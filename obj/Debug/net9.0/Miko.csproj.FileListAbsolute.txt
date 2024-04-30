@@ -1,0 +1,14 @@
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.GeneratedMSBuildEditorConfig.editorconfig
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.AssemblyInfoInputs.cache
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.AssemblyInfo.cs
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.csproj.CoreCompileInputs.cache
+c:\Source\Miko_lang\bin\Debug\net9.0\Miko.exe
+c:\Source\Miko_lang\bin\Debug\net9.0\Miko.deps.json
+c:\Source\Miko_lang\bin\Debug\net9.0\Miko.runtimeconfig.json
+c:\Source\Miko_lang\bin\Debug\net9.0\Miko.dll
+c:\Source\Miko_lang\bin\Debug\net9.0\Miko.pdb
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.dll
+c:\Source\Miko_lang\obj\Debug\net9.0\refint\Miko.dll
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.pdb
+c:\Source\Miko_lang\obj\Debug\net9.0\Miko.genruntimeconfig.cache
+c:\Source\Miko_lang\obj\Debug\net9.0\ref\Miko.dll
