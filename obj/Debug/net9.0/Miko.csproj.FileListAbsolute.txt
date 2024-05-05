@@ -12,3 +12,17 @@ c:\Source\Miko_lang\obj\Debug\net9.0\refint\Miko.dll
 c:\Source\Miko_lang\obj\Debug\net9.0\Miko.pdb
 c:\Source\Miko_lang\obj\Debug\net9.0\Miko.genruntimeconfig.cache
 c:\Source\Miko_lang\obj\Debug\net9.0\ref\Miko.dll
+f:\!Sources\miko\bin\Debug\net9.0\Miko.exe
+f:\!Sources\miko\bin\Debug\net9.0\Miko.deps.json
+f:\!Sources\miko\bin\Debug\net9.0\Miko.runtimeconfig.json
+f:\!Sources\miko\bin\Debug\net9.0\Miko.dll
+f:\!Sources\miko\bin\Debug\net9.0\Miko.pdb
+f:\!Sources\miko\obj\Debug\net9.0\Miko.GeneratedMSBuildEditorConfig.editorconfig
+f:\!Sources\miko\obj\Debug\net9.0\Miko.AssemblyInfoInputs.cache
+f:\!Sources\miko\obj\Debug\net9.0\Miko.AssemblyInfo.cs
+f:\!Sources\miko\obj\Debug\net9.0\Miko.csproj.CoreCompileInputs.cache
+f:\!Sources\miko\obj\Debug\net9.0\Miko.dll
+f:\!Sources\miko\obj\Debug\net9.0\refint\Miko.dll
+f:\!Sources\miko\obj\Debug\net9.0\Miko.pdb
+f:\!Sources\miko\obj\Debug\net9.0\Miko.genruntimeconfig.cache
+f:\!Sources\miko\obj\Debug\net9.0\ref\Miko.dll

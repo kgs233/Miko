@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Source\\Miko_lang\\Miko.csproj": {}
+    "f:\\!Sources\\miko\\Miko.csproj": {}
   },
   "projects": {
-    "c:\\Source\\Miko_lang\\Miko.csproj": {
+    "f:\\!Sources\\miko\\Miko.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Source\\Miko_lang\\Miko.csproj",
+        "projectUniqueName": "f:\\!Sources\\miko\\Miko.csproj",
         "projectName": "Miko",
-        "projectPath": "c:\\Source\\Miko_lang\\Miko.csproj",
-        "packagesPath": "C:\\Users\\马骏\\.nuget\\packages\\",
-        "outputPath": "c:\\Source\\Miko_lang\\obj\\",
+        "projectPath": "f:\\!Sources\\miko\\Miko.csproj",
+        "packagesPath": "C:\\Users\\heero\\.nuget\\packages\\",
+        "outputPath": "f:\\!Sources\\miko\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\马骏\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\heero\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.3.24204.13/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.1.24101.2/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

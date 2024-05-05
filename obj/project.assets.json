@@ -8,19 +8,19 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\马骏\\.nuget\\packages\\": {}
+    "C:\\Users\\heero\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Source\\Miko_lang\\Miko.csproj",
+      "projectUniqueName": "F:\\!Sources\\miko\\Miko.csproj",
       "projectName": "Miko",
-      "projectPath": "C:\\Source\\Miko_lang\\Miko.csproj",
-      "packagesPath": "C:\\Users\\马骏\\.nuget\\packages\\",
-      "outputPath": "C:\\Source\\Miko_lang\\obj\\",
+      "projectPath": "F:\\!Sources\\miko\\Miko.csproj",
+      "packagesPath": "C:\\Users\\heero\\.nuget\\packages\\",
+      "outputPath": "F:\\!Sources\\miko\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\马骏\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\heero\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.3.24204.13/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.1.24101.2/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,64 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
+using Miko.Lib.Structure;
 
 namespace Miko.Lib
 {
-    public enum TokenType
-    {
-        Identifer,
-        Integer,
-        Float,
-        String,
-        Char,
-        True,
-        False,
-        Null,
-
-        KW_open,
-        KW_space,
-        KW_struct,
-        KW_static,
-
-        KW_readonly,
-        KW_must,
-        KW_local,
-
-        KW_if,
-        KW_else,
-        KW_for,
-        KW_foreach,
-    }
-
-    public class Token
-    {
-        public Token(TokenType type, string Vaule, int Line, int Column)
-        {
-            this.Type = type;
-            this.Vaule = Vaule;
-            this.Line = Line;
-            this.Column = Column;
-        }
-
-        public TokenType Type;
-        public string Vaule;
-        public int Line;
-        public int Column;
-    }
 
     public class Lexer
     {
-        public Queue<char> Article;
+        public MikoQueue<char> Article = new();
         List<Token> Tokens = new();
 
-        public void Lex()
+        public List<Token> Lex()
         {
-            string vaule = "";
+            string value = "";
             int line = 0;
             int column = 0;
+
+            void nextColumn()
+            {
+                column++;
+                value += Article.Dequeue();
+            }
+
+            bool peek(string str)
+            {
+                foreach (char c in str)
+                {
+                    if (Article.Peek() == c)
+                    {
+                        nextColumn();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
 
             while (Article.Count > 0)
             {
@@ -67,122 +45,114 @@ namespace Miko.Lib
                     Article.Dequeue();
                 }
 
-                if (vaule == "")
+                if (value == "")
                 {
                     switch (Article.Peek())
                     {
                         case '\"':
-                            column++;
-                            Article.Dequeue();
+                            nextColumn();
                             while (Article.Peek() != '"')
                             {
                                 if (Article.Peek() == '\\')
                                 {
-                                    column++;
-                                    Article.Dequeue();
+                                    nextColumn();
                                     switch (Article.Peek())
                                     {
                                         case '\\':
-                                            vaule += "\\";
+                                            value += "\\";
                                             break;
                                         case '\"':
-                                            vaule += '\"';
+                                            value += '\"';
                                             break;
                                         case '\'':
-                                            vaule += '\'';
+                                            value += '\'';
                                             break;
                                         case 'n':
-                                            vaule += '\n';
+                                            value += '\n';
                                             break;
                                         case 'r':
-                                            vaule += '\r';
+                                            value += '\r';
                                             break;
                                         case 't':
-                                            vaule += '\t';
+                                            value += '\t';
                                             break;
                                         case 'f':
-                                            vaule += '\f';
+                                            value += '\f';
                                             break;
                                         case 'b':
-                                            vaule += '\b';
+                                            value += '\b';
                                             break;
                                         case 'a':
-                                            vaule += '\a';
+                                            value += '\a';
                                             break;
                                         case '0':
-                                            vaule += '\0';
+                                            value += '\0';
                                             break;
 
                                         default:
-                                            vaule += '\\';
+                                            value += '\\';
                                             continue;
                                     }
                                     column++;
                                     Article.Dequeue();
                                 }
-                                column++;
-                                vaule += Article.Dequeue();
+                                nextColumn();
                             }
-                            column++;
-                            Article.Dequeue();
-                            Tokens.Add(new(TokenType.String, vaule, line, column));
-                            vaule = "";
+                            nextColumn();
+                            Tokens.Add(new(TokenType.String, value, line, column));
+                            value = "";
                             break;
 
                         case '\'':
-                            column++;
-                            Article.Dequeue();
+                            nextColumn();
                             if (Article.Peek() == '\'')
                             {
                                 throw new Exception("Lex Error: Null char error");
                             }
                             if (Article.Peek() == '\\')
                             {
-                                column++;
-                                Article.Dequeue();
+                                nextColumn();
                                 switch (Article.Peek())
                                 {
                                     case '\\':
-                                        vaule += "\\";
+                                        value += "\\";
                                         break;
                                     case '\"':
-                                        vaule += '\"';
+                                        value += '\"';
                                         break;
                                     case '\'':
-                                        vaule += '\'';
+                                        value += '\'';
                                         break;
                                     case 'n':
-                                        vaule += '\n';
+                                        value += '\n';
                                         break;
                                     case 'r':
-                                        vaule += '\r';
+                                        value += '\r';
                                         break;
                                     case 't':
-                                        vaule += '\t';
+                                        value += '\t';
                                         break;
                                     case 'f':
-                                        vaule += '\f';
+                                        value += '\f';
                                         break;
                                     case 'b':
-                                        vaule += '\b';
+                                        value += '\b';
                                         break;
                                     case 'a':
-                                        vaule += '\a';
+                                        value += '\a';
                                         break;
                                     case '0':
-                                        vaule += '\0';
+                                        value += '\0';
                                         break;
 
                                     default:
                                         throw new Exception("Lex Error: Not char error");
                                 }
-                                column++;
-                                Article.Dequeue();
+                                nextColumn();
                             }
                             else
                             {
-                                column++;
-                                Article.Dequeue();
+                                nextColumn();
                             }
 
                             if (Article.Peek() != '\'')
@@ -191,92 +161,456 @@ namespace Miko.Lib
                             }
                             else
                             {
-                                Tokens.Add(new(TokenType.Char, vaule, line, column));
+                                Tokens.Add(new(TokenType.Char, value, line, column));
                                 Article.Dequeue();
-                                vaule = "";
+                                value = "";
                             }
                             break;
 
-                        //if
+                        case 'b':
+                            nextColumn();
+                            if (peek("reak"))
+                            {
+                                Tokens.Add(new(TokenType.KW_break, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'c':
+                            nextColumn();
+                            if (peek("ontinue"))
+                            {
+                                Tokens.Add(new(TokenType.KW_continue, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'e':
+                            nextColumn();
+                            if (peek("lse"))
+                            {
+                                Tokens.Add(new(TokenType.KW_else, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'f':
+                            nextColumn();
+                            if (peek("alse"))
+                            {
+                                Tokens.Add(new(TokenType.False, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("or"))
+                            {
+                                if (peek("each"))
+                                {
+                                    Tokens.Add(new(TokenType.KW_foreach, value, line, column));
+
+                                }
+                                else if (peek("ce"))
+                                {
+                                    Tokens.Add(new(TokenType.KW_force, value, line, column));
+                                }
+                                else
+                                {
+                                    Tokens.Add(new(TokenType.KW_for, value, line, column));
+                                }
+                                value = "";
+
+                            }
+                            else if (peek("unction"))
+                            {
+                                Tokens.Add(new(TokenType.KW_function, value, line, column));
+                                value = "";
+                            }
+                            break;
+
                         case 'i':
-                            column++;
-                            vaule += Article.Dequeue();
+                            nextColumn();
                             if (Article.Peek() == 'f')
                             {
-                                column++;
-                                vaule += Article.Dequeue();
-                                Tokens.Add(new(TokenType.KW_if, vaule, line, column));
-                                vaule = "";
+                                nextColumn();
+                                Tokens.Add(new(TokenType.KW_if, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("nitonly"))
+                            {
+                                Tokens.Add(new(TokenType.KW_initonly, value, line, column));
+                                value = "";
                             }
                             break;
-                        //else
-                        case 'e':
-                            column++;
-                            vaule += Article.Dequeue();
-                            if (Article.Peek() == 'l')
+
+                        case 'm':
+                            nextColumn();
+                            if (peek("ust"))
                             {
-                                column++;
-                                vaule += Article.Dequeue();
-                                if (Article.Peek() == 's')
+                                Tokens.Add(new(TokenType.KW_must, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'n':
+                            nextColumn();
+                            if (peek("ew"))
+                            {
+                                Tokens.Add(new(TokenType.KW_new, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("amespace"))
+                            {
+                                Tokens.Add(new(TokenType.KW_namespace, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("ull"))
+                            {
+                                Tokens.Add(new(TokenType.Null, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'o':
+                            nextColumn();
+                            if (peek("pen"))
+                            {
+                                Tokens.Add(new(TokenType.KW_open, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("ut"))
+                            {
+                                Tokens.Add(new(TokenType.KW_out, value, line, column));
+                            }
+                            break;
+
+                        case 'p':
+                            nextColumn();
+                            if (peek("ionter"))
+                            {
+                                Tokens.Add(new(TokenType.KW_pionter, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("rivate"))
+                            {
+                                Tokens.Add(new(TokenType.KW_private, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("ublic"))
+                            {
+                                Tokens.Add(new(TokenType.KW_public, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'r':
+                            nextColumn();
+                            if (Article.Peek() == 'e')
+                            {
+                                if (peek("adonly"))
                                 {
-                                    column++;
-                                    vaule += Article.Dequeue();
-                                    if (Article.Peek() == 'e')
-                                    {
-                                        column++;
-                                        vaule += Article.Dequeue();
-                                        Tokens.Add(new(TokenType.KW_else, vaule, line, column));
-                                    }
+                                    Tokens.Add(new(TokenType.KW_readonly, value, line, column));
+                                    value = "";
+                                }
+                                else if (peek("turn"))
+                                {
+                                    Tokens.Add(new(TokenType.KW_return, value, line, column));
+                                    value = "";
+                                }
+                                else if (Article.Peek() == 'f')
+                                {
+                                    nextColumn();
+                                    Tokens.Add(new(TokenType.KW_ref, value, line, column));
+                                    value = "";
                                 }
                             }
                             break;
 
-                        //for foreach
-                        case 'f':
-                            column++;
-                            vaule += Article.Dequeue();
-                            if (Article.Peek() == 'o')
+                        case 's':
+                            nextColumn();
+                            if (peek("truct"))
                             {
-                                column++;
-                                vaule += Article.Dequeue();
-                                if (Article.Peek() == 'r')
-                                {
-                                    column++;
-                                    vaule += Article.Dequeue();
-                                    if (Article.Peek() == 'e')
-                                    {
-                                        column++;
-                                        vaule += Article.Dequeue();
-                                        if (Article.Peek() == 'a')
-                                        {
-                                            column++;
-                                            vaule += Article.Dequeue();
-                                            if (Article.Peek() == 'c')
-                                            {
-                                                column++;
-                                                vaule += Article.Dequeue();
-                                                if (Article.Peek() == 'h')
-                                                {
-                                                    column++;
-                                                    vaule += Article.Dequeue();
-                                                    Tokens.Add(new(TokenType.KW_foreach, vaule, line, column));
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Tokens.Add(new(TokenType.KW_for, vaule, line, column));
-                                    }
-
-                                    vaule = "";
-                                }
+                                Tokens.Add(new(TokenType.KW_struct, value, line, column));
+                                value = "";
                             }
+                            break;
+
+                        case 't':
+                            nextColumn();
+                            if (peek("tuple"))
+                            {
+                                Tokens.Add(new(TokenType.KW_tuple, value, line, column));
+                                value = "";
+                            }
+                            else if (peek("rue"))
+                            {
+                                Tokens.Add(new(TokenType.True, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'v':
+                            nextColumn();
+                            if (peek("ar"))
+                            {
+                                Tokens.Add(new(TokenType.KW_var, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'w':
+                            nextColumn();
+                            if (peek("hile"))
+                            {
+                                Tokens.Add(new(TokenType.KW_while, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '+':
+                            nextColumn();
+                            if (peek("="))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Add_Ass, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Add, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '-':
+                            nextColumn();
+                            if (peek("="))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Sub_Ass, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Sub, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '*':
+                            nextColumn();
+                            if (peek("="))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Mul_Ass, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Mul, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '/':
+                            nextColumn();
+                            if (peek("="))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Div_Ass, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Div, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '%':
+                            nextColumn();
+                            if (peek("="))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Mod_Ass, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Mod, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '&':
+                            nextColumn();
+                            if (peek("&"))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_And, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Bit_And, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '|':
+                            nextColumn();
+                            if (peek("|"))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Or, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Bit_Or, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '^':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.OP_Bit_Xor, value, line, column));
+                            value = "";
+                            break;
+
+                        case '~':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.OP_Bit_Not, value, line, column));
+                            value = "";
+                            break;
+
+                        case '!':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.OP_Not, value, line, column));
+                            value = "";
+                            break;
+
+                        case '=':
+                            nextColumn();
+                            if (Article.Peek() == '=')
+                            {
+                                nextColumn();
+                                Tokens.Add(new Token(TokenType.OP_Eq, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Ass, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '<':
+                            nextColumn();
+                            if (peek("<"))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Bit_Shift_Left, value, line, column));
+                                value = "";
+                            }
+                            else if(Article.Peek() == '=')
+                            {
+                                nextColumn();
+                                Tokens.Add(new Token(TokenType.OP_Le, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Lt, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '>':
+                            nextColumn();
+                            if (peek(">"))
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Bit_Shift_Right, value, line, column));
+                                value = "";
+                            }
+                            else if(Article.Peek() == '=')
+                            {
+                                nextColumn();
+                                Tokens.Add(new Token(TokenType.OP_Ge, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.OP_Gt, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case '(':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Paren_Open, value, line, column));
+                            value = "";
+                            break;
+
+                        case ')':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Paren_Close, value, line, column));
+                            value = "";
+                            break;
+
+                        case '[':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Bracket_Open, value, line, column));
+                            value = "";
+                            break;
+
+                        case ']':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Bracket_Close, value, line, column));
+                            value = "";
+                            break;
+
+                        case '{':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_CurlyBrace_Open, value, line, column));
+                            value = "";
+                            break;
+
+                        case '}':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_CurlyBrace_Close, value, line, column));
+                            value = "";
+                            break;
+
+                        case ',':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Comma, value, line, column));
+                            value = "";
+                            break;
+
+                        case ':':
+                            nextColumn();
+                            if (peek(":"))
+                            {
+                                Tokens.Add(new Token(TokenType.DL_Double_Colon, value, line, column));
+                                value = "";
+                            }
+                            else
+                            {
+                                Tokens.Add(new Token(TokenType.DL_Colon, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case ';':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Semicolon, value, line, column));
+                            value = "";
+                            break;
+
+                        case '.':
+                            nextColumn();
+                            Tokens.Add(new Token(TokenType.DL_Dot, value, line, column));
+                            value = "";
+                            break;
+
+                        case '\n':
+                            line++;
+                            column = 0;
                             break;
 
                         default:
-                            column++;
-                            vaule += Article.Dequeue();
+                            nextColumn();
                             break;
                     }
                 }
@@ -285,18 +619,24 @@ namespace Miko.Lib
                     Regex regExp = new Regex("[^0-9a-zA-Z\u4e00-\u9fa5]");
                     while (!regExp.IsMatch(Article.Peek().ToString()))
                     {
-                        column++;
-                        vaule += Article.Dequeue();
-
-                        if (Article.Count == 0)
-                        {
-                            break;
-                        }
+                        nextColumn();
                     }
-                    Tokens.Add(new(TokenType.Identifer, vaule, line, column));
-                    vaule = "";
+                    Tokens.Add(new(TokenType.Identifer, value, line, column));
+                    value = "";
+                }
+
+                if (Article.Count == 0)
+                {
+                    if (value != "")
+                    {
+                        Tokens.Add(new(TokenType.Identifer, value, line, column));
+                        value = "";
+
+                    }
                 }
             }
+
+            return Tokens;
         }
     }
 }
