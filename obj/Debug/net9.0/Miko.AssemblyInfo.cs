@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Miko")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fd84098d44e8750d122b0147d8a087b63a5b6fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9b26b4522c7eb1d4c9c7c958021933975051022")]
 [assembly: System.Reflection.AssemblyProductAttribute("Miko")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Miko")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
