@@ -42,6 +42,7 @@ namespace Miko.Lib
             {
                 while (Article.Peek() == ' ')
                 {
+                    column++;
                     Article.Dequeue();
                 }
 
@@ -167,6 +168,15 @@ namespace Miko.Lib
                             }
                             break;
 
+                        case 'a':
+                            nextColumn();
+                            if(peek("auto"))
+                            {
+                                Tokens.Add(new(TokenType.KW_auto, value, line, column));
+                                value = "";
+                            }
+                            break;
+
                         case 'b':
                             nextColumn();
                             if (peek("reak"))
@@ -174,13 +184,45 @@ namespace Miko.Lib
                                 Tokens.Add(new(TokenType.KW_break, value, line, column));
                                 value = "";
                             }
+                            else if(peek("yte"))
+                            {
+                                Tokens.Add(new(TokenType.KW_byte, value, line, column));
+                                value = "";
+                            }
                             break;
 
                         case 'c':
                             nextColumn();
-                            if (peek("ontinue"))
+                            if (peek("on"))
                             {
-                                Tokens.Add(new(TokenType.KW_continue, value, line, column));
+                                if(peek("tinue"))
+                                {
+                                    Tokens.Add(new(TokenType.KW_continue, value, line, column));
+                                    value = "";
+                                }
+                                else if(peek("st"))
+                                {
+                                    Tokens.Add(new(TokenType.KW_const, value, line, column));
+                                    value = "";
+                                }
+                            }
+                            else if(peek("reate"))
+                            {
+                                Tokens.Add(new(TokenType.KW_create, value, line, column));
+                                value = "";
+                            }
+                            break;
+
+                        case 'd':
+                            nextColumn();
+                            if(peek("ispose"))
+                            {
+                                Tokens.Add(new(TokenType.KW_dispose, value, line, column));
+                                value = "";
+                            }
+                            else if(peek("ynamic"))
+                            {
+                                Tokens.Add(new(TokenType.KW_dynamic, value, line, column));
                                 value = "";
                             }
                             break;
@@ -190,6 +232,11 @@ namespace Miko.Lib
                             if (peek("lse"))
                             {
                                 Tokens.Add(new(TokenType.KW_else, value, line, column));
+                                value = "";
+                            }
+                            else if(peek("num"))
+                            {
+                                Tokens.Add(new(TokenType.KW_enum, value, line, column));
                                 value = "";
                             }
                             break;
@@ -208,10 +255,6 @@ namespace Miko.Lib
                                     Tokens.Add(new(TokenType.KW_foreach, value, line, column));
 
                                 }
-                                else if (peek("ce"))
-                                {
-                                    Tokens.Add(new(TokenType.KW_force, value, line, column));
-                                }
                                 else
                                 {
                                     Tokens.Add(new(TokenType.KW_for, value, line, column));
@@ -226,6 +269,15 @@ namespace Miko.Lib
                             }
                             break;
 
+                        case 'g':
+                            nextColumn();
+                            if(peek("oto"))
+                            {
+                                Tokens.Add(new(TokenType.KW_goto, value, line, column));
+                                value = "";
+                            }
+                            break;
+
                         case 'i':
                             nextColumn();
                             if (Article.Peek() == 'f')
@@ -234,35 +286,16 @@ namespace Miko.Lib
                                 Tokens.Add(new(TokenType.KW_if, value, line, column));
                                 value = "";
                             }
-                            else if (peek("nitonly"))
+                            else if (peek("nit"))
                             {
-                                Tokens.Add(new(TokenType.KW_initonly, value, line, column));
-                                value = "";
-                            }
-                            break;
-
-                        case 'm':
-                            nextColumn();
-                            if (peek("ust"))
-                            {
-                                Tokens.Add(new(TokenType.KW_must, value, line, column));
+                                Tokens.Add(new(TokenType.KW_init, value, line, column));
                                 value = "";
                             }
                             break;
 
                         case 'n':
                             nextColumn();
-                            if (peek("ew"))
-                            {
-                                Tokens.Add(new(TokenType.KW_new, value, line, column));
-                                value = "";
-                            }
-                            else if (peek("amespace"))
-                            {
-                                Tokens.Add(new(TokenType.KW_namespace, value, line, column));
-                                value = "";
-                            }
-                            else if (peek("ull"))
+                            if (peek("ull"))
                             {
                                 Tokens.Add(new(TokenType.Null, value, line, column));
                                 value = "";
@@ -276,20 +309,16 @@ namespace Miko.Lib
                                 Tokens.Add(new(TokenType.KW_open, value, line, column));
                                 value = "";
                             }
-                            else if (peek("ut"))
+                            else if(peek("nly"))
                             {
-                                Tokens.Add(new(TokenType.KW_out, value, line, column));
+                                Tokens.Add(new(TokenType.KW_only, value, line, column));
+                                value = "";
                             }
                             break;
 
                         case 'p':
                             nextColumn();
-                            if (peek("ionter"))
-                            {
-                                Tokens.Add(new(TokenType.KW_pionter, value, line, column));
-                                value = "";
-                            }
-                            else if (peek("rivate"))
+                            if (peek("rivate"))
                             {
                                 Tokens.Add(new(TokenType.KW_private, value, line, column));
                                 value = "";
@@ -305,12 +334,7 @@ namespace Miko.Lib
                             nextColumn();
                             if (Article.Peek() == 'e')
                             {
-                                if (peek("adonly"))
-                                {
-                                    Tokens.Add(new(TokenType.KW_readonly, value, line, column));
-                                    value = "";
-                                }
-                                else if (peek("turn"))
+                                if (peek("turn"))
                                 {
                                     Tokens.Add(new(TokenType.KW_return, value, line, column));
                                     value = "";
@@ -335,12 +359,7 @@ namespace Miko.Lib
 
                         case 't':
                             nextColumn();
-                            if (peek("tuple"))
-                            {
-                                Tokens.Add(new(TokenType.KW_tuple, value, line, column));
-                                value = "";
-                            }
-                            else if (peek("rue"))
+                            if (peek("rue"))
                             {
                                 Tokens.Add(new(TokenType.True, value, line, column));
                                 value = "";
@@ -605,8 +624,14 @@ namespace Miko.Lib
                             break;
 
                         case '\n':
+                            nextColumn();
+                            if (value != "" && value != "\n")
+                            {
+                                Tokens.Add(new(TokenType.Identifer, value, line, column));
+                            }
                             line++;
                             column = 0;
+                            value = "";
                             break;
 
                         default:
