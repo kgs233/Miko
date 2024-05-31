@@ -27,11 +27,24 @@ namespace Miko.Lib.Structure
         }
     }
 
-    public class ProgramNode : BaseStructureNode
+    public abstract class IdentifierNode : ASTNode, IMainNode
     {
-        public new ASTNodeType Type => ASTNodeType.ProgramStructure;
-        public ProgramNode() : base(null, ASTNodeType.ProgramStructure, 0)
-        {}
+        public enum Visibility
+        {
+            Public,
+            Private,
+            Auto,
+            Dynamic,
+        }
+
+        public ASTNodeType MainNodeType => ASTNodeType.Identifier;
+        public string Name;
+        public Visibility VisibilityType;
+        public IdentifierNode(IASTNode? parent, ASTNodeType type, Visibility visibilityType, string name, int line, int column) : base(parent, type, line, column)
+        {
+            Name = name;
+            VisibilityType = visibilityType;
+        }
     }
 
     public abstract class StatementNode : ASTNode, IMainNode
@@ -44,41 +57,66 @@ namespace Miko.Lib.Structure
         }
     }
 
-    public abstract class BaseStructureNode : ASTNode, IMainNode
+    public abstract class BlockNode : ASTNode, IMainNode
     {
-        public ASTNodeType MainNodeType => ASTNodeType.Structure;
-        public List<IdentifierNode>? IdentifierNodes { get; }
-        public BaseStructureNode(IASTNode? parent, ASTNodeType type, int line) : base(parent, type, line, 0)
-        {} 
+        public ASTNodeType MainNodeType => ASTNodeType.Block;
+        public List<StatementNode>? StatementList;
+        public BlockNode(IdentifierNode parent, ASTNodeType type, int line, int column) : base(parent, type, line, column)
+        {
+        }
     }
 
-    public abstract class IdentifierNode : ASTNode, IMainNode
+    public class VariableNode : IdentifierNode
     {
-        public ASTNodeType MainNodeType => ASTNodeType.Identifier;
-        public readonly string Name;
-        public bool Public;
-        public List<ConstIdentifierNode>? AlloweStruct;
-        public BaseStructureNode Body;
+        public ASTNode Body;
+        public VariableNode(StructureNode parent, Visibility visibilityType, ASTNode body, string name, int line, int column) : base(parent, ASTNodeType.VariableIdentifier, visibilityType, name, line, column)
+        {
+            Body = body;
+        }
+    }
 
-        public IdentifierNode(IASTNode parent, ASTNodeType type, string name, BaseStructureNode body, bool @public, int line) : this(parent, ASTNodeType.Identifier, name, body, @public, null, line)
-        { }
+    public class ConstantNode : IdentifierNode, IMainNode
+    {
+        public ASTNode Body;
+        public ConstantNode(StructureNode parent, Visibility visibilityType, ASTNode body, string name, int line, int column) : base(parent, ASTNodeType.ConstantIdentifier, visibilityType, name, line, column)
+        {
+            Body = body;
+        }
+    }
 
-        public IdentifierNode(IASTNode parent, ASTNodeType type, string name, BaseStructureNode body, List<ConstIdentifierNode> alloweStruct, int line) : this(parent, ASTNodeType.Identifier, name, body, false, alloweStruct, line)
+    public class FunctionNode : ConstantNode
+    {
+        public new ASTNodeType MainNodeType => ASTNodeType.ConstantIdentifier;
+        public ListNode? Parameters;
+
+        public FunctionNode(StructureNode parent, Visibility visibilityType, BlockNode body, string name, int line, int column) : base(parent, visibilityType, body, name, line, column)
+        {
+            this.Type = ASTNodeType.FunctionIdentifier;
+        }
+    }
+
+    public class ListNode : ASTNode
+    {
+        public List<IdentifierNode>? MemberList;
+        public ListNode(IdentifierNode parent, ASTNodeType type, int line, int column) : base(parent, type, line, column)
         {}
 
-        private IdentifierNode(IASTNode parent, ASTNodeType type, string name, BaseStructureNode body, bool @public, List<ConstIdentifierNode>? alloweStruct, int line) : base(parent, type, line, 0)
+    }
+
+    public class StructureNode : BlockNode
+    {
+        public List<VariableNode>? VariableList;
+        public List<ConstantNode>? ConstantList;
+        public List<FunctionNode>? FunctionList;
+        public StructureNode(IdentifierNode parent, int line, int column) : base(parent, ASTNodeType.Structure, line, column)
         {
-            Name = name;
-            Body = body;
-            Public = @public;
-            AlloweStruct = alloweStruct;
+
         }
     }
 
     public abstract class ExpressionNode : ASTNode, IMainNode
     {
         public ASTNodeType MainNodeType => ASTNodeType.Expression;
-        public BaseStructureNode? Results;
         public ExpressionNode(ASTNode parent, ASTNodeType type, int line, int column) : base(parent, type, line, column)
         { }
     }
@@ -112,15 +150,6 @@ namespace Miko.Lib.Structure
         {
             LeftObject = leftObject;
             RightObject = rightObject;
-        }
-    }
-
-    public class ConstIdentifierNode : IdentifierNode
-    {
-        public new readonly BaseStructureNode Body;
-        public ConstIdentifierNode(ASTNode parent, string name, BaseStructureNode body, bool @public, int line) : base(parent, ASTNodeType.ConstIdentifier, name, body, @public, line)
-        {
-            Body = body;
         }
     }
 

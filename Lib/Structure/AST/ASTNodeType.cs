@@ -6,6 +6,7 @@ public enum ASTNodeType
     Structure,
     Identifier,
     Expression,
+    Block,
 
     ProgramStructure,
 
@@ -18,7 +19,9 @@ public enum ASTNodeType
     UnaryOperationExpression,
     BinaryOperationExpression,
 
-    ConstIdentifier,
+    VariableIdentifier,
+    ConstantIdentifier,
+    FunctionIdentifier,
 
     AssignmentExpression,
     
