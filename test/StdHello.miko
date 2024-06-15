@@ -1,0 +1,8 @@
+open Std.Type;
+open Std.System.IO;
+
+function main(var argv : String[]) : Int32
+{
+    LangTestPut("Hello, world!\n");
+    return 0;
+}

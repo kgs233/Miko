@@ -1,0 +1,47 @@
+namespace Program;
+
+open Std.System.IO;
+open Std.Types;
+
+public const Type1 : struct
+{
+    var a : Int = 1;
+    var b : ref Int = a;
+}
+
+public const Type2 : Type1
+{
+    var a : Int = 2;
+}
+
+only(Type1,Type2) const Type3 : struct
+{
+    
+}
+
+function ErrorExp(in : Int32) : Int32
+{
+    if(in == 0)
+    {
+        throw "This is a Error";
+    }
+    else
+    {
+        return in;
+    }
+}
+
+function main(args : String[]) : byte(32)
+{
+    stdout("Hello World\n");
+    var a : (String, String) = ("Hello Miko", "Hello World");
+    stdout a;
+
+    a : catch("This is a Error") Int32 = try ErrorExp(0);
+
+    if(try ErrorExp(0) == catch(String))
+    {
+        stdout("Error!");
+    }
+    return 0;
+}
