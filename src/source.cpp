@@ -2,6 +2,7 @@
 #include "token.hpp"
 
 #include <cctype>
+#include <cerrno>
 #include <fstream>
 #include <ios>
 #include <string>
@@ -53,6 +54,20 @@ LexStart:
                 case '\'':
                 {
                     nowState = LexState::LEX_STATE_CHAR;
+                    break;
+                }
+
+                case OPERATOR:
+                {
+                    nowState = LexState::LEX_STATE_SYMBOL;
+                    nowValue += tc;
+                    break;
+                }
+
+                case '@':
+                {
+                    Token token(TokenType::TOKEN_OP_AT, "@", line, startColumn, column);
+                    this->Tokens.push_back(token);
                     break;
                 }
 
@@ -266,6 +281,154 @@ LexStart:
                     }
 
                     nowState = LexState::LEX_STATE_STRING;
+                    break;
+                }
+
+                case LexState::LEX_STATE_SYMBOL:
+                {
+                    TokenType opType;
+                    if(std::isalpha(tc) || std::isdigit(tc) || tc == '_')
+                    {
+                        if (nowValue == "+")
+                        {
+                            opType = TokenType::TOKEN_OP_ADD;
+                        }
+                        else if (nowValue == "++")
+                        {
+                            opType = TokenType::TOKEN_OP_DOUBLE_ADD;
+                        }
+                        else if (nowValue == "+=")
+                        {
+                            opType = TokenType::TOKEN_OP_ADD_ASS;
+                        }
+                        else if (nowValue == "-")
+                        {
+                            opType = TokenType::TOKEN_OP_SUB;
+                        }
+                        else if (nowValue == "--")
+                        {
+                            opType = TokenType::TOKEN_OP_DOUBLE_SUB;
+                        }
+                        else if (nowValue == "-=")
+                        {
+                            opType = TokenType::TOKEN_OP_SUB_ASS;
+                        }
+                        else if (nowValue == "*")
+                        {
+                            opType = TokenType::TOKEN_OP_MUL;
+                        }
+                        else if (nowValue == "*=")
+                        {
+                            opType = TokenType::TOKEN_OP_MUL_ASS;
+                        }
+                        else if (nowValue == "/")
+                        {
+                            opType = TokenType::TOKEN_OP_DIV;
+                        }
+                        else if (nowValue == "/=")
+                        {
+                            opType = TokenType::TOKEN_OP_DIV_ASS;
+                        }
+                        else if (nowValue == "%")
+                        {
+                            opType = TokenType::TOKEN_OP_MOD;
+                        }
+                        else if (nowValue == "%=")
+                        {
+                            opType = TokenType::TOKEN_OP_MOD_ASS;
+                        }
+                        else if (nowValue == "==")
+                        {
+                            opType = TokenType::TOKEN_OP_EQ;
+                        }
+                        else if (nowValue == "!")
+                        {
+                            opType = TokenType::TOKEN_OP_NOT;
+                        }
+                        else if (nowValue == "!=")
+                        {
+                            opType = TokenType::TOKEN_OP_NE;
+                        }
+                        else if (nowValue == ">")
+                        {
+                            opType = TokenType::TOKEN_OP_GE;
+                        }
+                        else if (nowValue == ">>")
+                        {
+                            opType = TokenType::TOKEN_OP_BIT_SHIFT_RIGHT;
+                        }
+                        else if (nowValue == ">>=")
+                        {
+                            opType = TokenType::TOKEN_OP_SHIFT_RIGHT_ASS;
+                        }
+                        else if (nowValue == ">=")
+                        {
+                            opType = TokenType::TOKEN_OP_GT;
+                        }
+                        else if (nowValue == "<")
+                        {
+                            opType = TokenType::TOKEN_OP_LE;
+                        }
+                        else if (nowValue == "<<")
+                        {
+                            opType = TokenType::TOKEN_OP_BIT_SHIFT_LEFT;
+                        }
+                        else if (nowValue == "<<=")
+                        {
+                            opType = TokenType::TOKEN_OP_SHIFT_LEFT_ASS;
+                        }
+                        else if (nowValue == "<=")
+                        {
+                            opType = TokenType::TOKEN_OP_LT;
+                        }
+                        else if (nowValue == "&")
+                        {
+                            opType = TokenType::TOKEN_OP_BIT_AND;
+                        }
+                        else if (nowValue == "&=")
+                        {
+                            opType = TokenType::TOKEN_OP_AND_ASS;
+                        }
+                        else if (nowValue == "&&")
+                        {
+                            opType = TokenType::TOKEN_OP_AND;
+                        }
+                        else if (nowValue == "|")
+                        {
+                            opType = TokenType::TOKEN_OP_BIT_OR;
+                        }
+                        else if (nowValue == "|=")
+                        {
+                            opType = TokenType::TOKEN_OP_OR_ASS;
+                        }
+                        else if (nowValue == "||")
+                        {
+                            opType = TokenType::TOKEN_OP_OR;
+                        }
+                        else if (nowValue == "^")
+                        {
+                            opType = TokenType::TOKEN_OP_BIT_XOR;
+                        }
+                        else if (nowValue == "^=")
+                        {
+                            opType = TokenType::TOKEN_OP_XOR_ASS;
+                        }
+                        else
+                        {
+                            throw "Invalid SYMBOL";
+                        }
+
+                        Token token(opType, nowValue, line, startColumn, column);
+                        this->Tokens.push_back(token);
+                        nowValue = "";
+                        nowState = LexState::LEX_STATE_NOMAL;
+                        goto LexStart;
+                    }
+                    else
+                    {
+                        nowValue += tc;
+                    }
+
                     break;
                 }
             }

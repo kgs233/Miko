@@ -72,6 +72,20 @@
     case 'Y':   \
     case 'Z'
 
+#define OPERATOR \
+    '+' :      \
+    case '-':  \
+    case '*':  \
+    case '/':  \
+    case '%':  \
+    case '=':  \
+    case '<':  \
+    case '>':  \
+    case '!':  \
+    case '|':  \
+    case '&':  \
+    case '^'
+
 enum class LexState {
     LEX_STATE_NOMAL,
     LEX_STATE_INTEGER,
