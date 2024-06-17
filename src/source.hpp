@@ -89,7 +89,6 @@
 enum class LexState {
     LEX_STATE_NOMAL,
     LEX_STATE_INTEGER,
-    LEX_STATE_FLOAT,
     LEX_STATE_STRING,
     LEX_STATE_CHAR,
     LEX_STATE_IDENTIFIER,
@@ -106,6 +105,7 @@ public:
     Source(std::string fileName);
 
     void Lex();
+    void Parse();
 };
 
 #endif // MIKO_SOURCE_HPP

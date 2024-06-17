@@ -162,11 +162,6 @@ LexStart:
                     {
                         nowValue += tc;
                     }
-                    else if (tc == '.')
-                    {
-                        nowValue += tc;
-                        nowState = LexState::LEX_STATE_FLOAT;
-                    }
                     else if (std::isalpha(tc))
                     {
                         throw "Invalid number";
@@ -180,26 +175,6 @@ LexStart:
                         goto LexStart;
                     }
                     break;
-                }
-
-                case LexState::LEX_STATE_FLOAT:
-                {
-                    if (std::isdigit(tc))
-                    {
-                        nowValue += tc;
-                    }
-                    else if (std::isalpha(tc))
-                    {
-                        throw "Invalid float";
-                    }
-                    else
-                    {
-                        Token token(TokenType::TOKEN_FLOAT, nowValue, line, startColumn, column);
-                        this->Tokens.push_back(token);
-                        nowValue = "";
-                        nowState = LexState::LEX_STATE_NOMAL;
-                        goto LexStart;
-                    }
                 }
 
                 case LexState::LEX_STATE_STRING:
