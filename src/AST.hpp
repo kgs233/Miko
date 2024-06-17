@@ -9,12 +9,21 @@
 
 enum class ASTNodeType
 {
-    Root,
-    Char,
-    Number,
-    Float,
-    Binary,
-    Unary
+    AST_TYPE_ROOT,
+    AST_TYPE_CHAR,
+    AST_TYPE_NUMBER,
+    AST_TYPE_FUNCTION,
+    AST_TYPE_STRING,
+    AST_TYPE_LIST,
+    AST_TYPE_STRUCT,
+    AST_TYPE_IDENTIFIER,
+
+    AST_TYPE_BINARY_ADD,
+    AST_TYPE_BINARY_SUB,
+    AST_TYPE_BINARY_MUL,
+    AST_TYPE_BINARY_DIV,
+    AST_TYPE_BINARY_MOD,
+    AST_TYPE_BINARY_EXP,
 };
 
 class ASTNode
@@ -30,6 +39,7 @@ public:
 class RootASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_ROOT;
     std::vector<ASTNode*> ASTree;
 
     RootASTNode();
@@ -46,6 +56,7 @@ public:
 class IdentifierASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
     std::string Name;
     ASTNode *Value;
 
@@ -55,6 +66,7 @@ public:
 class CharASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_CHAR;
     char Val;
 
     CharASTNode(char val);
@@ -63,6 +75,7 @@ public:
 class NumberASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
     long long Val;
 
     NumberASTNode(double val);
@@ -71,6 +84,7 @@ public:
 class FloatASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
     int Integer, Decimal;
     double Full;
 
@@ -98,6 +112,7 @@ public:
 class ListASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_LIST;
     std::map<std::string, IdentifierASTNode*> List;
 
     ListASTNode();
@@ -106,6 +121,7 @@ public:
 class FunctionASTNode : public ASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_FUNCTION;
     ListASTNode* Args;
     std::queue<StmASTNode*> FunctionBody;
     IdentifierASTNode RetType;
@@ -116,6 +132,7 @@ public:
 class StructASTNode : public ListASTNode
 {
 public:
+    ASTNodeType Type = ASTNodeType::AST_TYPE_STRUCT;
     int ObjectNum;
     std::map<std::string, IdentifierASTNode*> VarList, ConstList, FunctionList, ListList, StructList;
 

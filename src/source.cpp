@@ -1,4 +1,5 @@
 #include "source.hpp"
+#include "AST.hpp"
 #include "token.hpp"
 
 #include <cctype>
@@ -418,4 +419,10 @@ LexStart:
 
         column++;
     }
+}
+
+void Source::Parse()
+{
+    RootASTNode rootASTNode;
+    
 }
