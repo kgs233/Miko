@@ -8,6 +8,11 @@
 #include <ios>
 #include <string>
 
+Source::Source(std::string fileName)
+{
+    this->FileName = fileName;
+}
+
 void Source::Lex()
 {
     int line = 1;
@@ -263,7 +268,7 @@ LexStart:
                 case LexState::LEX_STATE_SYMBOL:
                 {
                     TokenType opType;
-                    if(std::isalpha(tc) || std::isdigit(tc) || tc == '_')
+                    if(std::isalpha(tc) || std::isdigit(tc) || tc == '_' || tc == ' ')
                     {
                         if (nowValue == "+")
                         {
@@ -389,6 +394,10 @@ LexStart:
                         {
                             opType = TokenType::TOKEN_OP_XOR_ASS;
                         }
+                        else if (nowValue == "->")
+                        {
+                            opType = TokenType::TOKEN_OP_RET;
+                        }
                         else
                         {
                             throw "Invalid SYMBOL";
@@ -419,10 +428,4 @@ LexStart:
 
         column++;
     }
-}
-
-void Source::Parse()
-{
-    RootASTNode rootASTNode;
-    
 }

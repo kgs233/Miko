@@ -81,6 +81,8 @@ enum class TokenType {
 
     TOKEN_OP_AT,
 
+    TOKEN_OP_RET,
+
     TOKEN_DL_PAREN_OPEN,
     TOKEN_DL_PAREN_CLOSE,
     TOKEN_DL_BRACKET_OPEN,

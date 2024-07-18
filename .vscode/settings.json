@@ -1,12 +1,3 @@
 {
-    "vcpkg.target.useStaticLib": false,
-    "vcpkg.target.defaultTriplet": "-windows",
-    "cmake.configureArgs": [
-        "-DVCPKG_TARGET_TRIPLET=-windows"
-    ],
-    "mesonbuild.configureOnOpen": true,
-    "C_Cpp.default.compileCommands": "f:\\!Sources\\MikoLang\\builddir/compile_commands.json",
-    "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
-    "vcpkg.target.hostTriplet": "-windows",
-    "cmake.ignoreCMakeListsMissing": true
+    "lldb.library": ""
 }

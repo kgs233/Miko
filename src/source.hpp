@@ -105,7 +105,6 @@ public:
     Source(std::string fileName);
 
     void Lex();
-    void Parse();
 };
 
 #endif // MIKO_SOURCE_HPP

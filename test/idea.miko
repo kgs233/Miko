@@ -31,7 +31,7 @@ function ErrorExp(in : Int32) : Int32
     }
 }
 
-function main(args : String[]) : byte(32)
+const main : function(args : String[]) -> byte(32)
 {
     stdout("Hello World\n");
     var a : (String, String) = ("Hello Miko", "Hello World");
@@ -45,3 +45,9 @@ function main(args : String[]) : byte(32)
     }
     return 0;
 }
+
+
+const PI : float  
+
+var AFun : function -> Int32;
+var BFun : function(Int32);

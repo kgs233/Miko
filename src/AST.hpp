@@ -26,6 +26,19 @@ enum class ASTNodeType
     AST_TYPE_BINARY_EXP,
 };
 
+enum class IdentifierType
+{
+    TYPE_CONST,
+    TYPE_VAR,
+};
+
+enum class IdentifierVisibility
+{
+    VISIBILITY_LOCAL,
+    VISIBILITY_STRUCT,
+    VISIBILITY_PUBLIC,
+};
+
 class ASTNode
 {
 public:
@@ -58,7 +71,9 @@ class IdentifierASTNode : public ASTNode
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
     std::string Name;
-    ASTNode *Value;
+    IdentifierVisibility IdVisibility;
+    IdentifierType IdType;
+    ASTNode *IdValueType;
 
     IdentifierASTNode(std::string name, ASTNode* value);
 };
@@ -91,7 +106,10 @@ public:
     FloatASTNode(int integer, int decimal);
 };
 
-class BinaryASTNode : public ASTNode
+class OperatorASTNode : public ASTNode
+{};
+
+class BinaryASTNode : public OperatorASTNode
 {
 public:
     TokenType Op;
@@ -100,13 +118,21 @@ public:
     BinaryASTNode(TokenType op, ASTNode* lhs, ASTNode* rhs);
 };
 
-class UnaryASTNode : public ASTNode
+class UnaryASTNode : public OperatorASTNode
 {
 public:
     TokenType Op;
     ASTNode* OpObject;
 
     UnaryASTNode(TokenType op, ASTNode* opObject);
+};
+
+class ExprASTNode : public ASTNode
+{
+public:
+    OperatorASTNode* RootOp;
+
+    ExprASTNode(OperatorASTNode* rootOp);
 };
 
 class ListASTNode : public ASTNode
@@ -123,10 +149,8 @@ class FunctionASTNode : public ASTNode
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_FUNCTION;
     ListASTNode* Args;
-    std::queue<StmASTNode*> FunctionBody;
-    IdentifierASTNode RetType;
-
-    FunctionASTNode(ListASTNode* args, IdentifierASTNode retType);
+    std::queue<ASTNode*> FunctionBody;
+    IdentifierASTNode* RetType;
 };
 
 class StructASTNode : public ListASTNode

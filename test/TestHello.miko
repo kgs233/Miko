@@ -1,5 +1,5 @@
-function main(var argv : String[]) : Int32
+const main : function(Args : String[]) -> Int32
 {
-    LangTestPut("Hello, world!\n");
+    put("Hello World");
     return 0;
 }
