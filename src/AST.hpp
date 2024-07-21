@@ -66,16 +66,30 @@ public:
     StmASTNode(ASTNode body);
 };
 
+class IdentifierNameASTNode;
 class IdentifierASTNode : public ASTNode
 {
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
-    std::string Name;
+    IdentifierNameASTNode* Name;
     IdentifierVisibility IdVisibility;
     IdentifierType IdType;
     ASTNode *IdValueType;
 
     IdentifierASTNode(std::string name, ASTNode* value);
+};
+
+class IdentifierNameASTNode : public ASTNode
+{
+public:
+    std::vector<IdentifierASTNode*> Parents;
+    std::string Name;
+};
+
+class CallIdentifier : public ASTNode
+{
+public:
+    CallIdentifier();
 };
 
 class CharASTNode : public ASTNode

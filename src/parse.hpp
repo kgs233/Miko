@@ -7,6 +7,7 @@
 #include <cctype>
 #include <cerrno>
 #include <map>
+#include <queue>
 #include <vector>
 
 class Parse
@@ -20,7 +21,10 @@ public:
 
     ListASTNode* ListTypeParse();
     FunctionASTNode* FunctionParse();
+    std::queue<ASTNode*> FunctionBodyParse();
     IdentifierASTNode* IdentifierParse();
+    IdentifierASTNode* CallIdentifierParse();
+    IdentifierNameASTNode* IdentifierNameParse();
     
 
     Token* GetNextToken();
