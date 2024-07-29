@@ -2,10 +2,10 @@
 #define MIKO_AST_HPP
 
 #include "token.hpp"
+#include <map>
 #include <queue>
 #include <string>
 #include <vector>
-#include <map>
 
 enum class ASTNodeType
 {
@@ -23,20 +23,20 @@ enum class ASTNodeType
     AST_TYPE_BINARY_MUL,
     AST_TYPE_BINARY_DIV,
     AST_TYPE_BINARY_MOD,
-    AST_TYPE_BINARY_EXP,
+    AST_TYPE_BINARY_EXP
 };
 
 enum class IdentifierType
 {
     TYPE_CONST,
-    TYPE_VAR,
+    TYPE_VAR
 };
 
 enum class IdentifierVisibility
 {
     VISIBILITY_LOCAL,
     VISIBILITY_STRUCT,
-    VISIBILITY_PUBLIC,
+    VISIBILITY_PUBLIC
 };
 
 class ASTNode
@@ -74,7 +74,7 @@ public:
     IdentifierNameASTNode* Name;
     IdentifierVisibility IdVisibility;
     IdentifierType IdType;
-    ASTNode *IdValueType;
+    ASTNode* Value;
 
     IdentifierASTNode(std::string name, ASTNode* value);
 };
@@ -121,7 +121,8 @@ public:
 };
 
 class OperatorASTNode : public ASTNode
-{};
+{
+};
 
 class BinaryASTNode : public OperatorASTNode
 {
@@ -153,7 +154,10 @@ class ListASTNode : public ASTNode
 {
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_LIST;
-    std::map<std::string, IdentifierASTNode*> List;
+    std::vector<IdentifierASTNode*> List;
+    std::map<std::string, IdentifierASTNode*> ListMap;
+
+    void AddNode(std::string Name, IdentifierASTNode* Node);
 
     ListASTNode();
 };
@@ -173,6 +177,8 @@ public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_STRUCT;
     int ObjectNum;
     std::map<std::string, IdentifierASTNode*> VarList, ConstList, FunctionList, ListList, StructList;
+
+    void AddNode(IdentifierASTNode* Node);
 
     StructASTNode();
 };

@@ -6,24 +6,27 @@
 
 #include <iostream>
 
-Parse::Parse(std::vector<Token>* tokenList) : TokenList(tokenList)
-{}
+Parse::Parse(std::vector<Token>* tokenList) :
+    TokenList(tokenList)
+{
+}
 
 ListASTNode* Parse::ListTypeParse()
 {
     ListASTNode* node;
-    while((*TokenList)[NowToken].Value != ")")
+    while (NowTokenValue != ")")
     {
-        NowToken++;
-        if((*TokenList)[NowToken].Value == ",")
+        NextToken();
+        if (NowTokenValue == ",")
         {
-            NowToken++;
+            NextToken();
             continue;
         }
-        else if((*TokenList)[NowToken].Type == TokenType::TOKEN_IDENTIFIER)
+        else if (NowTokenType == TokenType::TOKEN_IDENTIFIER)
         {
-            node->List[(*TokenList)[NowToken].Value] = IdentifierParse();
-            NowToken++;
+            // TODO: Have a idea: (exp = xxx, exp2 = xxx)
+            node->AddNode("", IdentifierParse());
+            NextToken();
         }
     }
     return node;
@@ -32,7 +35,7 @@ ListASTNode* Parse::ListTypeParse()
 IdentifierASTNode* Parse::IdentifierParse()
 {
     IdentifierASTNode* node;
-    if((*TokenList)[NowToken].Value == "var")
+    if (NowTokenValue == "var")
     {
         node->IdType = IdentifierType::TYPE_VAR;
     }
@@ -41,9 +44,9 @@ IdentifierASTNode* Parse::IdentifierParse()
         node->IdType = IdentifierType::TYPE_CONST;
     }
 
-    NowToken++;
+    NextToken();
 
-    if(isKeyWorld((*TokenList)[NowToken].Value))
+    if (isKeyWorld(NowTokenValue))
     {
         std::cerr << "Can't use key word as identifier" << std::endl;
         throw "Can't use key word as identifier";
@@ -51,13 +54,13 @@ IdentifierASTNode* Parse::IdentifierParse()
     }
     else
     {
-        if((*TokenList)[NowToken].Value == "function")
+        if (NowTokenValue == "function")
         {
-            node->IdValueType = FunctionParse();
+            node->Value = FunctionParse();
         }
         else
         {
-            node->IdValueType = IdentifierNameParse();
+            node->Value = IdentifierNameParse();
         }
 
         return node;
@@ -69,61 +72,78 @@ IdentifierASTNode* Parse::CallIdentifierParse()
     IdentifierASTNode* node;
     IdentifierASTNode* parent;
 
-    // TODO: Deep Identifier
-    // List->List->List...->Identifier
-    // in the List find next Identifier
-
-    while ((*TokenList)[NowToken].Type == TokenType::TOKEN_IDENTIFIER)
+    if (ProgramSymbolTable.ListMap.find(NowTokenValue) == ProgramSymbolTable.ListMap.end())
     {
-        
-    }
+        parent = ProgramSymbolTable.ListMap[NowTokenValue];
+        if (NowTokenType == TokenType::TOKEN_DL_DOT)
+        {
+            NextToken();
+        }
+        else
+        {
+            node = parent;
+        }
 
-        NowToken++;
-        return node;
+        while (NowTokenType == TokenType::TOKEN_IDENTIFIER)
+        {
+            StructASTNode* oldParent = (StructASTNode*)parent->Value;
+            parent = oldParent->ListMap[NowTokenValue];
+            NextToken();
+            if (NowTokenType == TokenType::TOKEN_DL_DOT)
+            {
+                NextToken();
+            }
+            else
+            {
+                node = parent;
+                break;
+            }
+        }
     }
+    else
+    {
+        std::cerr << "Can't fount Symbol" << std::endl;
+    }
+    NextToken();
+    return node;
+}
 
 IdentifierNameASTNode* Parse::IdentifierNameParse()
 {
     IdentifierNameASTNode* node;
 
-
-    while((*TokenList)[NowToken].Type == TokenType::TOKEN_IDENTIFIER)
+    while (NowTokenType == TokenType::TOKEN_IDENTIFIER)
     {
-        if (SymbolTable.find((*TokenList)[NowToken].Value) == SymbolTable.end())
-        {
-            std::cerr << (*TokenList)[NowToken].Value << "is not defined" << std::endl;
-            throw "is not defined";
-        }
 
-        node->Parents.push_back(SymbolTable[(*TokenList)[NowToken].Value]);
-        NowToken++;
-        if((*TokenList)[NowToken].Value == ".")
+        node->Parents.push_back(ProgramSymbolTable.ListMap[NowTokenValue]);
+        NextToken();
+        if (NowTokenValue == ".")
         {
-            NowToken++;
+            NextToken();
         }
     }
 
-    node->Name = (*TokenList)[NowToken].Value;
-    NowToken++;
+    node->Name = NowTokenValue;
+    NextToken();
 
     return node;
 }
 
 FunctionASTNode* Parse::FunctionParse()
 {
-    NowToken++;
+    NextToken();
     FunctionASTNode* node;
-    if((*TokenList)[NowToken].Type == TokenType::TOKEN_DL_BRACKET_OPEN)
+    if (NowTokenType == TokenType::TOKEN_DL_BRACKET_OPEN)
     {
         node->Args = ListTypeParse();
-        NowToken++;
-        if((*TokenList)[NowToken].Type == TokenType::TOKEN_OP_RET)
+        NextToken();
+        if (NowTokenType == TokenType::TOKEN_OP_RET)
         {
-            NowToken++;
-            node->RetType = SymbolTable[(*TokenList)[NowToken].Value];
-            NowToken++;
+            NextToken();
+            node->RetType = ProgramSymbolTable.ListMap[NowTokenValue];
+            NextToken();
         }
-        else if((*TokenList)[NowToken].Type == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
+        else if (NowTokenType == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
         {
             node->RetType = nullptr;
         }
@@ -133,9 +153,9 @@ FunctionASTNode* Parse::FunctionParse()
             throw "must have a return type";
         }
 
-        if ((*TokenList)[NowToken].Type == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
+        if (NowTokenType == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
         {
-            NowToken++;
+            NextToken();
         }
         else
         {
@@ -149,29 +169,35 @@ FunctionASTNode* Parse::FunctionParse()
         throw "Function must have args";
         return nullptr;
     }
-    
+
     return node;
 }
 
 std::queue<ASTNode*> Parse::FunctionBodyParse()
 {
     std::queue<ASTNode*> node;
-    while((*TokenList)[NowToken].Value != "}")
+    while (NowTokenValue != "}")
     {
-        NowToken++;
-        if((*TokenList)[NowToken].Value == "var" || (*TokenList)[NowToken].Value == "const")
+        NextToken();
+        if (NowTokenValue == "var" || NowTokenValue == "const")
         {
             node.push(IdentifierParse());
         }
         else
         {
-            
         }
     }
     return node;
 }
 
+void Parse::NextToken()
+{
+    NowTokenNum++;
+    NowTokenValue = (*TokenList)[NowTokenNum].Value;
+    NowTokenType = (*TokenList)[NowTokenNum].Type;
+}
+
 Token* Parse::GetNextToken()
 {
-    return &(*TokenList)[NowToken + 1];
+    return &(*TokenList)[NowTokenNum + 1];
 }

@@ -6,16 +6,19 @@
 
 #include <cctype>
 #include <cerrno>
-#include <map>
 #include <queue>
+#include <string>
 #include <vector>
 
 class Parse
 {
 public:
-    int NowToken = 0;
+    int NowTokenNum = 0;
+    std::string NowTokenValue;
+    TokenType NowTokenType;
     std::vector<Token>* TokenList;
-    std::map<std::string, IdentifierASTNode*> SymbolTable;
+    StructASTNode ProgramSymbolTable;
+    StructASTNode* NowStructSymbolTable;
 
     Parse(std::vector<Token>* tokenList);
 
@@ -27,6 +30,7 @@ public:
     IdentifierNameASTNode* IdentifierNameParse();
     
 
+    void NextToken();
     Token* GetNextToken();
 };
 
