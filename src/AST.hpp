@@ -26,17 +26,25 @@ enum class ASTNodeType
     AST_TYPE_BINARY_EXP
 };
 
-enum class IdentifierType
+enum class VisibilityType
 {
-    TYPE_CONST,
-    TYPE_VAR
+    VISIBILITY_TYPE_PUBLIC,
+    VISIBILITY_TYPE_PRIVATE,
+    VISIBILITY_TYPE_CUSTOM,
 };
 
-enum class IdentifierVisibility
+enum class VariabilityType
 {
-    VISIBILITY_LOCAL,
-    VISIBILITY_STRUCT,
-    VISIBILITY_PUBLIC
+    VARIABILITY_TYPE_VAR,
+    VARIABILITY_TYPE_CONST,
+};
+
+class IdentifierASTNode;
+
+struct IdentifierVisibility
+{
+    VisibilityType Type;
+    std::vector<IdentifierASTNode*> VisibilityList;
 };
 
 class ASTNode
@@ -71,12 +79,18 @@ class IdentifierASTNode : public ASTNode
 {
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
-    IdentifierNameASTNode* Name;
-    IdentifierVisibility IdVisibility;
-    IdentifierType IdType;
+    std::string Name;
+    IdentifierVisibility Visibility;
+    VariabilityType Variability;
+    bool Static;
     ASTNode* Value;
 
     IdentifierASTNode(std::string name, ASTNode* value);
+};
+class DeclareIdentifierASTNode : public ASTNode
+{
+    IdentifierASTNode* Parent;
+    
 };
 
 class IdentifierNameASTNode : public ASTNode
