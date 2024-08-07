@@ -51,3 +51,13 @@ const PI : float
 
 var AFun : function -> Int32;
 var BFun : function(Int32);
+
+const FunctionD : (const A : Int32) -> Int32
+{
+
+}
+
+const FunctionE : func(const A : Int32) -> Int32
+{
+    
+}

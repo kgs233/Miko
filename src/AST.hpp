@@ -171,7 +171,7 @@ public:
     std::vector<IdentifierASTNode*> List;
     std::map<std::string, IdentifierASTNode*> ListMap;
 
-    void AddNode(std::string Name, IdentifierASTNode* Node);
+    void AddNode(IdentifierASTNode* Node);
 
     ListASTNode();
 };
