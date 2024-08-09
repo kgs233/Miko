@@ -22,10 +22,12 @@ public:
 
     Parse(std::vector<Token>* tokenList);
 
-    StructASTNode* ListTypeParse(StructASTNode* node);
-    FunctionASTNode* FunctionParse();
-    std::queue<ASTNode*> FunctionBodyParse();
-    IdentifierASTNode* DeclarationParse(StructASTNode* symbolTable);
+    ListASTNode* ListTypeParse(ListASTNode* list);
+    FunctionASTNode* FunctionParse(StructASTNode* symbolTable, ListASTNode* args);
+    std::queue<ASTNode*> FunctionBodyParse(std::queue<ASTNode*> body);
+    ASTNode* TypeParse(StructASTNode* symbolTable);
+    IdentifierASTNode* MemberParse(StructASTNode* symbolTable);
+    IdentifierASTNode* DeclarationParse(StructASTNode* symbolTable, IdentifierASTNode* node);
     IdentifierASTNode* DeclarationNameParse(StructASTNode* symbolTable, IdentifierASTNode* node);
     IdentifierASTNode* CallIdentifierParse(StructASTNode* symbolTable);
     IdentifierNameASTNode* IdentifierNameParse();

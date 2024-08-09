@@ -56,8 +56,3 @@ const FunctionD : (const A : Int32) -> Int32
 {
 
 }
-
-const FunctionE : func(const A : Int32) -> Int32
-{
-    
-}

@@ -168,8 +168,8 @@ class ListASTNode : public ASTNode
 {
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_LIST;
+    int MemberNum;
     std::vector<IdentifierASTNode*> List;
-    std::map<std::string, IdentifierASTNode*> ListMap;
 
     void AddNode(IdentifierASTNode* Node);
 
@@ -185,16 +185,19 @@ public:
     IdentifierASTNode* RetType;
 };
 
-class StructASTNode : public ListASTNode
+class StructASTNode : public ASTNode
 {
 public:
     ASTNodeType Type = ASTNodeType::AST_TYPE_STRUCT;
-    int ObjectNum;
-    std::map<std::string, IdentifierASTNode*> VarList, ConstList, FunctionList, ListList, StructList;
+    int MemberNum;
+    std::map<std::string, IdentifierASTNode*> MemberMap;
 
-    void AddNode(IdentifierASTNode* Node);
+    void AddNode(IdentifierASTNode* node);
+    void AddNodeInList(ListASTNode* list);
 
     StructASTNode();
+    StructASTNode(ListASTNode* listNode);
+    StructASTNode(StructASTNode* structNode);
 };
 
 #endif // MIKO_AST_HPP

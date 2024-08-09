@@ -5,6 +5,7 @@
 #include "util.hpp"
 
 #include <iostream>
+#include <queue>
 
 Parse::Parse(std::vector<Token>* tokenList) :
     TokenList(tokenList)
@@ -12,51 +13,83 @@ Parse::Parse(std::vector<Token>* tokenList) :
 }
 
 // ListType : "(" $(ListTypeChild)
-// ListTypeChild : $(variability) $Identifier ":" $Identifier[call] "," $ListTypeChild
+// ListTypeChild : $(variability) $Identifier ":" $Type "," $ListTypeChild
 //               : $(variability) $Identifier ")"
-StructASTNode* Parse::ListTypeParse(StructASTNode* node)
+ListASTNode* Parse::ListTypeParse(ListASTNode* list)
 {
     if (NowTokenType == TokenType::TOKEN_DL_PAREN_CLOSE)
     {
         NextToken();
 
-        if (NowTokenType == TokenType::TOKEN_IDENTIFIER)
-        {
-            // TODO: Have a idea: (exp = xxx, exp2 = xxx)
-            node->AddNode(DeclarationParse(NowStructSymbolTable));
-            NextToken();
-        }
+        IdentifierASTNode* node;
+        node = DeclarationParse(NowStructSymbolTable, node);
+        list->AddNode(node);
 
         if (NowTokenType == TokenType::TOKEN_DL_COMMA)
         {
             NextToken();
         }
+        else
+        {
+            std::cerr << "Unknown Delimiter" << std::endl;
+        }
 
-        return ListTypeParse(node);
+        return ListTypeParse(list);
     }
     else
     {
-        return node;
+        NextToken();
+        return list;
     }
 }
 
-// IdentifierDefine : $(visibility) $(statibility) $(variability) $Identifier ":“ $Type
 // Type : $Identifier
 //      | $ListType
 //      | $Function
 //      | $Struct
 //      | $Enum
-IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable)
+ASTNode* Parse::TypeParse(StructASTNode* symbolTable)
+{
+    if(NowTokenType == TokenType::TOKEN_DL_COMMA)
+    {
+        NextToken();
+    }
+    else
+    {
+        std::cerr << "Identifier must have a name" << std::endl;
+        throw "Identifier must have a name";
+    }
+
+    if (NowTokenType == TokenType::TOKEN_DL_PAREN_OPEN)
+    {
+        ListASTNode* list;
+        list = ListTypeParse(list);
+        if (NowTokenType == TokenType::TOKEN_OP_PASS)
+        {
+            return FunctionParse(symbolTable, list);
+        }
+        else
+        {
+            
+        }
+    }
+    else
+    {
+        return CallIdentifierParse(symbolTable);
+    }
+}
+
+// Member : $Visibility $Static $IdentifierDefine
+IdentifierASTNode* Parse::MemberParse(StructASTNode* symbolTable)
 {
     IdentifierASTNode* node;
-
-    if(GetNextToken()->Type != TokenType::TOKEN_DL_COLON)
+    if (GetNextToken()->Type != TokenType::TOKEN_DL_COLON)
     {
-        if(NowTokenValue == "public")
+        if (NowTokenValue == "public")
         {
             node->Visibility.Type = VisibilityType::VISIBILITY_TYPE_PUBLIC;
         }
-        else if(NowTokenValue == "private")
+        else if (NowTokenValue == "private")
         {
             node->Visibility.Type = VisibilityType::VISIBILITY_TYPE_PRIVATE;
         }
@@ -73,7 +106,13 @@ IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable)
 
         NextToken();
     }
+    
+    return DeclarationParse(symbolTable, node);
+}
 
+// IdentifierDefine : $Identifier ":“ $Type
+IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable, IdentifierASTNode* node)
+{
     if (GetNextToken()->Type != TokenType::TOKEN_DL_COLON)
     {
         if (NowTokenValue == "var")
@@ -95,16 +134,7 @@ IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable)
         throw "Identifier must have type";
     }
 
-    NextToken();
-
-    if(NowTokenType == TokenType::TOKEN_DL_PAREN_OPEN)
-    {
-        StructASTNode list;
-    }
-    else
-    {
-        node->Value = CallIdentifierParse(symbolTable);
-    }
+    node->Value = TypeParse((StructASTNode*)symbolTable->MemberMap[NowTokenValue]->Value);
 
     return node;
 }
@@ -115,14 +145,16 @@ IdentifierASTNode* Parse::DeclarationNameParse(StructASTNode* symbolTable, Ident
 {
     if (GetNextToken()->Type == TokenType::TOKEN_DL_DOT)
     {
-        if (symbolTable->ListMap.find(NowTokenValue) != symbolTable->ListMap.end())
+        NextToken();
+
+        if (symbolTable->MemberMap.find(NowTokenValue) != symbolTable->MemberMap.end())
         {
             IdentifierASTNode childNode = *node;
             childNode.Name = NowTokenValue;
             symbolTable->AddNode(&childNode);
         }
 
-        bool paseIdIsNotStruct = symbolTable->ListMap.find(NowTokenValue) != symbolTable->ListMap.end();
+        bool paseIdIsNotStruct = symbolTable->MemberMap.find(NowTokenValue) != symbolTable->MemberMap.end();
         if (paseIdIsNotStruct)
         {
             std::cerr << "Only struct can add child" << std::endl;
@@ -130,17 +162,14 @@ IdentifierASTNode* Parse::DeclarationNameParse(StructASTNode* symbolTable, Ident
         }
 
         NextToken();
-        NextToken();
-
-        return DeclarationNameParse((StructASTNode*)symbolTable->ListMap[NowTokenValue]->Value, node);
+        return DeclarationNameParse((StructASTNode*)symbolTable->MemberMap[NowTokenValue]->Value, node);
     }
     else
     {
-        if (symbolTable->ListMap.find(NowTokenValue) != symbolTable->ListMap.end())
+        if (symbolTable->MemberMap.find(NowTokenValue) != symbolTable->MemberMap.end())
         {
             node->Name = NowTokenValue;
             symbolTable->AddNode(node);
-
             NextToken();
 
             return node;
@@ -155,16 +184,16 @@ IdentifierASTNode* Parse::DeclarationNameParse(StructASTNode* symbolTable, Ident
 
 IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
 {
-    if (symbolTable->ListMap.find(NowTokenValue) == symbolTable->ListMap.end())
+    if (symbolTable->MemberMap.find(NowTokenValue) == symbolTable->MemberMap.end())
     {
         if (GetNextToken()->Type == TokenType::TOKEN_DL_DOT)
         {
-            bool paseIdIsStruct = typeid(symbolTable->ListMap[NowTokenValue]->Value) == typeid(StructASTNode);
+            bool paseIdIsStruct = typeid(symbolTable->MemberMap[NowTokenValue]->Value) == typeid(StructASTNode);
             if(paseIdIsStruct)
             {
                 NextToken();
                 NextToken();
-                return CallIdentifierParse((StructASTNode*)symbolTable->ListMap[NowTokenValue]->Value);
+                return CallIdentifierParse((StructASTNode*)symbolTable->MemberMap[NowTokenValue]->Value);
             }
             else
             {
@@ -174,7 +203,7 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
         }
         else
         {
-            return symbolTable->ListMap[NowTokenValue];
+            return symbolTable->MemberMap[NowTokenValue];
         }
     }
     else
@@ -184,53 +213,39 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
     }
 }
 
-// Function : $ListType
-//          | $ListType => $Type
-FunctionASTNode* Parse::FunctionParse()
+// Function : $ListType => $Type {  }
+FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* args)
 {
-    NextToken();
     FunctionASTNode* node;
-    if (NowTokenType == TokenType::TOKEN_DL_BRACKET_OPEN)
-    {
-        //node->Args = ListTypeParse();
-        NextToken();
-        if (NowTokenType == TokenType::TOKEN_OP_RET)
-        {
-            NextToken();
-            node->RetType = ProgramSymbolTable.ListMap[NowTokenValue];
-            NextToken();
-        }
-        else if (NowTokenType == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
-        {
-            node->RetType = nullptr;
-        }
-        else
-        {
-            std::cerr << "Function must have a return type or the return type is null" << std::endl;
-            throw "must have a return type";
-        }
+    node->Args = args;
+    NextToken();
 
-        if (NowTokenType == TokenType::TOKEN_DL_CURLY_BRACE_OPEN)
-        {
-            NextToken();
-        }
-        else
-        {
-            std::cerr << "Function must have body" << std::endl;
-            throw "must have body";
-        }
+    if(GetNextToken()->Type != TokenType::TOKEN_IDENTIFIER)
+    {
+        std::cerr << "Function must have return type" << std::endl;
+        throw "Function must have return type";
     }
     else
     {
-        std::cerr << "Function must have args" << std::endl;
-        throw "Function must have args";
-        return nullptr;
+        node->RetType = CallIdentifierParse(symbolTable);
     }
 
+    if(NowTokenType != TokenType::TOKEN_DL_BRACKET_OPEN)
+    {
+        std::cerr << "Function must have body" << std::endl;
+        throw "Function must have body";
+    }
+    else
+    {
+        NextToken();
+    }
+
+    std::queue<ASTNode*> functionBody;
+    functionBody = FunctionBodyParse(functionBody);
     return node;
 }
 
-std::queue<ASTNode*> Parse::FunctionBodyParse()
+std::queue<ASTNode*> Parse::FunctionBodyParse(std::queue<ASTNode*> body)
 {
 }
 

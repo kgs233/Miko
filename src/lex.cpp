@@ -381,7 +381,7 @@ LexStart:
                         }
                         else if (nowValue == "->")
                         {
-                            opType = TokenType::TOKEN_OP_RET;
+                            opType = TokenType::TOKEN_OP_PASS;
                         }
                         else
                         {

@@ -1,17 +1,28 @@
 #include "AST.hpp"
+#include <iostream>
 
-void ListASTNode::AddNode(std::string Name, IdentifierASTNode* Node)
+StructASTNode::StructASTNode(StructASTNode* structNode)
 {
-    if(Name == "")
-    {
-        Name = Node->Name->Name;
-    }
+    MemberNum = structNode->MemberNum;
+    MemberMap = structNode->MemberMap;
+}
 
-    ListMap[Name] = Node;
+void ListASTNode::AddNode(IdentifierASTNode* Node)
+{
     List.push_back(Node);
+    MemberNum++;
 }
 
 void StructASTNode::AddNode(IdentifierASTNode* Node)
 {
-    ListASTNode::AddNode(Node->Name->Name, Node);
+    MemberMap[Node->Name] = Node;
+    MemberNum++;
+}
+
+void StructASTNode::AddNodeInList(ListASTNode* list)
+{
+    for (int i = 0; i < list->MemberNum; i++)
+    {
+        AddNode(list->List[i]);
+    }
 }
