@@ -213,7 +213,7 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
     }
 }
 
-// Function : $ListType => $Type {  }
+// Function : $ListType "=>" $Type "{" $FunctionBody
 FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* args)
 {
     FunctionASTNode* node;
