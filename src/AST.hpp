@@ -66,12 +66,70 @@ public:
     RootASTNode();
 };
 
-class StmASTNode : public ASTNode
+class OperatorASTNode : public ASTNode
+{
+};
+
+class UnaryASTNode : public OperatorASTNode
 {
 public:
-    ASTNode Body;
+    TokenType Op;
+    ASTNode* OpObject;
 
-    StmASTNode(ASTNode body);
+    UnaryASTNode(TokenType op, ASTNode* opObject);
+};
+
+class BinaryASTNode : public OperatorASTNode
+{
+public:
+    TokenType Op;
+    ASTNode *LHS, *RHS;
+
+    BinaryASTNode(TokenType op, ASTNode* lhs, ASTNode* rhs);
+};
+
+class StatementASTNode : public ASTNode
+{
+public:
+    StatementASTNode(ASTNode body);
+};
+class StatementBlockASTNode : public ASTNode
+{
+public:
+    std::vector<StatementASTNode*> Statements;
+};
+
+class IfStatementASTNode : public StatementASTNode
+{
+public:
+    BinaryASTNode Conditional;
+    StatementBlockASTNode TrueBlock;
+    StatementBlockASTNode ElseBlock;
+};
+
+class MatchStatementASTNode : public StatementASTNode
+{
+    IdentifierASTNode* Target;
+    std::vector<IdentifierASTNode*> Cases;
+};
+
+class MatchIfStatementASTNode : public StatementASTNode
+{
+    IdentifierASTNode* Target;
+    std::vector<BinaryASTNode> Conditionals;
+};
+
+class WhileStatementASTNode : public StatementASTNode
+{
+    BinaryASTNode Conditional;
+    StatementBlockASTNode Block;
+};
+
+class ForStatementASTNode : public StatementASTNode
+{
+    std::vector<IdentifierASTNode> Variables;
+    std::vector<BinaryASTNode> Conditional;
+    StatementBlockASTNode ErgodicBlock;
 };
 
 class IdentifierNameASTNode;
@@ -100,12 +158,6 @@ public:
     std::string Name;
 };
 
-class CallIdentifier : public ASTNode
-{
-public:
-    CallIdentifier();
-};
-
 class CharASTNode : public ASTNode
 {
 public:
@@ -132,28 +184,6 @@ public:
     double Full;
 
     FloatASTNode(int integer, int decimal);
-};
-
-class OperatorASTNode : public ASTNode
-{
-};
-
-class BinaryASTNode : public OperatorASTNode
-{
-public:
-    TokenType Op;
-    ASTNode *LHS, *RHS;
-
-    BinaryASTNode(TokenType op, ASTNode* lhs, ASTNode* rhs);
-};
-
-class UnaryASTNode : public OperatorASTNode
-{
-public:
-    TokenType Op;
-    ASTNode* OpObject;
-
-    UnaryASTNode(TokenType op, ASTNode* opObject);
 };
 
 class ExprASTNode : public ASTNode

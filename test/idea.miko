@@ -56,3 +56,63 @@ const FunctionD : (const A : Int32) -> Int32
 {
 
 }
+
+const MatchTypeVar : match(B) ->
+{
+    1 -> return Int32,
+    2 -> return Float
+}
+
+match(Test) ->
+{
+    1 -> stdout("One"),
+    2 -> stdout("Two"),
+    3 -> match(Test)
+    {
+        5 ->
+        {
+            ...
+        }
+        6 ->
+        {
+            ...
+        }
+    }
+    4 ->
+    {
+        ...
+    }
+}
+else
+{
+    ...
+}
+
+match if(Test) ->
+{
+    Test > 1
+    {
+        ...
+    }
+
+    Test < 1
+    {
+        ...
+    }
+}
+else
+{
+    ...
+}
+
+for(var i : Int32 = 0; i < 10; i++)
+{
+    ...
+}
+
+for(i : Int32 = 0, a : type;
+    i < 10;
+    {i++; a = Arg[i]})
+{
+    ...
+}
