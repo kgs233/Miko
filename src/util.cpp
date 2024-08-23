@@ -1,7 +1,9 @@
 #include "util.hpp"
 
+#include <string>
+
 #define COMPARE(keyword) \
-if(str != #keyword) \
+if(str != #keyword)
 
 bool isKeyWorld(std::string str)
 {

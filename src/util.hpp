@@ -1,4 +1,6 @@
-#include <iostream>
+#ifndef MIKO_UTIL_HPP
+#define MIKO_UTIL_HPP
+
 #include <string>
 
 bool isKeyWorld(std::string str);
@@ -17,3 +19,5 @@ inline std::string yellowString(std::string str)
 {
     return "\033[1;33m" + str + "\033[0m";
 }
+
+#endif
