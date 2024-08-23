@@ -1,12 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
 
-project("Miko"
-        LANGUAGES CXX C
-        DESCRIPTION "A New Language"
-        VERSION 0.0.0)
+project(
+  "Miko"
+  LANGUAGES CXX C
+  DESCRIPTION "A New Language"
+  VERSION 0.0.0)
 
-set(EXPORT_COMPILE_COMMANDS on)
-set(CMAKE_CXX_FLAGS_DEBUG "-fstandalone-debug -fPIC -O0 -g")
+option(USE_LLVM "Use LLVM Toolchain" OFF)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(EXPORT_COMPILE_COMMANDS on)
+  set(CMAKE_CXX_FLAGS_DEBUG "-fstandalone-debug -fPIC -O0 -g")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 find_package(LLVM REQUIRED CONFIG)
 

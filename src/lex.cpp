@@ -1,4 +1,5 @@
 #include "lex.hpp"
+#include "error.hpp"
 
 std::vector<Token>* Lexer::Lex(std::ifstream* File)
 {
@@ -155,7 +156,7 @@ LexStart:
                     }
                     else if (std::isalpha(tc))
                     {
-                        throw "Invalid number";
+                        error(ERROR_LEX, "Not a number");
                     }
                     else
                     {
@@ -206,7 +207,7 @@ LexStart:
                     }
                     else
                     {
-                        throw "Invalid Char";
+                        error(ERROR_LEX, "Invalid Char");
                     }
                     break;
                 }
@@ -385,7 +386,7 @@ LexStart:
                         }
                         else
                         {
-                            throw "Invalid SYMBOL";
+                            error(ERROR_LEX, "Invalid SYMBOL");
                         }
 
                         Token token(opType, nowValue, line, startColumn, column);

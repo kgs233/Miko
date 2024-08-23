@@ -13,6 +13,9 @@ void ListASTNode::AddNode(IdentifierASTNode* Node)
     MemberNum++;
 }
 
+StructASTNode::StructASTNode()
+{}
+
 void StructASTNode::AddNode(IdentifierASTNode* Node)
 {
     MemberMap[Node->Name] = Node;

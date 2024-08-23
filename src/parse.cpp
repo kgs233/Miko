@@ -1,15 +1,17 @@
 #include "parse.hpp"
 
 #include "AST.hpp"
+#include "error.hpp"
 #include "token.hpp"
 #include "util.hpp"
 
 #include <iostream>
 #include <queue>
 
-Parse::Parse(std::vector<Token>* tokenList) :
-    TokenList(tokenList)
+Parse::Parse(std::vector<Token>* tokenList)
 {
+    TokenList = tokenList;
+    NowTokenNum = 0;
 }
 
 // ListType : "(" $(ListTypeChild)
@@ -31,7 +33,7 @@ ListASTNode* Parse::ListTypeParse(ListASTNode* list)
         }
         else
         {
-            std::cerr << "Unknown Delimiter" << std::endl;
+            error(ERROR_PARSE, "Unknown Delimiter");
         }
 
         return ListTypeParse(list);
@@ -56,8 +58,7 @@ ASTNode* Parse::TypeParse(StructASTNode* symbolTable)
     }
     else
     {
-        std::cerr << "Identifier must have a name" << std::endl;
-        throw "Identifier must have a name";
+        warn(ERROR_PARSE, "Identifiers have no type");
     }
 
     if (NowTokenType == TokenType::TOKEN_DL_PAREN_OPEN)
@@ -130,8 +131,7 @@ IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable, Identifie
 
     if(NowTokenType != TokenType::TOKEN_DL_COLON)
     {
-        std::cerr << "Identifier must have type" << std::endl;
-        throw "Identifier must have type";
+        error(ERROR_PARSE, "Identifier must have type");
     }
 
     node->Value = TypeParse((StructASTNode*)symbolTable->MemberMap[NowTokenValue]->Value);
@@ -157,8 +157,7 @@ IdentifierASTNode* Parse::DeclarationNameParse(StructASTNode* symbolTable, Ident
         bool paseIdIsNotStruct = symbolTable->MemberMap.find(NowTokenValue) != symbolTable->MemberMap.end();
         if (paseIdIsNotStruct)
         {
-            std::cerr << "Only struct can add child" << std::endl;
-            throw "Only struct can add child";
+            error(ERROR_PARSE, "Only struct can add child");
         }
 
         NextToken();
@@ -176,8 +175,7 @@ IdentifierASTNode* Parse::DeclarationNameParse(StructASTNode* symbolTable, Ident
         }
         else
         {
-            std::cerr << "Unknow end sysboml";
-            throw "Unknow end sysboml";
+            error(ERROR_PARSE, "Unknow end sysboml");
         }
     }
 }
@@ -197,8 +195,7 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
             }
             else
             {
-                std::cerr << "Only struct can get child id" << std::endl;
-                throw "Only struct can get child id";
+                error(ERROR_PARSE, "Only struct can get child id");
             }
         }
         else
@@ -208,8 +205,7 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
     }
     else
     {
-        std::cerr << "Can't fount Symbol" << std::endl;
-        throw "Can't fount Symbol";
+        error(ERROR_PARSE, "Can't found Symbol");
     }
 }
 
@@ -222,8 +218,9 @@ FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* a
 
     if(GetNextToken()->Type != TokenType::TOKEN_IDENTIFIER)
     {
-        std::cerr << "Function must have return type" << std::endl;
-        throw "Function must have return type";
+        warn(ERROR_PARSE, "Function not have return type");
+        //TODO: default return type is dynamic
+        NextToken();
     }
     else
     {
@@ -232,14 +229,10 @@ FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* a
 
     if(NowTokenType != TokenType::TOKEN_DL_BRACKET_OPEN)
     {
-        std::cerr << "Function must have body" << std::endl;
-        throw "Function must have body";
-    }
-    else
-    {
-        NextToken();
+        return node;
     }
 
+    NextToken();
     std::queue<ASTNode*> functionBody;
     functionBody = FunctionBodyParse(functionBody);
     return node;
