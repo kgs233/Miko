@@ -10,31 +10,34 @@
 #include <string>
 #include <vector>
 
-class Parse
+namespace Miko
 {
-public:
-    int NowTokenNum = 0;
-    std::string NowTokenValue;
-    TokenType NowTokenType;
-    std::vector<Token>* TokenList;
-    StructASTNode ProgramSymbolTable;
-    StructASTNode* NowStructSymbolTable;
 
-    Parse(std::vector<Token>* tokenList);
+    class Parse
+    {
+    public:
+        int NowTokenNum = 0;
+        std::string NowTokenValue;
+        TokenType NowTokenType;
+        std::vector<Token>* TokenList;
+        StructASTNode ProgramSymbolTable;
+        StructASTNode* NowStructSymbolTable;
 
-    ListASTNode* ListTypeParse(ListASTNode* list);
-    FunctionASTNode* FunctionParse(StructASTNode* symbolTable, ListASTNode* args);
-    std::queue<ASTNode*> FunctionBodyParse(std::queue<ASTNode*> body);
-    ASTNode* TypeParse(StructASTNode* symbolTable);
-    IdentifierASTNode* MemberParse(StructASTNode* symbolTable);
-    IdentifierASTNode* DeclarationParse(StructASTNode* symbolTable, IdentifierASTNode* node);
-    IdentifierASTNode* DeclarationNameParse(StructASTNode* symbolTable, IdentifierASTNode* node);
-    IdentifierASTNode* CallIdentifierParse(StructASTNode* symbolTable);
-    IdentifierNameASTNode* IdentifierNameParse();
-    
+        Parse(std::vector<Token>* tokenList);
 
-    void NextToken();
-    Token* GetNextToken();
-};
+        ListASTNode* ListTypeParse(ListASTNode* list);
+        FunctionASTNode* FunctionParse(StructASTNode* symbolTable, ListASTNode* args);
+        std::queue<ASTNode*> FunctionBodyParse(std::queue<ASTNode*> body);
+        ASTNode* TypeParse(StructASTNode* symbolTable);
+        IdentifierASTNode* MemberParse(StructASTNode* symbolTable);
+        IdentifierASTNode* DeclarationParse(StructASTNode* symbolTable, IdentifierASTNode* node);
+        IdentifierASTNode* DeclarationNameParse(StructASTNode* symbolTable, IdentifierASTNode* node);
+        IdentifierASTNode* CallIdentifierParse(StructASTNode* symbolTable);
+        IdentifierNameASTNode* IdentifierNameParse();
+
+        void NextToken();
+        Token* GetNextToken();
+    };
+}
 
 #endif // MIKO_PARSE_HPP

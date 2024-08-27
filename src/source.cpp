@@ -8,6 +8,8 @@
 
 #include "lex.hpp"
 
+using namespace Miko;
+
 Source::Source(std::string fileName)
 {
     this->FileName = fileName;

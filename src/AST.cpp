@@ -1,5 +1,16 @@
 #include "AST.hpp"
-#include <iostream>
+
+using namespace Miko;
+
+ASTNode::ASTNode()
+{
+}
+
+RootASTNode::RootASTNode(std::string sourceName)
+{
+    sourceName = sourceName;
+    module = new llvm::Module(sourceName, context);
+}
 
 StructASTNode::StructASTNode(StructASTNode* structNode)
 {
@@ -14,7 +25,8 @@ void ListASTNode::AddNode(IdentifierASTNode* Node)
 }
 
 StructASTNode::StructASTNode()
-{}
+{
+}
 
 void StructASTNode::AddNode(IdentifierASTNode* Node)
 {

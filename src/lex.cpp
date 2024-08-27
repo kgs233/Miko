@@ -1,6 +1,8 @@
 #include "lex.hpp"
 #include "error.hpp"
 
+using namespace Miko;
+
 std::vector<Token>* Lexer::Lex(std::ifstream* File)
 {
     std::vector<Token> tokens;

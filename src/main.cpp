@@ -1,9 +1,12 @@
+#include "AST.hpp"
 #include "error.hpp"
 #include "source.hpp"
+
+using namespace Miko;
+
 int main(int argc, char* argv[])
 {
-    info(ERROR_LEX, "this is a info");
-    warn(ERROR_LEX, "this is a warn");
-    error(ERROR_LEX, "this is a error");
+    RootASTNode test("abc");
+    std::cout << test.GetIR() << std::endl;
     return 0;
 }

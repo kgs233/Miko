@@ -8,6 +8,8 @@
 #include <iostream>
 #include <queue>
 
+using namespace Miko;
+
 Parse::Parse(std::vector<Token>* tokenList)
 {
     TokenList = tokenList;
@@ -52,7 +54,7 @@ ListASTNode* Parse::ListTypeParse(ListASTNode* list)
 //      | $Enum
 ASTNode* Parse::TypeParse(StructASTNode* symbolTable)
 {
-    if(NowTokenType == TokenType::TOKEN_DL_COMMA)
+    if (NowTokenType == TokenType::TOKEN_DL_COMMA)
     {
         NextToken();
     }
@@ -71,7 +73,6 @@ ASTNode* Parse::TypeParse(StructASTNode* symbolTable)
         }
         else
         {
-            
         }
     }
     else
@@ -107,7 +108,7 @@ IdentifierASTNode* Parse::MemberParse(StructASTNode* symbolTable)
 
         NextToken();
     }
-    
+
     return DeclarationParse(symbolTable, node);
 }
 
@@ -129,7 +130,7 @@ IdentifierASTNode* Parse::DeclarationParse(StructASTNode* symbolTable, Identifie
 
     DeclarationNameParse(symbolTable, node);
 
-    if(NowTokenType != TokenType::TOKEN_DL_COLON)
+    if (NowTokenType != TokenType::TOKEN_DL_COLON)
     {
         error(ERROR_PARSE, "Identifier must have type");
     }
@@ -187,7 +188,7 @@ IdentifierASTNode* Parse::CallIdentifierParse(StructASTNode* symbolTable)
         if (GetNextToken()->Type == TokenType::TOKEN_DL_DOT)
         {
             bool paseIdIsStruct = typeid(symbolTable->MemberMap[NowTokenValue]->Value) == typeid(StructASTNode);
-            if(paseIdIsStruct)
+            if (paseIdIsStruct)
             {
                 NextToken();
                 NextToken();
@@ -216,10 +217,10 @@ FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* a
     node->Args = args;
     NextToken();
 
-    if(GetNextToken()->Type != TokenType::TOKEN_IDENTIFIER)
+    if (GetNextToken()->Type != TokenType::TOKEN_IDENTIFIER)
     {
         warn(ERROR_PARSE, "Function not have return type");
-        //TODO: default return type is dynamic
+        // TODO: default return type is dynamic
         NextToken();
     }
     else
@@ -227,7 +228,7 @@ FunctionASTNode* Parse::FunctionParse(StructASTNode* symbolTable, ListASTNode* a
         node->RetType = CallIdentifierParse(symbolTable);
     }
 
-    if(NowTokenType != TokenType::TOKEN_DL_BRACKET_OPEN)
+    if (NowTokenType != TokenType::TOKEN_DL_BRACKET_OPEN)
     {
         return node;
     }

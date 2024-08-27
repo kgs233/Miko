@@ -2,232 +2,254 @@
 #define MIKO_AST_HPP
 
 #include "token.hpp"
+
+#include <llvm/IR/Module.h>
 #include <map>
 #include <queue>
 #include <string>
 #include <vector>
 
-enum class ASTNodeType
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Value.h>
+
+namespace Miko
 {
-    AST_TYPE_ROOT,
-    AST_TYPE_CHAR,
-    AST_TYPE_NUMBER,
-    AST_TYPE_FUNCTION,
-    AST_TYPE_STRING,
-    AST_TYPE_LIST,
-    AST_TYPE_STRUCT,
-    AST_TYPE_IDENTIFIER,
+    enum class ASTNodeType
+    {
+        AST_TYPE_ROOT,
+        AST_TYPE_CHAR,
+        AST_TYPE_NUMBER,
+        AST_TYPE_FUNCTION,
+        AST_TYPE_STRING,
+        AST_TYPE_LIST,
+        AST_TYPE_STRUCT,
+        AST_TYPE_IDENTIFIER,
 
-    AST_TYPE_BINARY_ADD,
-    AST_TYPE_BINARY_SUB,
-    AST_TYPE_BINARY_MUL,
-    AST_TYPE_BINARY_DIV,
-    AST_TYPE_BINARY_MOD,
-    AST_TYPE_BINARY_EXP
-};
+        AST_TYPE_BINARY_ADD,
+        AST_TYPE_BINARY_SUB,
+        AST_TYPE_BINARY_MUL,
+        AST_TYPE_BINARY_DIV,
+        AST_TYPE_BINARY_MOD,
+        AST_TYPE_BINARY_EXP
+    };
 
-enum class VisibilityType
-{
-    VISIBILITY_TYPE_PUBLIC,
-    VISIBILITY_TYPE_PRIVATE,
-    VISIBILITY_TYPE_CUSTOM,
-};
+    enum class VisibilityType
+    {
+        VISIBILITY_TYPE_PUBLIC,
+        VISIBILITY_TYPE_PRIVATE,
+        VISIBILITY_TYPE_CUSTOM,
+    };
 
-enum class VariabilityType
-{
-    VARIABILITY_TYPE_VAR,
-    VARIABILITY_TYPE_CONST,
-};
+    enum class VariabilityType
+    {
+        VARIABILITY_TYPE_VAR,
+        VARIABILITY_TYPE_CONST,
+    };
 
-class IdentifierASTNode;
+    class IdentifierASTNode;
 
-struct IdentifierVisibility
-{
-    VisibilityType Type;
-    std::vector<IdentifierASTNode*> VisibilityList;
-};
+    struct IdentifierVisibility
+    {
+        VisibilityType Type;
+        std::vector<IdentifierASTNode*> VisibilityList;
+    };
 
-class ASTNode
-{
-public:
-    ASTNode* Parent;
-    ASTNodeType Type;
+    class ASTNode
+    {
+    public:
+        ASTNode* Parent;
+        ASTNodeType Type;
 
-    int StartLine, EndLine,
-        StartColumn, EndColumn;
-};
+        int StartLine, EndLine,
+            StartColumn, EndColumn;
 
-class RootASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_ROOT;
-    std::vector<ASTNode*> ASTree;
+        ASTNode();
 
-    RootASTNode();
-};
+        // virtual llvm::Value* CodeGenerate();
+    };
 
-class OperatorASTNode : public ASTNode
-{
-};
+    class RootASTNode
+    {
+        std::string sourceName;
 
-class UnaryASTNode : public OperatorASTNode
-{
-public:
-    TokenType Op;
-    ASTNode* OpObject;
+        llvm::LLVMContext context;
+        llvm::Module* module;
 
-    UnaryASTNode(TokenType op, ASTNode* opObject);
-};
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_ROOT;
+        std::vector<ASTNode*> ASTree;
 
-class BinaryASTNode : public OperatorASTNode
-{
-public:
-    TokenType Op;
-    ASTNode *LHS, *RHS;
+        RootASTNode();
+        RootASTNode(std::string sourceName);
 
-    BinaryASTNode(TokenType op, ASTNode* lhs, ASTNode* rhs);
-};
+        void CodeGenerate();
 
-class StatementASTNode : public ASTNode
-{
-public:
-    StatementASTNode(ASTNode body);
-};
-class StatementBlockASTNode : public ASTNode
-{
-public:
-    std::vector<StatementASTNode*> Statements;
-};
+        std::string GetIR();
+    };
 
-class IfStatementASTNode : public StatementASTNode
-{
-public:
-    BinaryASTNode Conditional;
-    StatementBlockASTNode TrueBlock;
-    StatementBlockASTNode ElseBlock;
-};
+    class OperatorASTNode : public ASTNode
+    {
+    };
 
-class MatchStatementASTNode : public StatementASTNode
-{
-    IdentifierASTNode* Target;
-    std::vector<IdentifierASTNode*> Cases;
-};
+    class UnaryASTNode : public OperatorASTNode
+    {
+    public:
+        TokenType Op;
+        ASTNode* OpObject;
 
-class MatchIfStatementASTNode : public StatementASTNode
-{
-    IdentifierASTNode* Target;
-    std::vector<BinaryASTNode> Conditionals;
-};
+        UnaryASTNode(TokenType op, ASTNode* opObject);
+    };
 
-class WhileStatementASTNode : public StatementASTNode
-{
-    BinaryASTNode Conditional;
-    StatementBlockASTNode Block;
-};
+    class BinaryASTNode : public OperatorASTNode
+    {
+    public:
+        TokenType Op;
+        ASTNode *LHS, *RHS;
 
-class ForStatementASTNode : public StatementASTNode
-{
-    std::vector<IdentifierASTNode> Variables;
-    std::vector<BinaryASTNode> Conditional;
-    StatementBlockASTNode ErgodicBlock;
-};
+        BinaryASTNode(TokenType op, ASTNode* lhs, ASTNode* rhs);
+    };
 
-class IdentifierNameASTNode;
-class IdentifierASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
-    std::string Name;
-    IdentifierVisibility Visibility;
-    VariabilityType Variability;
-    bool Static;
-    ASTNode* Value;
+    class StatementASTNode : public ASTNode
+    {
+    public:
+        StatementASTNode(ASTNode body);
+    };
+    class StatementBlockASTNode : public ASTNode
+    {
+    public:
+        std::vector<StatementASTNode*> Statements;
+    };
 
-    IdentifierASTNode(std::string name, ASTNode* value);
-};
-class DeclareIdentifierASTNode : public ASTNode
-{
-    IdentifierASTNode* Parent;
-    
-};
+    class IfStatementASTNode : public StatementASTNode
+    {
+    public:
+        BinaryASTNode Conditional;
+        StatementBlockASTNode TrueBlock;
+        StatementBlockASTNode ElseBlock;
+    };
 
-class IdentifierNameASTNode : public ASTNode
-{
-public:
-    std::vector<IdentifierASTNode*> Parents;
-    std::string Name;
-};
+    class MatchStatementASTNode : public StatementASTNode
+    {
+        IdentifierASTNode* Target;
+        std::vector<IdentifierASTNode*> Cases;
+    };
 
-class CharASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_CHAR;
-    char Val;
+    class MatchIfStatementASTNode : public StatementASTNode
+    {
+        IdentifierASTNode* Target;
+        std::vector<BinaryASTNode> Conditionals;
+    };
 
-    CharASTNode(char val);
-};
+    class WhileStatementASTNode : public StatementASTNode
+    {
+        BinaryASTNode Conditional;
+        StatementBlockASTNode Block;
+    };
 
-class NumberASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
-    long long Val;
+    class ForStatementASTNode : public StatementASTNode
+    {
+        std::vector<IdentifierASTNode> Variables;
+        std::vector<BinaryASTNode> Conditional;
+        StatementBlockASTNode ErgodicBlock;
+    };
 
-    NumberASTNode(double val);
-};
+    class IdentifierNameASTNode;
+    class IdentifierASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_IDENTIFIER;
+        std::string Name;
+        IdentifierVisibility Visibility;
+        VariabilityType Variability;
+        bool Static;
+        ASTNode* Value;
 
-class FloatASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
-    int Integer, Decimal;
-    double Full;
+        IdentifierASTNode(std::string name, ASTNode* value);
+    };
+    class DeclareIdentifierASTNode : public ASTNode
+    {
+        IdentifierASTNode* Parent;
+    };
 
-    FloatASTNode(int integer, int decimal);
-};
+    class IdentifierNameASTNode : public ASTNode
+    {
+    public:
+        std::vector<IdentifierASTNode*> Parents;
+        std::string Name;
+    };
 
-class ExprASTNode : public ASTNode
-{
-public:
-    OperatorASTNode* RootOp;
+    class CharASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_CHAR;
+        char Val;
 
-    ExprASTNode(OperatorASTNode* rootOp);
-};
+        CharASTNode(char val);
+    };
 
-class ListASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_LIST;
-    int MemberNum;
-    std::vector<IdentifierASTNode*> List;
+    class NumberASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
+        long long Val;
 
-    void AddNode(IdentifierASTNode* Node);
+        NumberASTNode(double val);
+    };
 
-    ListASTNode();
-};
+    class FloatASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_NUMBER;
+        int Integer, Decimal;
+        double Full;
 
-class FunctionASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_FUNCTION;
-    ListASTNode* Args;
-    std::queue<ASTNode*> FunctionBody;
-    IdentifierASTNode* RetType;
-};
+        FloatASTNode(int integer, int decimal);
+    };
 
-class StructASTNode : public ASTNode
-{
-public:
-    ASTNodeType Type = ASTNodeType::AST_TYPE_STRUCT;
-    int MemberNum;
-    std::map<std::string, IdentifierASTNode*> MemberMap;
+    class ExprASTNode : public ASTNode
+    {
+    public:
+        OperatorASTNode* RootOp;
 
-    void AddNode(IdentifierASTNode* node);
-    void AddNodeInList(ListASTNode* list);
+        ExprASTNode(OperatorASTNode* rootOp);
+    };
 
-    StructASTNode();
-    StructASTNode(ListASTNode* listNode);
-    StructASTNode(StructASTNode* structNode);
-};
+    class ListASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_LIST;
+        int MemberNum;
+        std::vector<IdentifierASTNode*> List;
+
+        void AddNode(IdentifierASTNode* Node);
+
+        ListASTNode();
+    };
+
+    class FunctionASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_FUNCTION;
+        ListASTNode* Args;
+        std::queue<ASTNode*> FunctionBody;
+        IdentifierASTNode* RetType;
+    };
+
+    class StructASTNode : public ASTNode
+    {
+    public:
+        ASTNodeType Type = ASTNodeType::AST_TYPE_STRUCT;
+        int MemberNum;
+        std::map<std::string, IdentifierASTNode*> MemberMap;
+
+        void AddNode(IdentifierASTNode* node);
+        void AddNodeInList(ListASTNode* list);
+
+        StructASTNode();
+        StructASTNode(ListASTNode* listNode);
+        StructASTNode(StructASTNode* structNode);
+    };
+
+}
 
 #endif // MIKO_AST_HPP

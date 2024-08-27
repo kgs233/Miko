@@ -6,15 +6,18 @@
 
 #include "token.hpp"
 
-class Source
+namespace Miko
 {
-public:
-    std::string FileName;
-    std::vector<Token>* Tokens;
+    class Source
+    {
+    public:
+        std::string FileName;
+        std::vector<Token>* Tokens;
 
-    Source(std::string fileName);
+        Source(std::string fileName);
 
-    void Compile();
-};
+        void Compile();
+    };
+}
 
 #endif // MIKO_SOURCE_HPP
