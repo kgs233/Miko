@@ -6,18 +6,14 @@
 #include <ios>
 #include <string>
 
-#include "lex.hpp"
-
 using namespace Miko;
 
-Source::Source(std::string fileName)
+Source::Source(const std::string& fileName) : fileName(fileName)
 {
-    this->FileName = fileName;
+    this->open(fileName);
 }
 
-void Source::Compile()
+Source::~Source()
 {
-    std::ifstream sourceFile(this->FileName);
-    sourceFile.unsetf(std::ios::skipws);
-    Tokens = Lexer::Lex(&sourceFile);
+    this->close();
 }

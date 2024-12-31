@@ -1,5 +1,0 @@
-const main : function(Args : String[]) -> Int32
-{
-    put("Hello World");
-    return 0;
-}

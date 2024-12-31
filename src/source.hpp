@@ -3,20 +3,16 @@
 
 #include <string>
 #include <vector>
-
-#include "token.hpp"
+#include <fstream>
 
 namespace Miko
 {
-    class Source
+    class Source : std::ifstream
     {
     public:
-        std::string FileName;
-        std::vector<Token>* Tokens;
-
-        Source(std::string fileName);
-
-        void Compile();
+        const std::string fileName;
+        Source(const std::string& fileName);
+        ~Source();
     };
 }
 
