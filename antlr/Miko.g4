@@ -1,3 +1,0 @@
-grammar Miko;
-
-import MikoLexerRules;

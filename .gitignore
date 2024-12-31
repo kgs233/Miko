@@ -73,3 +73,9 @@ pythonenv*
 
 # Antlr4
 /antlr/.antlr
+/antlr/*.cpp
+/antlr/*.hpp
+/antlr/*.h
+/antlr/*.java
+/antlr/*.interp
+/antlr/*.tokens
