@@ -1,18 +1,38 @@
 #ifndef MIKO_SOURCE_HPP
 #define MIKO_SOURCE_HPP
 
+#include <istream>
+#include <streambuf>
 #include <string>
-#include <vector>
-#include <fstream>
+#include <filesystem>
+
+#include <antlr4-runtime.h>
+
+#include "ANTLRInputStream.h"
+#include "pre/MikoLexerRules.h"
+#include "pre/MikoParserRules.h"
 
 namespace Miko
 {
-    class Source : std::ifstream
+
+    class Source
     {
+    private:
+        std::filesystem::path path;
+
+        antlr4::ANTLRInputStream input;
+        MikoLexerRules lexer;
+        MikoParserRules parser;
+        antlr4::CommonTokenStream tokenStream;
+        MikoParserRules::ProgContext* AST;
     public:
-        const std::string fileName;
-        Source(const std::string& fileName);
-        ~Source();
+        Source(std::string);
+        ~Source() = default;    
+
+        void PreCompile();
+
+        void PrintAST();
+        void PrintTokenStream();
     };
 }
 

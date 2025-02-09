@@ -70,12 +70,3 @@ pythonenv*
 /clang/utils/analyzer/projects/*/RefScanBuildResults
 # automodapi puts generated documentation files here.
 /lldb/docs/python_api/
-
-# Antlr4
-/antlr/.antlr
-/antlr/*.cpp
-/antlr/*.hpp
-/antlr/*.h
-/antlr/*.java
-/antlr/*.interp
-/antlr/*.tokens

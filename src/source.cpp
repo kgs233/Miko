@@ -1,19 +1,46 @@
 #include "source.hpp"
 
-#include <cctype>
-#include <cerrno>
-#include <fstream>
-#include <ios>
-#include <string>
+#include <filesystem>
+#include <iostream>
+#include <istream>
+#include <streambuf>
+
+#include "CommonTokenStream.h"
+#include "antlr4-runtime.h"
+
+#include "pre/MikoLexerRules.h"
+#include "pre/MikoParserRules.h"
 
 using namespace Miko;
 
-Source::Source(const std::string& fileName) : fileName(fileName)
+Source::Source(std::string path) : lexer(&input), tokenStream(&lexer), parser(&tokenStream)
 {
-    this->open(fileName);
+    this->path = *(new std::filesystem::path(path));
+    if (not std::filesystem::exists(this->path))
+    {
+        std::cerr << "File " << path << " does not exist" << std::endl;
+        throw "File does not exist";
+    }
 }
 
-Source::~Source()
+void Source::PreCompile()
 {
-    this->close();
+    std::ifstream inputStream(path);
+    input.load(inputStream);
+    inputStream.close();
+    tokenStream.fill();
+    AST = parser.prog();
+}
+
+void Source::PrintAST()
+{
+    std::cout << AST->toStringTree(&parser) << std::endl;
+}
+
+void Source::PrintTokenStream()
+{
+    for (const auto& token : tokenStream.getTokens())
+    {
+        std::cout << token->toString() << std::endl;
+    }
 }
