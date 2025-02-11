@@ -66,8 +66,9 @@ RSHIFT_ASS=65
 BITAND_ASS=66
 BITXOR_ASS=67
 BITOR_ASS=68
-LAMBDA=69
-WS=70
+COMPILER=69
+LAMBDA=70
+WS=71
 'var'=1
 'const'=2
 'define'=3
@@ -131,4 +132,5 @@ WS=70
 '&='=66
 '^='=67
 '|='=68
-'\\'=69
+'@'=69
+'\\'=70

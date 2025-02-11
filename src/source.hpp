@@ -6,33 +6,16 @@
 #include <string>
 #include <filesystem>
 
-#include <antlr4-runtime.h>
-
-#include "ANTLRInputStream.h"
-#include "pre/MikoLexerRules.h"
-#include "pre/MikoParserRules.h"
-
 namespace Miko
 {
 
-    class Source
+    class Source : public std::istream
     {
-    private:
         std::filesystem::path path;
-
-        antlr4::ANTLRInputStream input;
-        MikoLexerRules lexer;
-        MikoParserRules parser;
-        antlr4::CommonTokenStream tokenStream;
-        MikoParserRules::ProgContext* AST;
+        std::filebuf* buf;
     public:
         Source(std::string);
-        ~Source() = default;    
-
-        void PreCompile();
-
-        void PrintAST();
-        void PrintTokenStream();
+        ~Source();
     };
 }
 

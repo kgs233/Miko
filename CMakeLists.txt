@@ -39,4 +39,5 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CFLAGS}")
 target_include_directories(miko PRIVATE ${LLVM_INCLUDE_DIRS})
 target_include_directories(miko PRIVATE ${ANTLR_INCLUDE_DIRS})
 
+target_link_libraries(miko PRIVATE ${LLVM_LIBRARIES})
 target_link_libraries(miko PRIVATE ${ANTLR_LIBRARIES})

@@ -2,18 +2,18 @@
 
 #include <filesystem>
 #include <iostream>
-#include <istream>
-#include <streambuf>
 
-#include "CommonTokenStream.h"
-#include "antlr4-runtime.h"
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
 
 #include "pre/MikoLexerRules.h"
 #include "pre/MikoParserRules.h"
+#include "pre/MikoParserRulesBaseVisitor.h"
 
 using namespace Miko;
 
-Source::Source(std::string path) : lexer(&input), tokenStream(&lexer), parser(&tokenStream)
+Source::Source(std::string path)
 {
     this->path = *(new std::filesystem::path(path));
     if (not std::filesystem::exists(this->path))
@@ -21,26 +21,14 @@ Source::Source(std::string path) : lexer(&input), tokenStream(&lexer), parser(&t
         std::cerr << "File " << path << " does not exist" << std::endl;
         throw "File does not exist";
     }
+
+    buf = new std::filebuf();
+    buf->open(this->path, std::ios::in);
+    this->init(buf);
 }
 
-void Source::PreCompile()
+Source::~Source()
 {
-    std::ifstream inputStream(path);
-    input.load(inputStream);
-    inputStream.close();
-    tokenStream.fill();
-    AST = parser.prog();
-}
-
-void Source::PrintAST()
-{
-    std::cout << AST->toStringTree(&parser) << std::endl;
-}
-
-void Source::PrintTokenStream()
-{
-    for (const auto& token : tokenStream.getTokens())
-    {
-        std::cout << token->toString() << std::endl;
-    }
+    buf->close();
+    delete buf;
 }

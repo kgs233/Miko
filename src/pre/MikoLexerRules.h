@@ -23,8 +23,8 @@ public:
     LSHIFT = 48, RSHIFT = 49, DADD = 50, DMIN = 51, LPAREN = 52, RPAREN = 53, 
     LBRACE = 54, RBRACE = 55, LBRACK = 56, RBRACK = 57, ASS = 58, MUL_ASS = 59, 
     DIV_ASS = 60, MOD_ASS = 61, ADD_ASS = 62, MIN_ASS = 63, LSHIFT_ASS = 64, 
-    RSHIFT_ASS = 65, BITAND_ASS = 66, BITXOR_ASS = 67, BITOR_ASS = 68, LAMBDA = 69, 
-    WS = 70
+    RSHIFT_ASS = 65, BITAND_ASS = 66, BITXOR_ASS = 67, BITOR_ASS = 68, COMPILER = 69, 
+    LAMBDA = 70, WS = 71
   };
 
   explicit MikoLexerRules(antlr4::CharStream *input);

@@ -2,7 +2,7 @@
 // Generated from MikoParserRules.g4 by ANTLR 4.13.2
 
 
-#include "MikoParserRulesListener.h"
+#include "MikoParserRulesVisitor.h"
 
 #include "MikoParserRules.h"
 
@@ -54,12 +54,13 @@ void mikoparserrulesParserInitialize() {
   auto staticData = std::make_unique<MikoParserRulesStaticData>(
     std::vector<std::string>{
       "prog", "statement", "ifStatement", "matchStatement", "matchMember", 
-      "forStatement", "whileStatement", "returnStatement", "accessKeyword", 
-      "defineKeyword", "defineStatement", "define", "defineExpression", 
+      "forStatement", "whileStatement", "returnStatement", "openStatement", 
+      "accessKeyword", "defineKeyword", "defineStatement", "define", "defineExpression", 
       "type", "structType", "structBody", "structDefineStatement", "defineEnum", 
-      "enumBody", "call", "callIdentifier", "callFunction", "functionArgs", 
-      "atomExpression", "expression", "openExpression", "assignmentOperator", 
-      "lambdaExpression", "lambdaHead", "lambdaBody", "codeBlock", "returncodeBlock"
+      "enumBody", "call", "compilerCall", "programCall", "callIdentifier", 
+      "callFunction", "functionArgs", "atomExpression", "expression", "openExpression", 
+      "assignmentOperator", "lambdaExpression", "lambdaHead", "lambdaBody", 
+      "codeBlock", "returncodeBlock"
     },
     std::vector<std::string>{
       "", "'var'", "'const'", "'define'", "'open'", "'this'", "'public'", 
@@ -70,7 +71,7 @@ void mikoparserrulesParserInitialize() {
       "'<'", "'<='", "'=='", "'!='", "'&'", "'|'", "'^'", "'~'", "'<<'", 
       "'>>'", "'++'", "'--'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
       "'='", "'*='", "'/='", "'%='", "'+='", "'-='", "'<<='", "'>>='", "'&='", 
-      "'^='", "'|='", "'\\'"
+      "'^='", "'|='", "'@'", "'\\'"
     },
     std::vector<std::string>{
       "", "VAR", "CONST", "DEFINE", "OPEN", "THIS", "PUBLIC", "PRIVATE", 
@@ -82,148 +83,154 @@ void mikoparserrulesParserInitialize() {
       "LSHIFT", "RSHIFT", "DADD", "DMIN", "LPAREN", "RPAREN", "LBRACE", 
       "RBRACE", "LBRACK", "RBRACK", "ASS", "MUL_ASS", "DIV_ASS", "MOD_ASS", 
       "ADD_ASS", "MIN_ASS", "LSHIFT_ASS", "RSHIFT_ASS", "BITAND_ASS", "BITXOR_ASS", 
-      "BITOR_ASS", "LAMBDA", "WS"
+      "BITOR_ASS", "COMPILER", "LAMBDA", "WS"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,70,405,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,71,422,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
   	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
-  	28,2,29,7,29,2,30,7,30,2,31,7,31,1,0,1,0,1,0,5,0,68,8,0,10,0,12,0,71,
-  	9,0,1,0,5,0,74,8,0,10,0,12,0,77,9,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-  	1,1,1,1,1,1,1,3,1,91,8,1,1,2,1,2,1,2,1,2,1,2,1,2,3,2,99,8,2,1,2,1,2,1,
-  	2,1,2,1,2,1,2,3,2,107,8,2,1,2,1,2,1,2,3,2,112,8,2,3,2,114,8,2,1,3,1,3,
-  	1,3,1,3,1,3,1,3,1,3,5,3,123,8,3,10,3,12,3,126,9,3,1,3,1,3,1,3,1,3,3,3,
-  	132,8,3,1,4,1,4,1,4,1,4,3,4,138,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,
-  	5,1,5,3,5,150,8,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,158,8,6,1,7,1,7,3,7,162,
-  	8,7,1,7,1,7,1,8,1,8,1,9,1,9,1,10,1,10,1,10,1,10,1,11,1,11,1,11,3,11,177,
-  	8,11,1,11,1,11,1,11,1,11,3,11,183,8,11,5,11,185,8,11,10,11,12,11,188,
-  	9,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,3,13,198,8,13,1,13,1,13,
-  	1,13,1,13,1,13,3,13,205,8,13,1,14,1,14,1,14,1,14,1,14,3,14,212,8,14,1,
-  	14,1,14,1,14,1,14,1,15,1,15,5,15,220,8,15,10,15,12,15,223,9,15,1,16,3,
-  	16,226,8,16,1,16,3,16,229,8,16,1,16,1,16,1,17,1,17,1,17,1,17,1,17,3,17,
-  	238,8,17,1,17,1,17,3,17,242,8,17,1,17,1,17,1,17,1,17,1,18,1,18,1,18,5,
-  	18,251,8,18,10,18,12,18,254,9,18,1,18,1,18,1,18,1,18,1,18,1,18,5,18,262,
-  	8,18,10,18,12,18,265,9,18,3,18,267,8,18,1,19,1,19,3,19,271,8,19,1,20,
-  	1,20,1,20,5,20,276,8,20,10,20,12,20,279,9,20,1,21,1,21,1,21,1,21,1,21,
-  	1,22,1,22,1,22,5,22,289,8,22,10,22,12,22,292,9,22,1,23,1,23,1,23,1,23,
-  	1,23,3,23,299,8,23,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,
-  	1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,3,24,
-  	324,8,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,
-  	1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,
-  	1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,1,24,5,24,362,8,24,10,24,
-  	12,24,365,9,24,1,25,1,25,1,25,1,26,1,26,1,27,1,27,1,27,1,27,1,28,1,28,
-  	1,28,5,28,379,8,28,10,28,12,28,382,9,28,1,28,1,28,1,29,1,29,1,29,1,29,
-  	3,29,390,8,29,1,30,1,30,1,30,5,30,395,8,30,10,30,12,30,398,9,30,1,30,
-  	1,30,1,31,1,31,1,31,1,31,0,1,48,32,0,2,4,6,8,10,12,14,16,18,20,22,24,
-  	26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,0,8,1,0,6,8,
-  	1,0,1,3,1,0,32,34,1,0,30,31,1,0,48,49,1,0,38,41,1,0,42,43,1,0,58,68,442,
-  	0,69,1,0,0,0,2,90,1,0,0,0,4,113,1,0,0,0,6,115,1,0,0,0,8,133,1,0,0,0,10,
-  	139,1,0,0,0,12,151,1,0,0,0,14,159,1,0,0,0,16,165,1,0,0,0,18,167,1,0,0,
-  	0,20,169,1,0,0,0,22,173,1,0,0,0,24,189,1,0,0,0,26,204,1,0,0,0,28,206,
-  	1,0,0,0,30,217,1,0,0,0,32,225,1,0,0,0,34,232,1,0,0,0,36,266,1,0,0,0,38,
-  	270,1,0,0,0,40,272,1,0,0,0,42,280,1,0,0,0,44,285,1,0,0,0,46,298,1,0,0,
-  	0,48,323,1,0,0,0,50,366,1,0,0,0,52,369,1,0,0,0,54,371,1,0,0,0,56,375,
-  	1,0,0,0,58,389,1,0,0,0,60,391,1,0,0,0,62,401,1,0,0,0,64,65,3,50,25,0,
-  	65,66,5,27,0,0,66,68,1,0,0,0,67,64,1,0,0,0,68,71,1,0,0,0,69,67,1,0,0,
-  	0,69,70,1,0,0,0,70,75,1,0,0,0,71,69,1,0,0,0,72,74,3,30,15,0,73,72,1,0,
-  	0,0,74,77,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,1,1,0,0,0,77,75,1,0,
-  	0,0,78,91,5,27,0,0,79,80,3,48,24,0,80,81,5,27,0,0,81,91,1,0,0,0,82,83,
-  	3,20,10,0,83,84,5,27,0,0,84,91,1,0,0,0,85,91,3,4,2,0,86,91,3,6,3,0,87,
-  	91,3,10,5,0,88,91,3,12,6,0,89,91,3,14,7,0,90,78,1,0,0,0,90,79,1,0,0,0,
-  	90,82,1,0,0,0,90,85,1,0,0,0,90,86,1,0,0,0,90,87,1,0,0,0,90,88,1,0,0,0,
-  	90,89,1,0,0,0,91,3,1,0,0,0,92,93,5,12,0,0,93,94,5,52,0,0,94,95,3,48,24,
-  	0,95,98,5,53,0,0,96,99,3,60,30,0,97,99,3,2,1,0,98,96,1,0,0,0,98,97,1,
-  	0,0,0,99,114,1,0,0,0,100,101,5,12,0,0,101,102,5,52,0,0,102,103,3,48,24,
-  	0,103,106,5,53,0,0,104,107,3,60,30,0,105,107,3,2,1,0,106,104,1,0,0,0,
-  	106,105,1,0,0,0,107,108,1,0,0,0,108,111,5,13,0,0,109,112,3,60,30,0,110,
-  	112,3,2,1,0,111,109,1,0,0,0,111,110,1,0,0,0,112,114,1,0,0,0,113,92,1,
-  	0,0,0,113,100,1,0,0,0,114,5,1,0,0,0,115,116,5,14,0,0,116,117,5,52,0,0,
-  	117,118,3,48,24,0,118,119,5,53,0,0,119,120,5,54,0,0,120,124,3,8,4,0,121,
-  	123,3,8,4,0,122,121,1,0,0,0,123,126,1,0,0,0,124,122,1,0,0,0,124,125,1,
-  	0,0,0,125,127,1,0,0,0,126,124,1,0,0,0,127,128,5,55,0,0,128,131,5,13,0,
-  	0,129,132,3,60,30,0,130,132,3,2,1,0,131,129,1,0,0,0,131,130,1,0,0,0,132,
-  	7,1,0,0,0,133,134,3,48,24,0,134,137,5,28,0,0,135,138,3,60,30,0,136,138,
-  	3,2,1,0,137,135,1,0,0,0,137,136,1,0,0,0,138,9,1,0,0,0,139,140,5,15,0,
-  	0,140,141,5,52,0,0,141,142,3,22,11,0,142,143,5,27,0,0,143,144,3,48,24,
-  	0,144,145,5,27,0,0,145,146,3,48,24,0,146,149,5,53,0,0,147,150,3,60,30,
-  	0,148,150,3,2,1,0,149,147,1,0,0,0,149,148,1,0,0,0,150,11,1,0,0,0,151,
-  	152,5,17,0,0,152,153,5,52,0,0,153,154,3,48,24,0,154,157,5,53,0,0,155,
-  	158,3,60,30,0,156,158,3,2,1,0,157,155,1,0,0,0,157,156,1,0,0,0,158,13,
-  	1,0,0,0,159,161,5,20,0,0,160,162,3,48,24,0,161,160,1,0,0,0,161,162,1,
-  	0,0,0,162,163,1,0,0,0,163,164,5,27,0,0,164,15,1,0,0,0,165,166,7,0,0,0,
-  	166,17,1,0,0,0,167,168,7,1,0,0,168,19,1,0,0,0,169,170,3,18,9,0,170,171,
-  	3,22,11,0,171,172,5,27,0,0,172,21,1,0,0,0,173,176,3,24,12,0,174,175,5,
-  	58,0,0,175,177,3,48,24,0,176,174,1,0,0,0,176,177,1,0,0,0,177,186,1,0,
-  	0,0,178,179,5,29,0,0,179,182,3,24,12,0,180,181,5,58,0,0,181,183,3,48,
-  	24,0,182,180,1,0,0,0,182,183,1,0,0,0,183,185,1,0,0,0,184,178,1,0,0,0,
-  	185,188,1,0,0,0,186,184,1,0,0,0,186,187,1,0,0,0,187,23,1,0,0,0,188,186,
-  	1,0,0,0,189,190,5,21,0,0,190,191,5,28,0,0,191,192,3,26,13,0,192,25,1,
-  	0,0,0,193,205,3,38,19,0,194,195,3,38,19,0,195,197,5,56,0,0,196,198,3,
-  	48,24,0,197,196,1,0,0,0,197,198,1,0,0,0,198,199,1,0,0,0,199,200,5,57,
-  	0,0,200,205,1,0,0,0,201,205,3,28,14,0,202,205,3,34,17,0,203,205,3,54,
-  	27,0,204,193,1,0,0,0,204,194,1,0,0,0,204,201,1,0,0,0,204,202,1,0,0,0,
-  	204,203,1,0,0,0,205,27,1,0,0,0,206,211,5,10,0,0,207,208,5,52,0,0,208,
-  	209,3,38,19,0,209,210,5,53,0,0,210,212,1,0,0,0,211,207,1,0,0,0,211,212,
-  	1,0,0,0,212,213,1,0,0,0,213,214,5,54,0,0,214,215,3,30,15,0,215,216,5,
-  	55,0,0,216,29,1,0,0,0,217,221,3,32,16,0,218,220,3,32,16,0,219,218,1,0,
-  	0,0,220,223,1,0,0,0,221,219,1,0,0,0,221,222,1,0,0,0,222,31,1,0,0,0,223,
-  	221,1,0,0,0,224,226,3,16,8,0,225,224,1,0,0,0,225,226,1,0,0,0,226,228,
-  	1,0,0,0,227,229,5,11,0,0,228,227,1,0,0,0,228,229,1,0,0,0,229,230,1,0,
-  	0,0,230,231,3,20,10,0,231,33,1,0,0,0,232,237,5,9,0,0,233,234,5,52,0,0,
-  	234,235,3,38,19,0,235,236,5,53,0,0,236,238,1,0,0,0,237,233,1,0,0,0,237,
-  	238,1,0,0,0,238,241,1,0,0,0,239,240,5,28,0,0,240,242,3,26,13,0,241,239,
-  	1,0,0,0,241,242,1,0,0,0,242,243,1,0,0,0,243,244,5,54,0,0,244,245,3,36,
-  	18,0,245,246,5,55,0,0,246,35,1,0,0,0,247,252,5,21,0,0,248,249,5,29,0,
-  	0,249,251,5,21,0,0,250,248,1,0,0,0,251,254,1,0,0,0,252,250,1,0,0,0,252,
-  	253,1,0,0,0,253,267,1,0,0,0,254,252,1,0,0,0,255,256,5,21,0,0,256,257,
-  	5,58,0,0,257,263,3,48,24,0,258,259,5,21,0,0,259,260,5,58,0,0,260,262,
-  	3,48,24,0,261,258,1,0,0,0,262,265,1,0,0,0,263,261,1,0,0,0,263,264,1,0,
-  	0,0,264,267,1,0,0,0,265,263,1,0,0,0,266,247,1,0,0,0,266,255,1,0,0,0,267,
-  	37,1,0,0,0,268,271,3,42,21,0,269,271,3,40,20,0,270,268,1,0,0,0,270,269,
-  	1,0,0,0,271,39,1,0,0,0,272,277,5,21,0,0,273,274,5,26,0,0,274,276,5,21,
-  	0,0,275,273,1,0,0,0,276,279,1,0,0,0,277,275,1,0,0,0,277,278,1,0,0,0,278,
-  	41,1,0,0,0,279,277,1,0,0,0,280,281,5,21,0,0,281,282,5,52,0,0,282,283,
-  	3,44,22,0,283,284,5,53,0,0,284,43,1,0,0,0,285,290,3,48,24,0,286,287,5,
-  	29,0,0,287,289,3,48,24,0,288,286,1,0,0,0,289,292,1,0,0,0,290,288,1,0,
-  	0,0,290,291,1,0,0,0,291,45,1,0,0,0,292,290,1,0,0,0,293,299,3,38,19,0,
-  	294,299,5,22,0,0,295,299,5,24,0,0,296,299,5,23,0,0,297,299,5,25,0,0,298,
-  	293,1,0,0,0,298,294,1,0,0,0,298,295,1,0,0,0,298,296,1,0,0,0,298,297,1,
-  	0,0,0,299,47,1,0,0,0,300,301,6,24,-1,0,301,302,5,52,0,0,302,303,3,48,
-  	24,0,303,304,5,53,0,0,304,324,1,0,0,0,305,306,5,31,0,0,306,324,3,48,24,
-  	20,307,308,5,47,0,0,308,324,3,48,24,19,309,310,5,37,0,0,310,324,3,48,
-  	24,18,311,312,5,50,0,0,312,324,3,48,24,17,313,314,5,51,0,0,314,324,3,
-  	48,24,16,315,316,3,40,20,0,316,317,3,52,26,0,317,318,3,48,24,5,318,324,
-  	1,0,0,0,319,324,5,5,0,0,320,324,3,50,25,0,321,324,3,54,27,0,322,324,3,
-  	46,23,0,323,300,1,0,0,0,323,305,1,0,0,0,323,307,1,0,0,0,323,309,1,0,0,
-  	0,323,311,1,0,0,0,323,313,1,0,0,0,323,315,1,0,0,0,323,319,1,0,0,0,323,
-  	320,1,0,0,0,323,321,1,0,0,0,323,322,1,0,0,0,324,363,1,0,0,0,325,326,10,
-  	22,0,0,326,327,5,29,0,0,327,362,3,48,24,23,328,329,10,15,0,0,329,330,
-  	7,2,0,0,330,362,3,48,24,16,331,332,10,14,0,0,332,333,7,3,0,0,333,362,
-  	3,48,24,15,334,335,10,13,0,0,335,336,7,4,0,0,336,362,3,48,24,14,337,338,
-  	10,12,0,0,338,339,7,5,0,0,339,362,3,48,24,13,340,341,10,11,0,0,341,342,
-  	7,6,0,0,342,362,3,48,24,12,343,344,10,10,0,0,344,345,5,44,0,0,345,362,
-  	3,48,24,11,346,347,10,9,0,0,347,348,5,46,0,0,348,362,3,48,24,10,349,350,
-  	10,8,0,0,350,351,5,45,0,0,351,362,3,48,24,9,352,353,10,7,0,0,353,354,
-  	5,35,0,0,354,362,3,48,24,8,355,356,10,6,0,0,356,357,5,36,0,0,357,362,
-  	3,48,24,7,358,359,10,21,0,0,359,360,5,26,0,0,360,362,3,38,19,0,361,325,
-  	1,0,0,0,361,328,1,0,0,0,361,331,1,0,0,0,361,334,1,0,0,0,361,337,1,0,0,
-  	0,361,340,1,0,0,0,361,343,1,0,0,0,361,346,1,0,0,0,361,349,1,0,0,0,361,
-  	352,1,0,0,0,361,355,1,0,0,0,361,358,1,0,0,0,362,365,1,0,0,0,363,361,1,
-  	0,0,0,363,364,1,0,0,0,364,49,1,0,0,0,365,363,1,0,0,0,366,367,5,4,0,0,
-  	367,368,3,40,20,0,368,51,1,0,0,0,369,370,7,7,0,0,370,53,1,0,0,0,371,372,
-  	3,56,28,0,372,373,5,26,0,0,373,374,3,58,29,0,374,55,1,0,0,0,375,376,5,
-  	69,0,0,376,380,5,52,0,0,377,379,3,22,11,0,378,377,1,0,0,0,379,382,1,0,
-  	0,0,380,378,1,0,0,0,380,381,1,0,0,0,381,383,1,0,0,0,382,380,1,0,0,0,383,
-  	384,5,53,0,0,384,57,1,0,0,0,385,390,3,60,30,0,386,390,3,62,31,0,387,390,
-  	3,2,1,0,388,390,3,48,24,0,389,385,1,0,0,0,389,386,1,0,0,0,389,387,1,0,
-  	0,0,389,388,1,0,0,0,390,59,1,0,0,0,391,392,5,54,0,0,392,396,3,2,1,0,393,
-  	395,3,2,1,0,394,393,1,0,0,0,395,398,1,0,0,0,396,394,1,0,0,0,396,397,1,
-  	0,0,0,397,399,1,0,0,0,398,396,1,0,0,0,399,400,5,55,0,0,400,61,1,0,0,0,
-  	401,402,3,38,19,0,402,403,3,60,30,0,403,63,1,0,0,0,37,69,75,90,98,106,
-  	111,113,124,131,137,149,157,161,176,182,186,197,204,211,221,225,228,237,
-  	241,252,263,266,270,277,290,298,323,361,363,380,389,396
+  	28,2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,2,34,7,34,1,0,5,
+  	0,72,8,0,10,0,12,0,75,9,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+  	1,1,1,1,3,1,90,8,1,1,2,1,2,1,2,1,2,1,2,1,2,3,2,98,8,2,1,2,1,2,1,2,1,2,
+  	1,2,1,2,3,2,106,8,2,1,2,1,2,1,2,3,2,111,8,2,3,2,113,8,2,1,3,1,3,1,3,1,
+  	3,1,3,1,3,1,3,5,3,122,8,3,10,3,12,3,125,9,3,1,3,1,3,1,3,1,3,3,3,131,8,
+  	3,1,4,1,4,1,4,1,4,3,4,137,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
+  	3,5,149,8,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,157,8,6,1,7,1,7,3,7,161,8,7,1,
+  	7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,10,1,10,1,11,1,11,1,11,1,11,1,12,1,12,
+  	1,12,3,12,180,8,12,1,12,1,12,1,12,1,12,3,12,186,8,12,5,12,188,8,12,10,
+  	12,12,12,191,9,12,1,13,1,13,1,13,1,13,1,14,1,14,1,14,1,14,3,14,201,8,
+  	14,1,14,1,14,1,14,1,14,1,14,3,14,208,8,14,1,15,1,15,1,15,1,15,1,15,3,
+  	15,215,8,15,1,15,1,15,1,15,1,15,1,16,1,16,3,16,223,8,16,1,16,1,16,5,16,
+  	227,8,16,10,16,12,16,230,9,16,1,17,3,17,233,8,17,1,17,3,17,236,8,17,1,
+  	17,1,17,1,18,1,18,1,18,1,18,1,18,3,18,245,8,18,1,18,1,18,3,18,249,8,18,
+  	1,18,1,18,1,18,1,18,1,19,1,19,1,19,5,19,258,8,19,10,19,12,19,261,9,19,
+  	1,19,1,19,1,19,1,19,1,19,1,19,5,19,269,8,19,10,19,12,19,272,9,19,3,19,
+  	274,8,19,1,20,1,20,3,20,278,8,20,1,21,1,21,1,21,1,21,3,21,284,8,21,1,
+  	22,1,22,3,22,288,8,22,1,23,1,23,1,23,5,23,293,8,23,10,23,12,23,296,9,
+  	23,1,24,1,24,1,24,1,24,1,24,1,25,1,25,1,25,5,25,306,8,25,10,25,12,25,
+  	309,9,25,1,26,1,26,1,26,1,26,1,26,3,26,316,8,26,1,27,1,27,1,27,1,27,1,
+  	27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,
+  	27,1,27,1,27,1,27,1,27,3,27,341,8,27,1,27,1,27,1,27,1,27,1,27,1,27,1,
+  	27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,
+  	27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,27,1,
+  	27,1,27,5,27,379,8,27,10,27,12,27,382,9,27,1,28,1,28,1,28,1,29,1,29,1,
+  	30,1,30,1,30,1,30,1,31,1,31,1,31,5,31,396,8,31,10,31,12,31,399,9,31,1,
+  	31,1,31,1,32,1,32,1,32,1,32,3,32,407,8,32,1,33,1,33,1,33,5,33,412,8,33,
+  	10,33,12,33,415,9,33,1,33,1,33,1,34,1,34,1,34,1,34,0,1,54,35,0,2,4,6,
+  	8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,
+  	56,58,60,62,64,66,68,0,8,1,0,6,8,1,0,1,3,1,0,32,34,1,0,30,31,1,0,48,49,
+  	1,0,38,41,1,0,42,43,1,0,58,68,460,0,73,1,0,0,0,2,89,1,0,0,0,4,112,1,0,
+  	0,0,6,114,1,0,0,0,8,132,1,0,0,0,10,138,1,0,0,0,12,150,1,0,0,0,14,158,
+  	1,0,0,0,16,164,1,0,0,0,18,168,1,0,0,0,20,170,1,0,0,0,22,172,1,0,0,0,24,
+  	176,1,0,0,0,26,192,1,0,0,0,28,207,1,0,0,0,30,209,1,0,0,0,32,222,1,0,0,
+  	0,34,232,1,0,0,0,36,239,1,0,0,0,38,273,1,0,0,0,40,277,1,0,0,0,42,283,
+  	1,0,0,0,44,287,1,0,0,0,46,289,1,0,0,0,48,297,1,0,0,0,50,302,1,0,0,0,52,
+  	315,1,0,0,0,54,340,1,0,0,0,56,383,1,0,0,0,58,386,1,0,0,0,60,388,1,0,0,
+  	0,62,392,1,0,0,0,64,406,1,0,0,0,66,408,1,0,0,0,68,418,1,0,0,0,70,72,3,
+  	32,16,0,71,70,1,0,0,0,72,75,1,0,0,0,73,71,1,0,0,0,73,74,1,0,0,0,74,1,
+  	1,0,0,0,75,73,1,0,0,0,76,90,5,27,0,0,77,78,3,54,27,0,78,79,5,27,0,0,79,
+  	90,1,0,0,0,80,81,3,22,11,0,81,82,5,27,0,0,82,90,1,0,0,0,83,90,3,4,2,0,
+  	84,90,3,6,3,0,85,90,3,10,5,0,86,90,3,12,6,0,87,90,3,14,7,0,88,90,3,16,
+  	8,0,89,76,1,0,0,0,89,77,1,0,0,0,89,80,1,0,0,0,89,83,1,0,0,0,89,84,1,0,
+  	0,0,89,85,1,0,0,0,89,86,1,0,0,0,89,87,1,0,0,0,89,88,1,0,0,0,90,3,1,0,
+  	0,0,91,92,5,12,0,0,92,93,5,52,0,0,93,94,3,54,27,0,94,97,5,53,0,0,95,98,
+  	3,66,33,0,96,98,3,2,1,0,97,95,1,0,0,0,97,96,1,0,0,0,98,113,1,0,0,0,99,
+  	100,5,12,0,0,100,101,5,52,0,0,101,102,3,54,27,0,102,105,5,53,0,0,103,
+  	106,3,66,33,0,104,106,3,2,1,0,105,103,1,0,0,0,105,104,1,0,0,0,106,107,
+  	1,0,0,0,107,110,5,13,0,0,108,111,3,66,33,0,109,111,3,2,1,0,110,108,1,
+  	0,0,0,110,109,1,0,0,0,111,113,1,0,0,0,112,91,1,0,0,0,112,99,1,0,0,0,113,
+  	5,1,0,0,0,114,115,5,14,0,0,115,116,5,52,0,0,116,117,3,54,27,0,117,118,
+  	5,53,0,0,118,119,5,54,0,0,119,123,3,8,4,0,120,122,3,8,4,0,121,120,1,0,
+  	0,0,122,125,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,126,1,0,0,0,125,
+  	123,1,0,0,0,126,127,5,55,0,0,127,130,5,13,0,0,128,131,3,66,33,0,129,131,
+  	3,2,1,0,130,128,1,0,0,0,130,129,1,0,0,0,131,7,1,0,0,0,132,133,3,54,27,
+  	0,133,136,5,28,0,0,134,137,3,66,33,0,135,137,3,2,1,0,136,134,1,0,0,0,
+  	136,135,1,0,0,0,137,9,1,0,0,0,138,139,5,15,0,0,139,140,5,52,0,0,140,141,
+  	3,24,12,0,141,142,5,27,0,0,142,143,3,54,27,0,143,144,5,27,0,0,144,145,
+  	3,54,27,0,145,148,5,53,0,0,146,149,3,66,33,0,147,149,3,2,1,0,148,146,
+  	1,0,0,0,148,147,1,0,0,0,149,11,1,0,0,0,150,151,5,17,0,0,151,152,5,52,
+  	0,0,152,153,3,54,27,0,153,156,5,53,0,0,154,157,3,66,33,0,155,157,3,2,
+  	1,0,156,154,1,0,0,0,156,155,1,0,0,0,157,13,1,0,0,0,158,160,5,20,0,0,159,
+  	161,3,54,27,0,160,159,1,0,0,0,160,161,1,0,0,0,161,162,1,0,0,0,162,163,
+  	5,27,0,0,163,15,1,0,0,0,164,165,5,4,0,0,165,166,3,54,27,0,166,167,5,27,
+  	0,0,167,17,1,0,0,0,168,169,7,0,0,0,169,19,1,0,0,0,170,171,7,1,0,0,171,
+  	21,1,0,0,0,172,173,3,20,10,0,173,174,3,24,12,0,174,175,5,27,0,0,175,23,
+  	1,0,0,0,176,179,3,26,13,0,177,178,5,58,0,0,178,180,3,54,27,0,179,177,
+  	1,0,0,0,179,180,1,0,0,0,180,189,1,0,0,0,181,182,5,29,0,0,182,185,3,26,
+  	13,0,183,184,5,58,0,0,184,186,3,54,27,0,185,183,1,0,0,0,185,186,1,0,0,
+  	0,186,188,1,0,0,0,187,181,1,0,0,0,188,191,1,0,0,0,189,187,1,0,0,0,189,
+  	190,1,0,0,0,190,25,1,0,0,0,191,189,1,0,0,0,192,193,5,21,0,0,193,194,5,
+  	28,0,0,194,195,3,28,14,0,195,27,1,0,0,0,196,208,3,40,20,0,197,198,3,40,
+  	20,0,198,200,5,56,0,0,199,201,3,54,27,0,200,199,1,0,0,0,200,201,1,0,0,
+  	0,201,202,1,0,0,0,202,203,5,57,0,0,203,208,1,0,0,0,204,208,3,30,15,0,
+  	205,208,3,36,18,0,206,208,3,60,30,0,207,196,1,0,0,0,207,197,1,0,0,0,207,
+  	204,1,0,0,0,207,205,1,0,0,0,207,206,1,0,0,0,208,29,1,0,0,0,209,214,5,
+  	10,0,0,210,211,5,52,0,0,211,212,3,40,20,0,212,213,5,53,0,0,213,215,1,
+  	0,0,0,214,210,1,0,0,0,214,215,1,0,0,0,215,216,1,0,0,0,216,217,5,54,0,
+  	0,217,218,3,32,16,0,218,219,5,55,0,0,219,31,1,0,0,0,220,223,3,16,8,0,
+  	221,223,3,34,17,0,222,220,1,0,0,0,222,221,1,0,0,0,223,228,1,0,0,0,224,
+  	227,3,16,8,0,225,227,3,34,17,0,226,224,1,0,0,0,226,225,1,0,0,0,227,230,
+  	1,0,0,0,228,226,1,0,0,0,228,229,1,0,0,0,229,33,1,0,0,0,230,228,1,0,0,
+  	0,231,233,3,18,9,0,232,231,1,0,0,0,232,233,1,0,0,0,233,235,1,0,0,0,234,
+  	236,5,11,0,0,235,234,1,0,0,0,235,236,1,0,0,0,236,237,1,0,0,0,237,238,
+  	3,22,11,0,238,35,1,0,0,0,239,244,5,9,0,0,240,241,5,52,0,0,241,242,3,40,
+  	20,0,242,243,5,53,0,0,243,245,1,0,0,0,244,240,1,0,0,0,244,245,1,0,0,0,
+  	245,248,1,0,0,0,246,247,5,28,0,0,247,249,3,28,14,0,248,246,1,0,0,0,248,
+  	249,1,0,0,0,249,250,1,0,0,0,250,251,5,54,0,0,251,252,3,38,19,0,252,253,
+  	5,55,0,0,253,37,1,0,0,0,254,259,5,21,0,0,255,256,5,29,0,0,256,258,5,21,
+  	0,0,257,255,1,0,0,0,258,261,1,0,0,0,259,257,1,0,0,0,259,260,1,0,0,0,260,
+  	274,1,0,0,0,261,259,1,0,0,0,262,263,5,21,0,0,263,264,5,58,0,0,264,270,
+  	3,54,27,0,265,266,5,21,0,0,266,267,5,58,0,0,267,269,3,54,27,0,268,265,
+  	1,0,0,0,269,272,1,0,0,0,270,268,1,0,0,0,270,271,1,0,0,0,271,274,1,0,0,
+  	0,272,270,1,0,0,0,273,254,1,0,0,0,273,262,1,0,0,0,274,39,1,0,0,0,275,
+  	278,3,42,21,0,276,278,3,44,22,0,277,275,1,0,0,0,277,276,1,0,0,0,278,41,
+  	1,0,0,0,279,280,5,69,0,0,280,284,3,48,24,0,281,282,5,69,0,0,282,284,3,
+  	46,23,0,283,279,1,0,0,0,283,281,1,0,0,0,284,43,1,0,0,0,285,288,3,48,24,
+  	0,286,288,3,46,23,0,287,285,1,0,0,0,287,286,1,0,0,0,288,45,1,0,0,0,289,
+  	294,5,21,0,0,290,291,5,26,0,0,291,293,5,21,0,0,292,290,1,0,0,0,293,296,
+  	1,0,0,0,294,292,1,0,0,0,294,295,1,0,0,0,295,47,1,0,0,0,296,294,1,0,0,
+  	0,297,298,5,21,0,0,298,299,5,52,0,0,299,300,3,50,25,0,300,301,5,53,0,
+  	0,301,49,1,0,0,0,302,307,3,54,27,0,303,304,5,29,0,0,304,306,3,54,27,0,
+  	305,303,1,0,0,0,306,309,1,0,0,0,307,305,1,0,0,0,307,308,1,0,0,0,308,51,
+  	1,0,0,0,309,307,1,0,0,0,310,316,3,40,20,0,311,316,5,22,0,0,312,316,5,
+  	24,0,0,313,316,5,23,0,0,314,316,5,25,0,0,315,310,1,0,0,0,315,311,1,0,
+  	0,0,315,312,1,0,0,0,315,313,1,0,0,0,315,314,1,0,0,0,316,53,1,0,0,0,317,
+  	318,6,27,-1,0,318,319,5,52,0,0,319,320,3,54,27,0,320,321,5,53,0,0,321,
+  	341,1,0,0,0,322,323,5,31,0,0,323,341,3,54,27,20,324,325,5,47,0,0,325,
+  	341,3,54,27,19,326,327,5,37,0,0,327,341,3,54,27,18,328,329,5,50,0,0,329,
+  	341,3,54,27,17,330,331,5,51,0,0,331,341,3,54,27,16,332,333,3,46,23,0,
+  	333,334,3,58,29,0,334,335,3,54,27,5,335,341,1,0,0,0,336,341,5,5,0,0,337,
+  	341,3,56,28,0,338,341,3,60,30,0,339,341,3,52,26,0,340,317,1,0,0,0,340,
+  	322,1,0,0,0,340,324,1,0,0,0,340,326,1,0,0,0,340,328,1,0,0,0,340,330,1,
+  	0,0,0,340,332,1,0,0,0,340,336,1,0,0,0,340,337,1,0,0,0,340,338,1,0,0,0,
+  	340,339,1,0,0,0,341,380,1,0,0,0,342,343,10,22,0,0,343,344,5,29,0,0,344,
+  	379,3,54,27,23,345,346,10,15,0,0,346,347,7,2,0,0,347,379,3,54,27,16,348,
+  	349,10,14,0,0,349,350,7,3,0,0,350,379,3,54,27,15,351,352,10,13,0,0,352,
+  	353,7,4,0,0,353,379,3,54,27,14,354,355,10,12,0,0,355,356,7,5,0,0,356,
+  	379,3,54,27,13,357,358,10,11,0,0,358,359,7,6,0,0,359,379,3,54,27,12,360,
+  	361,10,10,0,0,361,362,5,44,0,0,362,379,3,54,27,11,363,364,10,9,0,0,364,
+  	365,5,46,0,0,365,379,3,54,27,10,366,367,10,8,0,0,367,368,5,45,0,0,368,
+  	379,3,54,27,9,369,370,10,7,0,0,370,371,5,35,0,0,371,379,3,54,27,8,372,
+  	373,10,6,0,0,373,374,5,36,0,0,374,379,3,54,27,7,375,376,10,21,0,0,376,
+  	377,5,26,0,0,377,379,3,40,20,0,378,342,1,0,0,0,378,345,1,0,0,0,378,348,
+  	1,0,0,0,378,351,1,0,0,0,378,354,1,0,0,0,378,357,1,0,0,0,378,360,1,0,0,
+  	0,378,363,1,0,0,0,378,366,1,0,0,0,378,369,1,0,0,0,378,372,1,0,0,0,378,
+  	375,1,0,0,0,379,382,1,0,0,0,380,378,1,0,0,0,380,381,1,0,0,0,381,55,1,
+  	0,0,0,382,380,1,0,0,0,383,384,5,4,0,0,384,385,3,46,23,0,385,57,1,0,0,
+  	0,386,387,7,7,0,0,387,59,1,0,0,0,388,389,3,62,31,0,389,390,5,26,0,0,390,
+  	391,3,64,32,0,391,61,1,0,0,0,392,393,5,70,0,0,393,397,5,52,0,0,394,396,
+  	3,24,12,0,395,394,1,0,0,0,396,399,1,0,0,0,397,395,1,0,0,0,397,398,1,0,
+  	0,0,398,400,1,0,0,0,399,397,1,0,0,0,400,401,5,53,0,0,401,63,1,0,0,0,402,
+  	407,3,66,33,0,403,407,3,68,34,0,404,407,3,2,1,0,405,407,3,54,27,0,406,
+  	402,1,0,0,0,406,403,1,0,0,0,406,404,1,0,0,0,406,405,1,0,0,0,407,65,1,
+  	0,0,0,408,409,5,54,0,0,409,413,3,2,1,0,410,412,3,2,1,0,411,410,1,0,0,
+  	0,412,415,1,0,0,0,413,411,1,0,0,0,413,414,1,0,0,0,414,416,1,0,0,0,415,
+  	413,1,0,0,0,416,417,5,55,0,0,417,67,1,0,0,0,418,419,3,28,14,0,419,420,
+  	3,66,33,0,420,69,1,0,0,0,40,73,89,97,105,110,112,123,130,136,148,156,
+  	160,179,185,189,200,207,214,222,226,228,232,235,244,248,259,270,273,277,
+  	283,287,294,307,315,340,378,380,397,406,413
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -278,22 +285,6 @@ MikoParserRules::ProgContext::ProgContext(ParserRuleContext *parent, size_t invo
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<MikoParserRules::OpenExpressionContext *> MikoParserRules::ProgContext::openExpression() {
-  return getRuleContexts<MikoParserRules::OpenExpressionContext>();
-}
-
-MikoParserRules::OpenExpressionContext* MikoParserRules::ProgContext::openExpression(size_t i) {
-  return getRuleContext<MikoParserRules::OpenExpressionContext>(i);
-}
-
-std::vector<tree::TerminalNode *> MikoParserRules::ProgContext::SEMIC() {
-  return getTokens(MikoParserRules::SEMIC);
-}
-
-tree::TerminalNode* MikoParserRules::ProgContext::SEMIC(size_t i) {
-  return getToken(MikoParserRules::SEMIC, i);
-}
-
 std::vector<MikoParserRules::StructBodyContext *> MikoParserRules::ProgContext::structBody() {
   return getRuleContexts<MikoParserRules::StructBodyContext>();
 }
@@ -307,16 +298,12 @@ size_t MikoParserRules::ProgContext::getRuleIndex() const {
   return MikoParserRules::RuleProg;
 }
 
-void MikoParserRules::ProgContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProg(this);
-}
 
-void MikoParserRules::ProgContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProg(this);
+std::any MikoParserRules::ProgContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitProg(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::ProgContext* MikoParserRules::prog() {
@@ -333,26 +320,14 @@ MikoParserRules::ProgContext* MikoParserRules::prog() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(69);
-    _errHandler->sync(this);
-    _la = _input->LA(1);
-    while (_la == MikoParserRules::OPEN) {
-      setState(64);
-      openExpression();
-      setState(65);
-      match(MikoParserRules::SEMIC);
-      setState(71);
-      _errHandler->sync(this);
-      _la = _input->LA(1);
-    }
-    setState(75);
+    setState(73);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 2510) != 0)) {
-      setState(72);
+      ((1ULL << _la) & 2526) != 0)) {
+      setState(70);
       structBody();
-      setState(77);
+      setState(75);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -405,21 +380,21 @@ MikoParserRules::ReturnStatementContext* MikoParserRules::StatementContext::retu
   return getRuleContext<MikoParserRules::ReturnStatementContext>(0);
 }
 
+MikoParserRules::OpenStatementContext* MikoParserRules::StatementContext::openStatement() {
+  return getRuleContext<MikoParserRules::OpenStatementContext>(0);
+}
+
 
 size_t MikoParserRules::StatementContext::getRuleIndex() const {
   return MikoParserRules::RuleStatement;
 }
 
-void MikoParserRules::StatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStatement(this);
-}
 
-void MikoParserRules::StatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStatement(this);
+std::any MikoParserRules::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::StatementContext* MikoParserRules::statement() {
@@ -434,86 +409,78 @@ MikoParserRules::StatementContext* MikoParserRules::statement() {
     exitRule();
   });
   try {
-    setState(90);
+    setState(89);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case MikoParserRules::SEMIC: {
-        enterOuterAlt(_localctx, 1);
-        setState(78);
-        match(MikoParserRules::SEMIC);
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(76);
+      match(MikoParserRules::SEMIC);
+      break;
+    }
 
-      case MikoParserRules::OPEN:
-      case MikoParserRules::THIS:
-      case MikoParserRules::ID:
-      case MikoParserRules::INT:
-      case MikoParserRules::CHAR:
-      case MikoParserRules::FLOAT:
-      case MikoParserRules::STRING:
-      case MikoParserRules::MIN:
-      case MikoParserRules::NOT:
-      case MikoParserRules::BITNOT:
-      case MikoParserRules::DADD:
-      case MikoParserRules::DMIN:
-      case MikoParserRules::LPAREN:
-      case MikoParserRules::LAMBDA: {
-        enterOuterAlt(_localctx, 2);
-        setState(79);
-        expression(0);
-        setState(80);
-        match(MikoParserRules::SEMIC);
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(77);
+      expression(0);
+      setState(78);
+      match(MikoParserRules::SEMIC);
+      break;
+    }
 
-      case MikoParserRules::VAR:
-      case MikoParserRules::CONST:
-      case MikoParserRules::DEFINE: {
-        enterOuterAlt(_localctx, 3);
-        setState(82);
-        defineStatement();
-        setState(83);
-        match(MikoParserRules::SEMIC);
-        break;
-      }
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(80);
+      defineStatement();
+      setState(81);
+      match(MikoParserRules::SEMIC);
+      break;
+    }
 
-      case MikoParserRules::IF: {
-        enterOuterAlt(_localctx, 4);
-        setState(85);
-        ifStatement();
-        break;
-      }
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(83);
+      ifStatement();
+      break;
+    }
 
-      case MikoParserRules::MATCH: {
-        enterOuterAlt(_localctx, 5);
-        setState(86);
-        matchStatement();
-        break;
-      }
+    case 5: {
+      enterOuterAlt(_localctx, 5);
+      setState(84);
+      matchStatement();
+      break;
+    }
 
-      case MikoParserRules::FOR: {
-        enterOuterAlt(_localctx, 6);
-        setState(87);
-        forStatement();
-        break;
-      }
+    case 6: {
+      enterOuterAlt(_localctx, 6);
+      setState(85);
+      forStatement();
+      break;
+    }
 
-      case MikoParserRules::WHILE: {
-        enterOuterAlt(_localctx, 7);
-        setState(88);
-        whileStatement();
-        break;
-      }
+    case 7: {
+      enterOuterAlt(_localctx, 7);
+      setState(86);
+      whileStatement();
+      break;
+    }
 
-      case MikoParserRules::RETURN: {
-        enterOuterAlt(_localctx, 8);
-        setState(89);
-        returnStatement();
-        break;
-      }
+    case 8: {
+      enterOuterAlt(_localctx, 8);
+      setState(87);
+      returnStatement();
+      break;
+    }
+
+    case 9: {
+      enterOuterAlt(_localctx, 9);
+      setState(88);
+      openStatement();
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
    
   }
@@ -573,16 +540,12 @@ size_t MikoParserRules::IfStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleIfStatement;
 }
 
-void MikoParserRules::IfStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterIfStatement(this);
-}
 
-void MikoParserRules::IfStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitIfStatement(this);
+std::any MikoParserRules::IfStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitIfStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
@@ -597,24 +560,24 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
     exitRule();
   });
   try {
-    setState(113);
+    setState(112);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(92);
+      setState(91);
       match(MikoParserRules::IF);
-      setState(93);
+      setState(92);
       match(MikoParserRules::LPAREN);
-      setState(94);
+      setState(93);
       expression(0);
-      setState(95);
+      setState(94);
       match(MikoParserRules::RPAREN);
-      setState(98);
+      setState(97);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case MikoParserRules::LBRACE: {
-          setState(96);
+          setState(95);
           codeBlock();
           break;
         }
@@ -641,8 +604,9 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
         case MikoParserRules::DADD:
         case MikoParserRules::DMIN:
         case MikoParserRules::LPAREN:
+        case MikoParserRules::COMPILER:
         case MikoParserRules::LAMBDA: {
-          setState(97);
+          setState(96);
           statement();
           break;
         }
@@ -655,19 +619,19 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(100);
+      setState(99);
       match(MikoParserRules::IF);
-      setState(101);
+      setState(100);
       match(MikoParserRules::LPAREN);
-      setState(102);
+      setState(101);
       expression(0);
-      setState(103);
+      setState(102);
       match(MikoParserRules::RPAREN);
-      setState(106);
+      setState(105);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case MikoParserRules::LBRACE: {
-          setState(104);
+          setState(103);
           codeBlock();
           break;
         }
@@ -694,8 +658,9 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
         case MikoParserRules::DADD:
         case MikoParserRules::DMIN:
         case MikoParserRules::LPAREN:
+        case MikoParserRules::COMPILER:
         case MikoParserRules::LAMBDA: {
-          setState(105);
+          setState(104);
           statement();
           break;
         }
@@ -703,13 +668,13 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
       default:
         throw NoViableAltException(this);
       }
-      setState(108);
+      setState(107);
       match(MikoParserRules::ELSE);
-      setState(111);
+      setState(110);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case MikoParserRules::LBRACE: {
-          setState(109);
+          setState(108);
           codeBlock();
           break;
         }
@@ -736,8 +701,9 @@ MikoParserRules::IfStatementContext* MikoParserRules::ifStatement() {
         case MikoParserRules::DADD:
         case MikoParserRules::DMIN:
         case MikoParserRules::LPAREN:
+        case MikoParserRules::COMPILER:
         case MikoParserRules::LAMBDA: {
-          setState(110);
+          setState(109);
           statement();
           break;
         }
@@ -817,16 +783,12 @@ size_t MikoParserRules::MatchStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleMatchStatement;
 }
 
-void MikoParserRules::MatchStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMatchStatement(this);
-}
 
-void MikoParserRules::MatchStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMatchStatement(this);
+std::any MikoParserRules::MatchStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitMatchStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::MatchStatementContext* MikoParserRules::matchStatement() {
@@ -843,38 +805,40 @@ MikoParserRules::MatchStatementContext* MikoParserRules::matchStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(115);
+    setState(114);
     match(MikoParserRules::MATCH);
-    setState(116);
+    setState(115);
     match(MikoParserRules::LPAREN);
-    setState(117);
+    setState(116);
     expression(0);
-    setState(118);
+    setState(117);
     match(MikoParserRules::RPAREN);
-    setState(119);
+    setState(118);
     match(MikoParserRules::LBRACE);
-    setState(120);
+    setState(119);
     matchMember();
-    setState(124);
+    setState(123);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::LAMBDA) {
-      setState(121);
+      ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::COMPILER
+
+    || _la == MikoParserRules::LAMBDA) {
+      setState(120);
       matchMember();
-      setState(126);
+      setState(125);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(127);
+    setState(126);
     match(MikoParserRules::RBRACE);
-    setState(128);
+    setState(127);
     match(MikoParserRules::ELSE);
-    setState(131);
+    setState(130);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MikoParserRules::LBRACE: {
-        setState(129);
+        setState(128);
         codeBlock();
         break;
       }
@@ -901,8 +865,9 @@ MikoParserRules::MatchStatementContext* MikoParserRules::matchStatement() {
       case MikoParserRules::DADD:
       case MikoParserRules::DMIN:
       case MikoParserRules::LPAREN:
+      case MikoParserRules::COMPILER:
       case MikoParserRules::LAMBDA: {
-        setState(130);
+        setState(129);
         statement();
         break;
       }
@@ -948,16 +913,12 @@ size_t MikoParserRules::MatchMemberContext::getRuleIndex() const {
   return MikoParserRules::RuleMatchMember;
 }
 
-void MikoParserRules::MatchMemberContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMatchMember(this);
-}
 
-void MikoParserRules::MatchMemberContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMatchMember(this);
+std::any MikoParserRules::MatchMemberContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitMatchMember(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::MatchMemberContext* MikoParserRules::matchMember() {
@@ -973,15 +934,15 @@ MikoParserRules::MatchMemberContext* MikoParserRules::matchMember() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(133);
+    setState(132);
     expression(0);
-    setState(134);
+    setState(133);
     match(MikoParserRules::COLON);
-    setState(137);
+    setState(136);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MikoParserRules::LBRACE: {
-        setState(135);
+        setState(134);
         codeBlock();
         break;
       }
@@ -1008,8 +969,9 @@ MikoParserRules::MatchMemberContext* MikoParserRules::matchMember() {
       case MikoParserRules::DADD:
       case MikoParserRules::DMIN:
       case MikoParserRules::LPAREN:
+      case MikoParserRules::COMPILER:
       case MikoParserRules::LAMBDA: {
-        setState(136);
+        setState(135);
         statement();
         break;
       }
@@ -1079,16 +1041,12 @@ size_t MikoParserRules::ForStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleForStatement;
 }
 
-void MikoParserRules::ForStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterForStatement(this);
-}
 
-void MikoParserRules::ForStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitForStatement(this);
+std::any MikoParserRules::ForStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitForStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::ForStatementContext* MikoParserRules::forStatement() {
@@ -1104,27 +1062,27 @@ MikoParserRules::ForStatementContext* MikoParserRules::forStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(139);
+    setState(138);
     match(MikoParserRules::FOR);
-    setState(140);
+    setState(139);
     match(MikoParserRules::LPAREN);
-    setState(141);
+    setState(140);
     define();
+    setState(141);
+    match(MikoParserRules::SEMIC);
     setState(142);
-    match(MikoParserRules::SEMIC);
+    expression(0);
     setState(143);
-    expression(0);
-    setState(144);
     match(MikoParserRules::SEMIC);
-    setState(145);
+    setState(144);
     expression(0);
-    setState(146);
+    setState(145);
     match(MikoParserRules::RPAREN);
-    setState(149);
+    setState(148);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MikoParserRules::LBRACE: {
-        setState(147);
+        setState(146);
         codeBlock();
         break;
       }
@@ -1151,8 +1109,9 @@ MikoParserRules::ForStatementContext* MikoParserRules::forStatement() {
       case MikoParserRules::DADD:
       case MikoParserRules::DMIN:
       case MikoParserRules::LPAREN:
+      case MikoParserRules::COMPILER:
       case MikoParserRules::LAMBDA: {
-        setState(148);
+        setState(147);
         statement();
         break;
       }
@@ -1206,16 +1165,12 @@ size_t MikoParserRules::WhileStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleWhileStatement;
 }
 
-void MikoParserRules::WhileStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterWhileStatement(this);
-}
 
-void MikoParserRules::WhileStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitWhileStatement(this);
+std::any MikoParserRules::WhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitWhileStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::WhileStatementContext* MikoParserRules::whileStatement() {
@@ -1231,19 +1186,19 @@ MikoParserRules::WhileStatementContext* MikoParserRules::whileStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(151);
+    setState(150);
     match(MikoParserRules::WHILE);
-    setState(152);
+    setState(151);
     match(MikoParserRules::LPAREN);
-    setState(153);
+    setState(152);
     expression(0);
-    setState(154);
+    setState(153);
     match(MikoParserRules::RPAREN);
-    setState(157);
+    setState(156);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MikoParserRules::LBRACE: {
-        setState(155);
+        setState(154);
         codeBlock();
         break;
       }
@@ -1270,8 +1225,9 @@ MikoParserRules::WhileStatementContext* MikoParserRules::whileStatement() {
       case MikoParserRules::DADD:
       case MikoParserRules::DMIN:
       case MikoParserRules::LPAREN:
+      case MikoParserRules::COMPILER:
       case MikoParserRules::LAMBDA: {
-        setState(156);
+        setState(155);
         statement();
         break;
       }
@@ -1313,16 +1269,12 @@ size_t MikoParserRules::ReturnStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleReturnStatement;
 }
 
-void MikoParserRules::ReturnStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterReturnStatement(this);
-}
 
-void MikoParserRules::ReturnStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitReturnStatement(this);
+std::any MikoParserRules::ReturnStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitReturnStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::ReturnStatementContext* MikoParserRules::returnStatement() {
@@ -1339,18 +1291,81 @@ MikoParserRules::ReturnStatementContext* MikoParserRules::returnStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(159);
+    setState(158);
     match(MikoParserRules::RETURN);
-    setState(161);
+    setState(160);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::LAMBDA) {
-      setState(160);
+      ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::COMPILER
+
+    || _la == MikoParserRules::LAMBDA) {
+      setState(159);
       expression(0);
     }
-    setState(163);
+    setState(162);
+    match(MikoParserRules::SEMIC);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- OpenStatementContext ------------------------------------------------------------------
+
+MikoParserRules::OpenStatementContext::OpenStatementContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* MikoParserRules::OpenStatementContext::OPEN() {
+  return getToken(MikoParserRules::OPEN, 0);
+}
+
+MikoParserRules::ExpressionContext* MikoParserRules::OpenStatementContext::expression() {
+  return getRuleContext<MikoParserRules::ExpressionContext>(0);
+}
+
+tree::TerminalNode* MikoParserRules::OpenStatementContext::SEMIC() {
+  return getToken(MikoParserRules::SEMIC, 0);
+}
+
+
+size_t MikoParserRules::OpenStatementContext::getRuleIndex() const {
+  return MikoParserRules::RuleOpenStatement;
+}
+
+
+std::any MikoParserRules::OpenStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitOpenStatement(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+MikoParserRules::OpenStatementContext* MikoParserRules::openStatement() {
+  OpenStatementContext *_localctx = _tracker.createInstance<OpenStatementContext>(_ctx, getState());
+  enterRule(_localctx, 16, MikoParserRules::RuleOpenStatement);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(164);
+    match(MikoParserRules::OPEN);
+    setState(165);
+    expression(0);
+    setState(166);
     match(MikoParserRules::SEMIC);
    
   }
@@ -1386,21 +1401,17 @@ size_t MikoParserRules::AccessKeywordContext::getRuleIndex() const {
   return MikoParserRules::RuleAccessKeyword;
 }
 
-void MikoParserRules::AccessKeywordContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAccessKeyword(this);
-}
 
-void MikoParserRules::AccessKeywordContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAccessKeyword(this);
+std::any MikoParserRules::AccessKeywordContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAccessKeyword(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::AccessKeywordContext* MikoParserRules::accessKeyword() {
   AccessKeywordContext *_localctx = _tracker.createInstance<AccessKeywordContext>(_ctx, getState());
-  enterRule(_localctx, 16, MikoParserRules::RuleAccessKeyword);
+  enterRule(_localctx, 18, MikoParserRules::RuleAccessKeyword);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1412,7 +1423,7 @@ MikoParserRules::AccessKeywordContext* MikoParserRules::accessKeyword() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(165);
+    setState(168);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 448) != 0))) {
@@ -1456,21 +1467,17 @@ size_t MikoParserRules::DefineKeywordContext::getRuleIndex() const {
   return MikoParserRules::RuleDefineKeyword;
 }
 
-void MikoParserRules::DefineKeywordContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDefineKeyword(this);
-}
 
-void MikoParserRules::DefineKeywordContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDefineKeyword(this);
+std::any MikoParserRules::DefineKeywordContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDefineKeyword(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::DefineKeywordContext* MikoParserRules::defineKeyword() {
   DefineKeywordContext *_localctx = _tracker.createInstance<DefineKeywordContext>(_ctx, getState());
-  enterRule(_localctx, 18, MikoParserRules::RuleDefineKeyword);
+  enterRule(_localctx, 20, MikoParserRules::RuleDefineKeyword);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1482,7 +1489,7 @@ MikoParserRules::DefineKeywordContext* MikoParserRules::defineKeyword() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(167);
+    setState(170);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 14) != 0))) {
@@ -1526,21 +1533,17 @@ size_t MikoParserRules::DefineStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleDefineStatement;
 }
 
-void MikoParserRules::DefineStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDefineStatement(this);
-}
 
-void MikoParserRules::DefineStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDefineStatement(this);
+std::any MikoParserRules::DefineStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDefineStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::DefineStatementContext* MikoParserRules::defineStatement() {
   DefineStatementContext *_localctx = _tracker.createInstance<DefineStatementContext>(_ctx, getState());
-  enterRule(_localctx, 20, MikoParserRules::RuleDefineStatement);
+  enterRule(_localctx, 22, MikoParserRules::RuleDefineStatement);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1551,11 +1554,11 @@ MikoParserRules::DefineStatementContext* MikoParserRules::defineStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(169);
+    setState(172);
     defineKeyword();
-    setState(170);
+    setState(173);
     define();
-    setState(171);
+    setState(174);
     match(MikoParserRules::SEMIC);
    
   }
@@ -1611,21 +1614,17 @@ size_t MikoParserRules::DefineContext::getRuleIndex() const {
   return MikoParserRules::RuleDefine;
 }
 
-void MikoParserRules::DefineContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDefine(this);
-}
 
-void MikoParserRules::DefineContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDefine(this);
+std::any MikoParserRules::DefineContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDefine(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::DefineContext* MikoParserRules::define() {
   DefineContext *_localctx = _tracker.createInstance<DefineContext>(_ctx, getState());
-  enterRule(_localctx, 22, MikoParserRules::RuleDefine);
+  enterRule(_localctx, 24, MikoParserRules::RuleDefine);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1637,37 +1636,37 @@ MikoParserRules::DefineContext* MikoParserRules::define() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(173);
-    defineExpression();
     setState(176);
+    defineExpression();
+    setState(179);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == MikoParserRules::ASS) {
-      setState(174);
+      setState(177);
       match(MikoParserRules::ASS);
-      setState(175);
+      setState(178);
       expression(0);
     }
-    setState(186);
+    setState(189);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MikoParserRules::COMMA) {
-      setState(178);
+      setState(181);
       match(MikoParserRules::COMMA);
-      setState(179);
-      defineExpression();
       setState(182);
+      defineExpression();
+      setState(185);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == MikoParserRules::ASS) {
-        setState(180);
+        setState(183);
         match(MikoParserRules::ASS);
-        setState(181);
+        setState(184);
         expression(0);
       }
-      setState(188);
+      setState(191);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1705,21 +1704,17 @@ size_t MikoParserRules::DefineExpressionContext::getRuleIndex() const {
   return MikoParserRules::RuleDefineExpression;
 }
 
-void MikoParserRules::DefineExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDefineExpression(this);
-}
 
-void MikoParserRules::DefineExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDefineExpression(this);
+std::any MikoParserRules::DefineExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDefineExpression(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::DefineExpressionContext* MikoParserRules::defineExpression() {
   DefineExpressionContext *_localctx = _tracker.createInstance<DefineExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 24, MikoParserRules::RuleDefineExpression);
+  enterRule(_localctx, 26, MikoParserRules::RuleDefineExpression);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1730,11 +1725,11 @@ MikoParserRules::DefineExpressionContext* MikoParserRules::defineExpression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(189);
+    setState(192);
     match(MikoParserRules::ID);
-    setState(190);
+    setState(193);
     match(MikoParserRules::COLON);
-    setState(191);
+    setState(194);
     type();
    
   }
@@ -1786,21 +1781,17 @@ size_t MikoParserRules::TypeContext::getRuleIndex() const {
   return MikoParserRules::RuleType;
 }
 
-void MikoParserRules::TypeContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterType(this);
-}
 
-void MikoParserRules::TypeContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitType(this);
+std::any MikoParserRules::TypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitType(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::TypeContext* MikoParserRules::type() {
   TypeContext *_localctx = _tracker.createInstance<TypeContext>(_ctx, getState());
-  enterRule(_localctx, 26, MikoParserRules::RuleType);
+  enterRule(_localctx, 28, MikoParserRules::RuleType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1811,53 +1802,55 @@ MikoParserRules::TypeContext* MikoParserRules::type() {
     exitRule();
   });
   try {
-    setState(204);
+    setState(207);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 17, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 16, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(193);
+      setState(196);
       call();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(194);
-      call();
-      setState(195);
-      match(MikoParserRules::LBRACK);
       setState(197);
+      call();
+      setState(198);
+      match(MikoParserRules::LBRACK);
+      setState(200);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::LAMBDA) {
-        setState(196);
+        ((1ULL << _la) & 8022176487702576) != 0) || _la == MikoParserRules::COMPILER
+
+      || _la == MikoParserRules::LAMBDA) {
+        setState(199);
         expression(0);
       }
-      setState(199);
+      setState(202);
       match(MikoParserRules::RBRACK);
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(201);
+      setState(204);
       structType();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(202);
+      setState(205);
       defineEnum();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(203);
+      setState(206);
       lambdaExpression();
       break;
     }
@@ -1915,21 +1908,17 @@ size_t MikoParserRules::StructTypeContext::getRuleIndex() const {
   return MikoParserRules::RuleStructType;
 }
 
-void MikoParserRules::StructTypeContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStructType(this);
-}
 
-void MikoParserRules::StructTypeContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStructType(this);
+std::any MikoParserRules::StructTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitStructType(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::StructTypeContext* MikoParserRules::structType() {
   StructTypeContext *_localctx = _tracker.createInstance<StructTypeContext>(_ctx, getState());
-  enterRule(_localctx, 28, MikoParserRules::RuleStructType);
+  enterRule(_localctx, 30, MikoParserRules::RuleStructType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1941,25 +1930,25 @@ MikoParserRules::StructTypeContext* MikoParserRules::structType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(206);
+    setState(209);
     match(MikoParserRules::STRUCT);
-    setState(211);
+    setState(214);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == MikoParserRules::LPAREN) {
-      setState(207);
+      setState(210);
       match(MikoParserRules::LPAREN);
-      setState(208);
+      setState(211);
       call();
-      setState(209);
+      setState(212);
       match(MikoParserRules::RPAREN);
     }
-    setState(213);
+    setState(216);
     match(MikoParserRules::LBRACE);
-    setState(214);
+    setState(217);
     structBody();
-    setState(215);
+    setState(218);
     match(MikoParserRules::RBRACE);
    
   }
@@ -1978,6 +1967,14 @@ MikoParserRules::StructBodyContext::StructBodyContext(ParserRuleContext *parent,
   : ParserRuleContext(parent, invokingState) {
 }
 
+std::vector<MikoParserRules::OpenStatementContext *> MikoParserRules::StructBodyContext::openStatement() {
+  return getRuleContexts<MikoParserRules::OpenStatementContext>();
+}
+
+MikoParserRules::OpenStatementContext* MikoParserRules::StructBodyContext::openStatement(size_t i) {
+  return getRuleContext<MikoParserRules::OpenStatementContext>(i);
+}
+
 std::vector<MikoParserRules::StructDefineStatementContext *> MikoParserRules::StructBodyContext::structDefineStatement() {
   return getRuleContexts<MikoParserRules::StructDefineStatementContext>();
 }
@@ -1991,21 +1988,17 @@ size_t MikoParserRules::StructBodyContext::getRuleIndex() const {
   return MikoParserRules::RuleStructBody;
 }
 
-void MikoParserRules::StructBodyContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStructBody(this);
-}
 
-void MikoParserRules::StructBodyContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStructBody(this);
+std::any MikoParserRules::StructBodyContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitStructBody(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::StructBodyContext* MikoParserRules::structBody() {
   StructBodyContext *_localctx = _tracker.createInstance<StructBodyContext>(_ctx, getState());
-  enterRule(_localctx, 30, MikoParserRules::RuleStructBody);
+  enterRule(_localctx, 32, MikoParserRules::RuleStructBody);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2017,19 +2010,63 @@ MikoParserRules::StructBodyContext* MikoParserRules::structBody() {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(217);
-    structDefineStatement();
-    setState(221);
+    setState(222);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 19, _ctx);
+    switch (_input->LA(1)) {
+      case MikoParserRules::OPEN: {
+        setState(220);
+        openStatement();
+        break;
+      }
+
+      case MikoParserRules::VAR:
+      case MikoParserRules::CONST:
+      case MikoParserRules::DEFINE:
+      case MikoParserRules::PUBLIC:
+      case MikoParserRules::PRIVATE:
+      case MikoParserRules::LOCAL:
+      case MikoParserRules::STATIC: {
+        setState(221);
+        structDefineStatement();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+    setState(228);
+    _errHandler->sync(this);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 20, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
-        setState(218);
-        structDefineStatement(); 
+        setState(226);
+        _errHandler->sync(this);
+        switch (_input->LA(1)) {
+          case MikoParserRules::OPEN: {
+            setState(224);
+            openStatement();
+            break;
+          }
+
+          case MikoParserRules::VAR:
+          case MikoParserRules::CONST:
+          case MikoParserRules::DEFINE:
+          case MikoParserRules::PUBLIC:
+          case MikoParserRules::PRIVATE:
+          case MikoParserRules::LOCAL:
+          case MikoParserRules::STATIC: {
+            setState(225);
+            structDefineStatement();
+            break;
+          }
+
+        default:
+          throw NoViableAltException(this);
+        } 
       }
-      setState(223);
+      setState(230);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 19, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 20, _ctx);
     }
    
   }
@@ -2065,21 +2102,17 @@ size_t MikoParserRules::StructDefineStatementContext::getRuleIndex() const {
   return MikoParserRules::RuleStructDefineStatement;
 }
 
-void MikoParserRules::StructDefineStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStructDefineStatement(this);
-}
 
-void MikoParserRules::StructDefineStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStructDefineStatement(this);
+std::any MikoParserRules::StructDefineStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitStructDefineStatement(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::StructDefineStatementContext* MikoParserRules::structDefineStatement() {
   StructDefineStatementContext *_localctx = _tracker.createInstance<StructDefineStatementContext>(_ctx, getState());
-  enterRule(_localctx, 32, MikoParserRules::RuleStructDefineStatement);
+  enterRule(_localctx, 34, MikoParserRules::RuleStructDefineStatement);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2091,24 +2124,24 @@ MikoParserRules::StructDefineStatementContext* MikoParserRules::structDefineStat
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(225);
+    setState(232);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 448) != 0)) {
-      setState(224);
+      setState(231);
       accessKeyword();
     }
-    setState(228);
+    setState(235);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == MikoParserRules::STATIC) {
-      setState(227);
+      setState(234);
       match(MikoParserRules::STATIC);
     }
-    setState(230);
+    setState(237);
     defineStatement();
    
   }
@@ -2168,21 +2201,17 @@ size_t MikoParserRules::DefineEnumContext::getRuleIndex() const {
   return MikoParserRules::RuleDefineEnum;
 }
 
-void MikoParserRules::DefineEnumContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDefineEnum(this);
-}
 
-void MikoParserRules::DefineEnumContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDefineEnum(this);
+std::any MikoParserRules::DefineEnumContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDefineEnum(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::DefineEnumContext* MikoParserRules::defineEnum() {
   DefineEnumContext *_localctx = _tracker.createInstance<DefineEnumContext>(_ctx, getState());
-  enterRule(_localctx, 34, MikoParserRules::RuleDefineEnum);
+  enterRule(_localctx, 36, MikoParserRules::RuleDefineEnum);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2194,35 +2223,35 @@ MikoParserRules::DefineEnumContext* MikoParserRules::defineEnum() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(232);
+    setState(239);
     match(MikoParserRules::ENUM);
-    setState(237);
+    setState(244);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == MikoParserRules::LPAREN) {
-      setState(233);
+      setState(240);
       match(MikoParserRules::LPAREN);
-      setState(234);
+      setState(241);
       call();
-      setState(235);
+      setState(242);
       match(MikoParserRules::RPAREN);
     }
-    setState(241);
+    setState(248);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == MikoParserRules::COLON) {
-      setState(239);
+      setState(246);
       match(MikoParserRules::COLON);
-      setState(240);
+      setState(247);
       type();
     }
-    setState(243);
+    setState(250);
     match(MikoParserRules::LBRACE);
-    setState(244);
+    setState(251);
     enumBody();
-    setState(245);
+    setState(252);
     match(MikoParserRules::RBRACE);
    
   }
@@ -2278,21 +2307,17 @@ size_t MikoParserRules::EnumBodyContext::getRuleIndex() const {
   return MikoParserRules::RuleEnumBody;
 }
 
-void MikoParserRules::EnumBodyContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterEnumBody(this);
-}
 
-void MikoParserRules::EnumBodyContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitEnumBody(this);
+std::any MikoParserRules::EnumBodyContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitEnumBody(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::EnumBodyContext* MikoParserRules::enumBody() {
   EnumBodyContext *_localctx = _tracker.createInstance<EnumBodyContext>(_ctx, getState());
-  enterRule(_localctx, 36, MikoParserRules::RuleEnumBody);
+  enterRule(_localctx, 38, MikoParserRules::RuleEnumBody);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2303,22 +2328,22 @@ MikoParserRules::EnumBodyContext* MikoParserRules::enumBody() {
     exitRule();
   });
   try {
-    setState(266);
+    setState(273);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 26, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 27, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(247);
+      setState(254);
       match(MikoParserRules::ID);
-      setState(252);
+      setState(259);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == MikoParserRules::COMMA) {
-        setState(248);
+        setState(255);
         match(MikoParserRules::COMMA);
-        setState(249);
+        setState(256);
         match(MikoParserRules::ID);
-        setState(254);
+        setState(261);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -2327,23 +2352,23 @@ MikoParserRules::EnumBodyContext* MikoParserRules::enumBody() {
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(255);
+      setState(262);
       match(MikoParserRules::ID);
-      setState(256);
-      match(MikoParserRules::ASS);
-      setState(257);
-      expression(0);
       setState(263);
+      match(MikoParserRules::ASS);
+      setState(264);
+      expression(0);
+      setState(270);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == MikoParserRules::ID) {
-        setState(258);
-        match(MikoParserRules::ID);
-        setState(259);
-        match(MikoParserRules::ASS);
-        setState(260);
-        expression(0);
         setState(265);
+        match(MikoParserRules::ID);
+        setState(266);
+        match(MikoParserRules::ASS);
+        setState(267);
+        expression(0);
+        setState(272);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -2370,12 +2395,12 @@ MikoParserRules::CallContext::CallContext(ParserRuleContext *parent, size_t invo
   : ParserRuleContext(parent, invokingState) {
 }
 
-MikoParserRules::CallFunctionContext* MikoParserRules::CallContext::callFunction() {
-  return getRuleContext<MikoParserRules::CallFunctionContext>(0);
+MikoParserRules::CompilerCallContext* MikoParserRules::CallContext::compilerCall() {
+  return getRuleContext<MikoParserRules::CompilerCallContext>(0);
 }
 
-MikoParserRules::CallIdentifierContext* MikoParserRules::CallContext::callIdentifier() {
-  return getRuleContext<MikoParserRules::CallIdentifierContext>(0);
+MikoParserRules::ProgramCallContext* MikoParserRules::CallContext::programCall() {
+  return getRuleContext<MikoParserRules::ProgramCallContext>(0);
 }
 
 
@@ -2383,21 +2408,17 @@ size_t MikoParserRules::CallContext::getRuleIndex() const {
   return MikoParserRules::RuleCall;
 }
 
-void MikoParserRules::CallContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterCall(this);
-}
 
-void MikoParserRules::CallContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitCall(this);
+std::any MikoParserRules::CallContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitCall(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::CallContext* MikoParserRules::call() {
   CallContext *_localctx = _tracker.createInstance<CallContext>(_ctx, getState());
-  enterRule(_localctx, 38, MikoParserRules::RuleCall);
+  enterRule(_localctx, 40, MikoParserRules::RuleCall);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2407,19 +2428,167 @@ MikoParserRules::CallContext* MikoParserRules::call() {
     exitRule();
   });
   try {
-    setState(270);
+    setState(277);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 27, _ctx)) {
+    switch (_input->LA(1)) {
+      case MikoParserRules::COMPILER: {
+        enterOuterAlt(_localctx, 1);
+        setState(275);
+        compilerCall();
+        break;
+      }
+
+      case MikoParserRules::ID: {
+        enterOuterAlt(_localctx, 2);
+        setState(276);
+        programCall();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- CompilerCallContext ------------------------------------------------------------------
+
+MikoParserRules::CompilerCallContext::CompilerCallContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* MikoParserRules::CompilerCallContext::COMPILER() {
+  return getToken(MikoParserRules::COMPILER, 0);
+}
+
+MikoParserRules::CallFunctionContext* MikoParserRules::CompilerCallContext::callFunction() {
+  return getRuleContext<MikoParserRules::CallFunctionContext>(0);
+}
+
+MikoParserRules::CallIdentifierContext* MikoParserRules::CompilerCallContext::callIdentifier() {
+  return getRuleContext<MikoParserRules::CallIdentifierContext>(0);
+}
+
+
+size_t MikoParserRules::CompilerCallContext::getRuleIndex() const {
+  return MikoParserRules::RuleCompilerCall;
+}
+
+
+std::any MikoParserRules::CompilerCallContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitCompilerCall(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+MikoParserRules::CompilerCallContext* MikoParserRules::compilerCall() {
+  CompilerCallContext *_localctx = _tracker.createInstance<CompilerCallContext>(_ctx, getState());
+  enterRule(_localctx, 42, MikoParserRules::RuleCompilerCall);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(283);
+    _errHandler->sync(this);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 29, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(268);
+      setState(279);
+      match(MikoParserRules::COMPILER);
+      setState(280);
       callFunction();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(269);
+      setState(281);
+      match(MikoParserRules::COMPILER);
+      setState(282);
+      callIdentifier();
+      break;
+    }
+
+    default:
+      break;
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ProgramCallContext ------------------------------------------------------------------
+
+MikoParserRules::ProgramCallContext::ProgramCallContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+MikoParserRules::CallFunctionContext* MikoParserRules::ProgramCallContext::callFunction() {
+  return getRuleContext<MikoParserRules::CallFunctionContext>(0);
+}
+
+MikoParserRules::CallIdentifierContext* MikoParserRules::ProgramCallContext::callIdentifier() {
+  return getRuleContext<MikoParserRules::CallIdentifierContext>(0);
+}
+
+
+size_t MikoParserRules::ProgramCallContext::getRuleIndex() const {
+  return MikoParserRules::RuleProgramCall;
+}
+
+
+std::any MikoParserRules::ProgramCallContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitProgramCall(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+MikoParserRules::ProgramCallContext* MikoParserRules::programCall() {
+  ProgramCallContext *_localctx = _tracker.createInstance<ProgramCallContext>(_ctx, getState());
+  enterRule(_localctx, 44, MikoParserRules::RuleProgramCall);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(287);
+    _errHandler->sync(this);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 30, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(285);
+      callFunction();
+      break;
+    }
+
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(286);
       callIdentifier();
       break;
     }
@@ -2465,21 +2634,17 @@ size_t MikoParserRules::CallIdentifierContext::getRuleIndex() const {
   return MikoParserRules::RuleCallIdentifier;
 }
 
-void MikoParserRules::CallIdentifierContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterCallIdentifier(this);
-}
 
-void MikoParserRules::CallIdentifierContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitCallIdentifier(this);
+std::any MikoParserRules::CallIdentifierContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitCallIdentifier(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::CallIdentifierContext* MikoParserRules::callIdentifier() {
   CallIdentifierContext *_localctx = _tracker.createInstance<CallIdentifierContext>(_ctx, getState());
-  enterRule(_localctx, 40, MikoParserRules::RuleCallIdentifier);
+  enterRule(_localctx, 46, MikoParserRules::RuleCallIdentifier);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2491,21 +2656,21 @@ MikoParserRules::CallIdentifierContext* MikoParserRules::callIdentifier() {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(272);
+    setState(289);
     match(MikoParserRules::ID);
-    setState(277);
+    setState(294);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 28, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 31, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
-        setState(273);
+        setState(290);
         match(MikoParserRules::DOT);
-        setState(274);
+        setState(291);
         match(MikoParserRules::ID); 
       }
-      setState(279);
+      setState(296);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 28, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 31, _ctx);
     }
    
   }
@@ -2545,21 +2710,17 @@ size_t MikoParserRules::CallFunctionContext::getRuleIndex() const {
   return MikoParserRules::RuleCallFunction;
 }
 
-void MikoParserRules::CallFunctionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterCallFunction(this);
-}
 
-void MikoParserRules::CallFunctionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitCallFunction(this);
+std::any MikoParserRules::CallFunctionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitCallFunction(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::CallFunctionContext* MikoParserRules::callFunction() {
   CallFunctionContext *_localctx = _tracker.createInstance<CallFunctionContext>(_ctx, getState());
-  enterRule(_localctx, 42, MikoParserRules::RuleCallFunction);
+  enterRule(_localctx, 48, MikoParserRules::RuleCallFunction);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2570,13 +2731,13 @@ MikoParserRules::CallFunctionContext* MikoParserRules::callFunction() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(280);
+    setState(297);
     match(MikoParserRules::ID);
-    setState(281);
+    setState(298);
     match(MikoParserRules::LPAREN);
-    setState(282);
+    setState(299);
     functionArgs();
-    setState(283);
+    setState(300);
     match(MikoParserRules::RPAREN);
    
   }
@@ -2616,21 +2777,17 @@ size_t MikoParserRules::FunctionArgsContext::getRuleIndex() const {
   return MikoParserRules::RuleFunctionArgs;
 }
 
-void MikoParserRules::FunctionArgsContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFunctionArgs(this);
-}
 
-void MikoParserRules::FunctionArgsContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFunctionArgs(this);
+std::any MikoParserRules::FunctionArgsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitFunctionArgs(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::FunctionArgsContext* MikoParserRules::functionArgs() {
   FunctionArgsContext *_localctx = _tracker.createInstance<FunctionArgsContext>(_ctx, getState());
-  enterRule(_localctx, 44, MikoParserRules::RuleFunctionArgs);
+  enterRule(_localctx, 50, MikoParserRules::RuleFunctionArgs);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2642,17 +2799,17 @@ MikoParserRules::FunctionArgsContext* MikoParserRules::functionArgs() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(285);
+    setState(302);
     expression(0);
-    setState(290);
+    setState(307);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MikoParserRules::COMMA) {
-      setState(286);
+      setState(303);
       match(MikoParserRules::COMMA);
-      setState(287);
+      setState(304);
       expression(0);
-      setState(292);
+      setState(309);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2698,21 +2855,17 @@ size_t MikoParserRules::AtomExpressionContext::getRuleIndex() const {
   return MikoParserRules::RuleAtomExpression;
 }
 
-void MikoParserRules::AtomExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAtomExpression(this);
-}
 
-void MikoParserRules::AtomExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAtomExpression(this);
+std::any MikoParserRules::AtomExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAtomExpression(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::AtomExpressionContext* MikoParserRules::atomExpression() {
   AtomExpressionContext *_localctx = _tracker.createInstance<AtomExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 46, MikoParserRules::RuleAtomExpression);
+  enterRule(_localctx, 52, MikoParserRules::RuleAtomExpression);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2722,40 +2875,41 @@ MikoParserRules::AtomExpressionContext* MikoParserRules::atomExpression() {
     exitRule();
   });
   try {
-    setState(298);
+    setState(315);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case MikoParserRules::ID: {
+      case MikoParserRules::ID:
+      case MikoParserRules::COMPILER: {
         enterOuterAlt(_localctx, 1);
-        setState(293);
+        setState(310);
         call();
         break;
       }
 
       case MikoParserRules::INT: {
         enterOuterAlt(_localctx, 2);
-        setState(294);
+        setState(311);
         match(MikoParserRules::INT);
         break;
       }
 
       case MikoParserRules::FLOAT: {
         enterOuterAlt(_localctx, 3);
-        setState(295);
+        setState(312);
         match(MikoParserRules::FLOAT);
         break;
       }
 
       case MikoParserRules::CHAR: {
         enterOuterAlt(_localctx, 4);
-        setState(296);
+        setState(313);
         match(MikoParserRules::CHAR);
         break;
       }
 
       case MikoParserRules::STRING: {
         enterOuterAlt(_localctx, 5);
-        setState(297);
+        setState(314);
         match(MikoParserRules::STRING);
         break;
       }
@@ -2809,15 +2963,12 @@ tree::TerminalNode* MikoParserRules::AddContext::MIN() {
 
 MikoParserRules::AddContext::AddContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::AddContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAdd(this);
-}
-void MikoParserRules::AddContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAdd(this);
+
+std::any MikoParserRules::AddContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAdd(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- ParentContext ------------------------------------------------------------------
 
@@ -2835,15 +2986,12 @@ tree::TerminalNode* MikoParserRules::ParentContext::RPAREN() {
 
 MikoParserRules::ParentContext::ParentContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::ParentContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterParent(this);
-}
-void MikoParserRules::ParentContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitParent(this);
+
+std::any MikoParserRules::ParentContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitParent(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- MinusContext ------------------------------------------------------------------
 
@@ -2857,15 +3005,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::MinusContext::expression() 
 
 MikoParserRules::MinusContext::MinusContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::MinusContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMinus(this);
-}
-void MikoParserRules::MinusContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMinus(this);
+
+std::any MikoParserRules::MinusContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitMinus(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- LogicBoSContext ------------------------------------------------------------------
 
@@ -2895,15 +3040,12 @@ tree::TerminalNode* MikoParserRules::LogicBoSContext::SMALL_EQ() {
 
 MikoParserRules::LogicBoSContext::LogicBoSContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::LogicBoSContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLogicBoS(this);
-}
-void MikoParserRules::LogicBoSContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLogicBoS(this);
+
+std::any MikoParserRules::LogicBoSContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLogicBoS(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- BitOrContext ------------------------------------------------------------------
 
@@ -2921,15 +3063,12 @@ tree::TerminalNode* MikoParserRules::BitOrContext::BITOR() {
 
 MikoParserRules::BitOrContext::BitOrContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::BitOrContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterBitOr(this);
-}
-void MikoParserRules::BitOrContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitBitOr(this);
+
+std::any MikoParserRules::BitOrContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitBitOr(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- LogicOrContext ------------------------------------------------------------------
 
@@ -2947,15 +3086,12 @@ tree::TerminalNode* MikoParserRules::LogicOrContext::OR() {
 
 MikoParserRules::LogicOrContext::LogicOrContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::LogicOrContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLogicOr(this);
-}
-void MikoParserRules::LogicOrContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLogicOr(this);
+
+std::any MikoParserRules::LogicOrContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLogicOr(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- ThisContext ------------------------------------------------------------------
 
@@ -2965,15 +3101,12 @@ tree::TerminalNode* MikoParserRules::ThisContext::THIS() {
 
 MikoParserRules::ThisContext::ThisContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::ThisContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterThis(this);
-}
-void MikoParserRules::ThisContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitThis(this);
+
+std::any MikoParserRules::ThisContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitThis(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- DotContext ------------------------------------------------------------------
 
@@ -2991,15 +3124,12 @@ MikoParserRules::CallContext* MikoParserRules::DotContext::call() {
 
 MikoParserRules::DotContext::DotContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::DotContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDot(this);
-}
-void MikoParserRules::DotContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDot(this);
+
+std::any MikoParserRules::DotContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDot(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- IncrementContext ------------------------------------------------------------------
 
@@ -3013,15 +3143,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::IncrementContext::expressio
 
 MikoParserRules::IncrementContext::IncrementContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::IncrementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterIncrement(this);
-}
-void MikoParserRules::IncrementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitIncrement(this);
+
+std::any MikoParserRules::IncrementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitIncrement(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- BitshiftContext ------------------------------------------------------------------
 
@@ -3043,15 +3170,12 @@ tree::TerminalNode* MikoParserRules::BitshiftContext::RSHIFT() {
 
 MikoParserRules::BitshiftContext::BitshiftContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::BitshiftContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterBitshift(this);
-}
-void MikoParserRules::BitshiftContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitBitshift(this);
+
+std::any MikoParserRules::BitshiftContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitBitshift(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- LogicEqContext ------------------------------------------------------------------
 
@@ -3073,15 +3197,12 @@ tree::TerminalNode* MikoParserRules::LogicEqContext::NOT_EQ() {
 
 MikoParserRules::LogicEqContext::LogicEqContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::LogicEqContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLogicEq(this);
-}
-void MikoParserRules::LogicEqContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLogicEq(this);
+
+std::any MikoParserRules::LogicEqContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLogicEq(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- MultiContext ------------------------------------------------------------------
 
@@ -3107,15 +3228,12 @@ tree::TerminalNode* MikoParserRules::MultiContext::MOD() {
 
 MikoParserRules::MultiContext::MultiContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::MultiContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMulti(this);
-}
-void MikoParserRules::MultiContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMulti(this);
+
+std::any MikoParserRules::MultiContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitMulti(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- NotContext ------------------------------------------------------------------
 
@@ -3129,15 +3247,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::NotContext::expression() {
 
 MikoParserRules::NotContext::NotContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::NotContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterNot(this);
-}
-void MikoParserRules::NotContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitNot(this);
+
+std::any MikoParserRules::NotContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitNot(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- LambdaContext ------------------------------------------------------------------
 
@@ -3147,15 +3262,12 @@ MikoParserRules::LambdaExpressionContext* MikoParserRules::LambdaContext::lambda
 
 MikoParserRules::LambdaContext::LambdaContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::LambdaContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLambda(this);
-}
-void MikoParserRules::LambdaContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLambda(this);
+
+std::any MikoParserRules::LambdaContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLambda(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- CommaContext ------------------------------------------------------------------
 
@@ -3173,15 +3285,12 @@ tree::TerminalNode* MikoParserRules::CommaContext::COMMA() {
 
 MikoParserRules::CommaContext::CommaContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::CommaContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterComma(this);
-}
-void MikoParserRules::CommaContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitComma(this);
+
+std::any MikoParserRules::CommaContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitComma(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- BitAndContext ------------------------------------------------------------------
 
@@ -3199,15 +3308,12 @@ tree::TerminalNode* MikoParserRules::BitAndContext::BITAND() {
 
 MikoParserRules::BitAndContext::BitAndContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::BitAndContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterBitAnd(this);
-}
-void MikoParserRules::BitAndContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitBitAnd(this);
+
+std::any MikoParserRules::BitAndContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitBitAnd(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- LogicAndContext ------------------------------------------------------------------
 
@@ -3225,15 +3331,12 @@ tree::TerminalNode* MikoParserRules::LogicAndContext::AND() {
 
 MikoParserRules::LogicAndContext::LogicAndContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::LogicAndContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLogicAnd(this);
-}
-void MikoParserRules::LogicAndContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLogicAnd(this);
+
+std::any MikoParserRules::LogicAndContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLogicAnd(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- NegateContext ------------------------------------------------------------------
 
@@ -3247,15 +3350,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::NegateContext::expression()
 
 MikoParserRules::NegateContext::NegateContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::NegateContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterNegate(this);
-}
-void MikoParserRules::NegateContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitNegate(this);
+
+std::any MikoParserRules::NegateContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitNegate(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- BitXorContext ------------------------------------------------------------------
 
@@ -3273,15 +3373,12 @@ tree::TerminalNode* MikoParserRules::BitXorContext::BITXOR() {
 
 MikoParserRules::BitXorContext::BitXorContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::BitXorContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterBitXor(this);
-}
-void MikoParserRules::BitXorContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitBitXor(this);
+
+std::any MikoParserRules::BitXorContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitBitXor(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- DecrmentContext ------------------------------------------------------------------
 
@@ -3295,15 +3392,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::DecrmentContext::expression
 
 MikoParserRules::DecrmentContext::DecrmentContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::DecrmentContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDecrment(this);
-}
-void MikoParserRules::DecrmentContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDecrment(this);
+
+std::any MikoParserRules::DecrmentContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitDecrment(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- AtomContext ------------------------------------------------------------------
 
@@ -3313,15 +3407,12 @@ MikoParserRules::AtomExpressionContext* MikoParserRules::AtomContext::atomExpres
 
 MikoParserRules::AtomContext::AtomContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::AtomContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAtom(this);
-}
-void MikoParserRules::AtomContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAtom(this);
+
+std::any MikoParserRules::AtomContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAtom(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- OpenContext ------------------------------------------------------------------
 
@@ -3331,15 +3422,12 @@ MikoParserRules::OpenExpressionContext* MikoParserRules::OpenContext::openExpres
 
 MikoParserRules::OpenContext::OpenContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::OpenContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterOpen(this);
-}
-void MikoParserRules::OpenContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitOpen(this);
+
+std::any MikoParserRules::OpenContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitOpen(this);
+  else
+    return visitor->visitChildren(this);
 }
 //----------------- AssignContext ------------------------------------------------------------------
 
@@ -3357,15 +3445,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::AssignContext::expression()
 
 MikoParserRules::AssignContext::AssignContext(ExpressionContext *ctx) { copyFrom(ctx); }
 
-void MikoParserRules::AssignContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAssign(this);
-}
-void MikoParserRules::AssignContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAssign(this);
+
+std::any MikoParserRules::AssignContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAssign(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::ExpressionContext* MikoParserRules::expression() {
@@ -3378,8 +3463,8 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
   MikoParserRules::ExpressionContext *_localctx = _tracker.createInstance<ExpressionContext>(_ctx, parentState);
   MikoParserRules::ExpressionContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 48;
-  enterRecursionRule(_localctx, 48, MikoParserRules::RuleExpression, precedence);
+  size_t startState = 54;
+  enterRecursionRule(_localctx, 54, MikoParserRules::RuleExpression, precedence);
 
     size_t _la = 0;
 
@@ -3393,19 +3478,19 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(323);
+    setState(340);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 31, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 34, _ctx)) {
     case 1: {
       _localctx = _tracker.createInstance<ParentContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
 
-      setState(301);
+      setState(318);
       match(MikoParserRules::LPAREN);
-      setState(302);
+      setState(319);
       expression(0);
-      setState(303);
+      setState(320);
       match(MikoParserRules::RPAREN);
       break;
     }
@@ -3414,9 +3499,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<MinusContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(305);
+      setState(322);
       match(MikoParserRules::MIN);
-      setState(306);
+      setState(323);
       expression(20);
       break;
     }
@@ -3425,9 +3510,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<NegateContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(307);
+      setState(324);
       match(MikoParserRules::BITNOT);
-      setState(308);
+      setState(325);
       expression(19);
       break;
     }
@@ -3436,9 +3521,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<NotContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(309);
+      setState(326);
       match(MikoParserRules::NOT);
-      setState(310);
+      setState(327);
       expression(18);
       break;
     }
@@ -3447,9 +3532,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<IncrementContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(311);
+      setState(328);
       match(MikoParserRules::DADD);
-      setState(312);
+      setState(329);
       expression(17);
       break;
     }
@@ -3458,9 +3543,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<DecrmentContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(313);
+      setState(330);
       match(MikoParserRules::DMIN);
-      setState(314);
+      setState(331);
       expression(16);
       break;
     }
@@ -3469,11 +3554,11 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<AssignContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(315);
+      setState(332);
       callIdentifier();
-      setState(316);
+      setState(333);
       assignmentOperator();
-      setState(317);
+      setState(334);
       expression(5);
       break;
     }
@@ -3482,7 +3567,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<ThisContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(319);
+      setState(336);
       match(MikoParserRules::THIS);
       break;
     }
@@ -3491,7 +3576,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<OpenContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(320);
+      setState(337);
       openExpression();
       break;
     }
@@ -3500,7 +3585,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<LambdaContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(321);
+      setState(338);
       lambdaExpression();
       break;
     }
@@ -3509,7 +3594,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       _localctx = _tracker.createInstance<AtomContext>(_localctx);
       _ctx = _localctx;
       previousContext = _localctx;
-      setState(322);
+      setState(339);
       atomExpression();
       break;
     }
@@ -3518,27 +3603,27 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
       break;
     }
     _ctx->stop = _input->LT(-1);
-    setState(363);
+    setState(380);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 33, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 36, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        setState(361);
+        setState(378);
         _errHandler->sync(this);
-        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 32, _ctx)) {
+        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 35, _ctx)) {
         case 1: {
           auto newContext = _tracker.createInstance<CommaContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(325);
+          setState(342);
 
           if (!(precpred(_ctx, 22))) throw FailedPredicateException(this, "precpred(_ctx, 22)");
-          setState(326);
+          setState(343);
           match(MikoParserRules::COMMA);
-          setState(327);
+          setState(344);
           expression(23);
           break;
         }
@@ -3547,10 +3632,10 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<MultiContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(328);
+          setState(345);
 
           if (!(precpred(_ctx, 15))) throw FailedPredicateException(this, "precpred(_ctx, 15)");
-          setState(329);
+          setState(346);
           _la = _input->LA(1);
           if (!((((_la & ~ 0x3fULL) == 0) &&
             ((1ULL << _la) & 30064771072) != 0))) {
@@ -3560,7 +3645,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(330);
+          setState(347);
           expression(16);
           break;
         }
@@ -3569,10 +3654,10 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<AddContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(331);
+          setState(348);
 
           if (!(precpred(_ctx, 14))) throw FailedPredicateException(this, "precpred(_ctx, 14)");
-          setState(332);
+          setState(349);
           _la = _input->LA(1);
           if (!(_la == MikoParserRules::ADD
 
@@ -3583,7 +3668,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(333);
+          setState(350);
           expression(15);
           break;
         }
@@ -3592,10 +3677,10 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<BitshiftContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(334);
+          setState(351);
 
           if (!(precpred(_ctx, 13))) throw FailedPredicateException(this, "precpred(_ctx, 13)");
-          setState(335);
+          setState(352);
           _la = _input->LA(1);
           if (!(_la == MikoParserRules::LSHIFT
 
@@ -3606,7 +3691,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(336);
+          setState(353);
           expression(14);
           break;
         }
@@ -3615,10 +3700,10 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<LogicBoSContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(337);
+          setState(354);
 
           if (!(precpred(_ctx, 12))) throw FailedPredicateException(this, "precpred(_ctx, 12)");
-          setState(338);
+          setState(355);
           _la = _input->LA(1);
           if (!((((_la & ~ 0x3fULL) == 0) &&
             ((1ULL << _la) & 4123168604160) != 0))) {
@@ -3628,7 +3713,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(339);
+          setState(356);
           expression(13);
           break;
         }
@@ -3637,10 +3722,10 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<LogicEqContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(340);
+          setState(357);
 
           if (!(precpred(_ctx, 11))) throw FailedPredicateException(this, "precpred(_ctx, 11)");
-          setState(341);
+          setState(358);
           _la = _input->LA(1);
           if (!(_la == MikoParserRules::DOB_EQ
 
@@ -3651,7 +3736,7 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(342);
+          setState(359);
           expression(12);
           break;
         }
@@ -3660,12 +3745,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<BitAndContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(343);
+          setState(360);
 
           if (!(precpred(_ctx, 10))) throw FailedPredicateException(this, "precpred(_ctx, 10)");
-          setState(344);
+          setState(361);
           match(MikoParserRules::BITAND);
-          setState(345);
+          setState(362);
           expression(11);
           break;
         }
@@ -3674,12 +3759,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<BitXorContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(346);
+          setState(363);
 
           if (!(precpred(_ctx, 9))) throw FailedPredicateException(this, "precpred(_ctx, 9)");
-          setState(347);
+          setState(364);
           match(MikoParserRules::BITXOR);
-          setState(348);
+          setState(365);
           expression(10);
           break;
         }
@@ -3688,12 +3773,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<BitOrContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(349);
+          setState(366);
 
           if (!(precpred(_ctx, 8))) throw FailedPredicateException(this, "precpred(_ctx, 8)");
-          setState(350);
+          setState(367);
           match(MikoParserRules::BITOR);
-          setState(351);
+          setState(368);
           expression(9);
           break;
         }
@@ -3702,12 +3787,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<LogicAndContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(352);
+          setState(369);
 
           if (!(precpred(_ctx, 7))) throw FailedPredicateException(this, "precpred(_ctx, 7)");
-          setState(353);
+          setState(370);
           match(MikoParserRules::AND);
-          setState(354);
+          setState(371);
           expression(8);
           break;
         }
@@ -3716,12 +3801,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<LogicOrContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(355);
+          setState(372);
 
           if (!(precpred(_ctx, 6))) throw FailedPredicateException(this, "precpred(_ctx, 6)");
-          setState(356);
+          setState(373);
           match(MikoParserRules::OR);
-          setState(357);
+          setState(374);
           expression(7);
           break;
         }
@@ -3730,12 +3815,12 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           auto newContext = _tracker.createInstance<DotContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpression);
-          setState(358);
+          setState(375);
 
           if (!(precpred(_ctx, 21))) throw FailedPredicateException(this, "precpred(_ctx, 21)");
-          setState(359);
+          setState(376);
           match(MikoParserRules::DOT);
-          setState(360);
+          setState(377);
           call();
           break;
         }
@@ -3744,9 +3829,9 @@ MikoParserRules::ExpressionContext* MikoParserRules::expression(int precedence) 
           break;
         } 
       }
-      setState(365);
+      setState(382);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 33, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 36, _ctx);
     }
   }
   catch (RecognitionException &e) {
@@ -3776,21 +3861,17 @@ size_t MikoParserRules::OpenExpressionContext::getRuleIndex() const {
   return MikoParserRules::RuleOpenExpression;
 }
 
-void MikoParserRules::OpenExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterOpenExpression(this);
-}
 
-void MikoParserRules::OpenExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitOpenExpression(this);
+std::any MikoParserRules::OpenExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitOpenExpression(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::OpenExpressionContext* MikoParserRules::openExpression() {
   OpenExpressionContext *_localctx = _tracker.createInstance<OpenExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 50, MikoParserRules::RuleOpenExpression);
+  enterRule(_localctx, 56, MikoParserRules::RuleOpenExpression);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3801,9 +3882,9 @@ MikoParserRules::OpenExpressionContext* MikoParserRules::openExpression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(366);
+    setState(383);
     match(MikoParserRules::OPEN);
-    setState(367);
+    setState(384);
     callIdentifier();
    
   }
@@ -3871,21 +3952,17 @@ size_t MikoParserRules::AssignmentOperatorContext::getRuleIndex() const {
   return MikoParserRules::RuleAssignmentOperator;
 }
 
-void MikoParserRules::AssignmentOperatorContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAssignmentOperator(this);
-}
 
-void MikoParserRules::AssignmentOperatorContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAssignmentOperator(this);
+std::any MikoParserRules::AssignmentOperatorContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitAssignmentOperator(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::AssignmentOperatorContext* MikoParserRules::assignmentOperator() {
   AssignmentOperatorContext *_localctx = _tracker.createInstance<AssignmentOperatorContext>(_ctx, getState());
-  enterRule(_localctx, 52, MikoParserRules::RuleAssignmentOperator);
+  enterRule(_localctx, 58, MikoParserRules::RuleAssignmentOperator);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -3897,7 +3974,7 @@ MikoParserRules::AssignmentOperatorContext* MikoParserRules::assignmentOperator(
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(369);
+    setState(386);
     _la = _input->LA(1);
     if (!(((((_la - 58) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 58)) & 2047) != 0))) {
@@ -3941,21 +4018,17 @@ size_t MikoParserRules::LambdaExpressionContext::getRuleIndex() const {
   return MikoParserRules::RuleLambdaExpression;
 }
 
-void MikoParserRules::LambdaExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLambdaExpression(this);
-}
 
-void MikoParserRules::LambdaExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLambdaExpression(this);
+std::any MikoParserRules::LambdaExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLambdaExpression(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::LambdaExpressionContext* MikoParserRules::lambdaExpression() {
   LambdaExpressionContext *_localctx = _tracker.createInstance<LambdaExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 54, MikoParserRules::RuleLambdaExpression);
+  enterRule(_localctx, 60, MikoParserRules::RuleLambdaExpression);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3966,11 +4039,11 @@ MikoParserRules::LambdaExpressionContext* MikoParserRules::lambdaExpression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(371);
+    setState(388);
     lambdaHead();
-    setState(372);
+    setState(389);
     match(MikoParserRules::DOT);
-    setState(373);
+    setState(390);
     lambdaBody();
    
   }
@@ -4014,21 +4087,17 @@ size_t MikoParserRules::LambdaHeadContext::getRuleIndex() const {
   return MikoParserRules::RuleLambdaHead;
 }
 
-void MikoParserRules::LambdaHeadContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLambdaHead(this);
-}
 
-void MikoParserRules::LambdaHeadContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLambdaHead(this);
+std::any MikoParserRules::LambdaHeadContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLambdaHead(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::LambdaHeadContext* MikoParserRules::lambdaHead() {
   LambdaHeadContext *_localctx = _tracker.createInstance<LambdaHeadContext>(_ctx, getState());
-  enterRule(_localctx, 56, MikoParserRules::RuleLambdaHead);
+  enterRule(_localctx, 62, MikoParserRules::RuleLambdaHead);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -4040,21 +4109,21 @@ MikoParserRules::LambdaHeadContext* MikoParserRules::lambdaHead() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(375);
+    setState(392);
     match(MikoParserRules::LAMBDA);
-    setState(376);
+    setState(393);
     match(MikoParserRules::LPAREN);
-    setState(380);
+    setState(397);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MikoParserRules::ID) {
-      setState(377);
+      setState(394);
       define();
-      setState(382);
+      setState(399);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(383);
+    setState(400);
     match(MikoParserRules::RPAREN);
    
   }
@@ -4094,21 +4163,17 @@ size_t MikoParserRules::LambdaBodyContext::getRuleIndex() const {
   return MikoParserRules::RuleLambdaBody;
 }
 
-void MikoParserRules::LambdaBodyContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLambdaBody(this);
-}
 
-void MikoParserRules::LambdaBodyContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLambdaBody(this);
+std::any MikoParserRules::LambdaBodyContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitLambdaBody(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::LambdaBodyContext* MikoParserRules::lambdaBody() {
   LambdaBodyContext *_localctx = _tracker.createInstance<LambdaBodyContext>(_ctx, getState());
-  enterRule(_localctx, 58, MikoParserRules::RuleLambdaBody);
+  enterRule(_localctx, 64, MikoParserRules::RuleLambdaBody);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -4118,33 +4183,33 @@ MikoParserRules::LambdaBodyContext* MikoParserRules::lambdaBody() {
     exitRule();
   });
   try {
-    setState(389);
+    setState(406);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 35, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 38, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(385);
+      setState(402);
       codeBlock();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(386);
+      setState(403);
       returncodeBlock();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(387);
+      setState(404);
       statement();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(388);
+      setState(405);
       expression(0);
       break;
     }
@@ -4190,21 +4255,17 @@ size_t MikoParserRules::CodeBlockContext::getRuleIndex() const {
   return MikoParserRules::RuleCodeBlock;
 }
 
-void MikoParserRules::CodeBlockContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterCodeBlock(this);
-}
 
-void MikoParserRules::CodeBlockContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitCodeBlock(this);
+std::any MikoParserRules::CodeBlockContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitCodeBlock(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::CodeBlockContext* MikoParserRules::codeBlock() {
   CodeBlockContext *_localctx = _tracker.createInstance<CodeBlockContext>(_ctx, getState());
-  enterRule(_localctx, 60, MikoParserRules::RuleCodeBlock);
+  enterRule(_localctx, 66, MikoParserRules::RuleCodeBlock);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -4216,22 +4277,24 @@ MikoParserRules::CodeBlockContext* MikoParserRules::codeBlock() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(391);
+    setState(408);
     match(MikoParserRules::LBRACE);
-    setState(392);
+    setState(409);
     statement();
-    setState(396);
+    setState(413);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 8022176623153214) != 0) || _la == MikoParserRules::LAMBDA) {
-      setState(393);
+      ((1ULL << _la) & 8022176623153214) != 0) || _la == MikoParserRules::COMPILER
+
+    || _la == MikoParserRules::LAMBDA) {
+      setState(410);
       statement();
-      setState(398);
+      setState(415);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(399);
+    setState(416);
     match(MikoParserRules::RBRACE);
    
   }
@@ -4250,8 +4313,8 @@ MikoParserRules::ReturncodeBlockContext::ReturncodeBlockContext(ParserRuleContex
   : ParserRuleContext(parent, invokingState) {
 }
 
-MikoParserRules::CallContext* MikoParserRules::ReturncodeBlockContext::call() {
-  return getRuleContext<MikoParserRules::CallContext>(0);
+MikoParserRules::TypeContext* MikoParserRules::ReturncodeBlockContext::type() {
+  return getRuleContext<MikoParserRules::TypeContext>(0);
 }
 
 MikoParserRules::CodeBlockContext* MikoParserRules::ReturncodeBlockContext::codeBlock() {
@@ -4263,21 +4326,17 @@ size_t MikoParserRules::ReturncodeBlockContext::getRuleIndex() const {
   return MikoParserRules::RuleReturncodeBlock;
 }
 
-void MikoParserRules::ReturncodeBlockContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterReturncodeBlock(this);
-}
 
-void MikoParserRules::ReturncodeBlockContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<MikoParserRulesListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitReturncodeBlock(this);
+std::any MikoParserRules::ReturncodeBlockContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MikoParserRulesVisitor*>(visitor))
+    return parserVisitor->visitReturncodeBlock(this);
+  else
+    return visitor->visitChildren(this);
 }
 
 MikoParserRules::ReturncodeBlockContext* MikoParserRules::returncodeBlock() {
   ReturncodeBlockContext *_localctx = _tracker.createInstance<ReturncodeBlockContext>(_ctx, getState());
-  enterRule(_localctx, 62, MikoParserRules::RuleReturncodeBlock);
+  enterRule(_localctx, 68, MikoParserRules::RuleReturncodeBlock);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -4288,9 +4347,9 @@ MikoParserRules::ReturncodeBlockContext* MikoParserRules::returncodeBlock() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(401);
-    call();
-    setState(402);
+    setState(418);
+    type();
+    setState(419);
     codeBlock();
    
   }
@@ -4305,7 +4364,7 @@ MikoParserRules::ReturncodeBlockContext* MikoParserRules::returncodeBlock() {
 
 bool MikoParserRules::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 24: return expressionSempred(antlrcpp::downCast<ExpressionContext *>(context), predicateIndex);
+    case 27: return expressionSempred(antlrcpp::downCast<ExpressionContext *>(context), predicateIndex);
 
   default:
     break;

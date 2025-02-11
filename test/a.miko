@@ -1,3 +1,6 @@
 open Std.IO;
 
-const main : \().Int{}
+const main : \().@i32
+{
+    return 0;
+};
