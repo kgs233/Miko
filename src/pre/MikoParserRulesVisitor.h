@@ -44,31 +44,31 @@ public:
 
     virtual std::any visitDefineStatement(MikoParserRules::DefineStatementContext *context) = 0;
 
-    virtual std::any visitDefine(MikoParserRules::DefineContext *context) = 0;
-
     virtual std::any visitDefineExpression(MikoParserRules::DefineExpressionContext *context) = 0;
 
-    virtual std::any visitType(MikoParserRules::TypeContext *context) = 0;
+    virtual std::any visitDefineType(MikoParserRules::DefineTypeContext *context) = 0;
+
+    virtual std::any visitExternVar(MikoParserRules::ExternVarContext *context) = 0;
+
+    virtual std::any visitExternFunc(MikoParserRules::ExternFuncContext *context) = 0;
+
+    virtual std::any visitExternStruct(MikoParserRules::ExternStructContext *context) = 0;
 
     virtual std::any visitStructType(MikoParserRules::StructTypeContext *context) = 0;
 
-    virtual std::any visitStructBody(MikoParserRules::StructBodyContext *context) = 0;
-
-    virtual std::any visitStructDefineStatement(MikoParserRules::StructDefineStatementContext *context) = 0;
+    virtual std::any visitStructMember(MikoParserRules::StructMemberContext *context) = 0;
 
     virtual std::any visitDefineEnum(MikoParserRules::DefineEnumContext *context) = 0;
 
-    virtual std::any visitEnumBody(MikoParserRules::EnumBodyContext *context) = 0;
+    virtual std::any visitEnumMember(MikoParserRules::EnumMemberContext *context) = 0;
+
+    virtual std::any visitExtendObject(MikoParserRules::ExtendObjectContext *context) = 0;
+
+    virtual std::any visitCompilerVar(MikoParserRules::CompilerVarContext *context) = 0;
+
+    virtual std::any visitCompilerFunc(MikoParserRules::CompilerFuncContext *context) = 0;
 
     virtual std::any visitCall(MikoParserRules::CallContext *context) = 0;
-
-    virtual std::any visitCompilerCall(MikoParserRules::CompilerCallContext *context) = 0;
-
-    virtual std::any visitProgramCall(MikoParserRules::ProgramCallContext *context) = 0;
-
-    virtual std::any visitCallIdentifier(MikoParserRules::CallIdentifierContext *context) = 0;
-
-    virtual std::any visitCallFunction(MikoParserRules::CallFunctionContext *context) = 0;
 
     virtual std::any visitFunctionArgs(MikoParserRules::FunctionArgsContext *context) = 0;
 
@@ -86,9 +86,9 @@ public:
 
     virtual std::any visitLogicOr(MikoParserRules::LogicOrContext *context) = 0;
 
-    virtual std::any visitThis(MikoParserRules::ThisContext *context) = 0;
-
     virtual std::any visitDot(MikoParserRules::DotContext *context) = 0;
+
+    virtual std::any visitThis(MikoParserRules::ThisContext *context) = 0;
 
     virtual std::any visitIncrement(MikoParserRules::IncrementContext *context) = 0;
 
@@ -98,11 +98,11 @@ public:
 
     virtual std::any visitMulti(MikoParserRules::MultiContext *context) = 0;
 
+    virtual std::any visitComma(MikoParserRules::CommaContext *context) = 0;
+
     virtual std::any visitNot(MikoParserRules::NotContext *context) = 0;
 
     virtual std::any visitLambda(MikoParserRules::LambdaContext *context) = 0;
-
-    virtual std::any visitComma(MikoParserRules::CommaContext *context) = 0;
 
     virtual std::any visitBitAnd(MikoParserRules::BitAndContext *context) = 0;
 
@@ -117,6 +117,8 @@ public:
     virtual std::any visitAtom(MikoParserRules::AtomContext *context) = 0;
 
     virtual std::any visitOpen(MikoParserRules::OpenContext *context) = 0;
+
+    virtual std::any visitObject(MikoParserRules::ObjectContext *context) = 0;
 
     virtual std::any visitAssign(MikoParserRules::AssignContext *context) = 0;
 

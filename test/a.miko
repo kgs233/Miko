@@ -1,6 +1,6 @@
 open Std.IO;
 
-const main : \().@i32
+define main : \().
 {
     return 0;
 };

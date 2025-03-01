@@ -32,3 +32,8 @@ Source::~Source()
     buf->close();
     delete buf;
 }
+
+std::string Source::GetSourcePath()
+{
+    return path;
+}

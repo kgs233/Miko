@@ -12,7 +12,7 @@ namespace Miko
 {
     class AST
     {
-        Source& source;
+        Source* source;
 
         antlr4::ANTLRInputStream input;
         MikoLexerRules lexer;
@@ -20,12 +20,14 @@ namespace Miko
         antlr4::CommonTokenStream tokens;
         MikoParserRules::ProgContext* antlrContext;
     public:
-        AST(Source& source);
+        AST(Source* source);
 
         antlr4::CommonTokenStream& GetTokens();
         void PrintTokens();
         MikoParserRules::ProgContext* GetAST(); 
         void PrintAST();
+
+        Source* GetSource();
 
         operator MikoParserRules::ProgContext*() { return antlrContext; }
     };

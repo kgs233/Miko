@@ -2,11 +2,12 @@
 
 #include "CommonTokenStream.h"
 #include "pre/MikoParserRules.h"
+#include "source.hpp"
 
 using namespace Miko;
 
-AST::AST(Source& source)
-    : source(source), input(source), lexer(&input), tokens(&lexer), parser(&tokens)
+AST::AST(Source* source)
+    : source(source), input(*source), lexer(&input), tokens(&lexer), parser(&tokens)
 {
     tokens.fill();
     antlrContext = parser.prog();
@@ -33,4 +34,9 @@ MikoParserRules::ProgContext* AST::GetAST()
 void AST::PrintAST()
 {
     std::cout << antlrContext->toStringTree(&parser) << std::endl;
+}
+
+Source* AST::GetSource()
+{
+    return source;
 }

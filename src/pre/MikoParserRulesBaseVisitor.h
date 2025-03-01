@@ -65,15 +65,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDefine(MikoParserRules::DefineContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitDefineExpression(MikoParserRules::DefineExpressionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitType(MikoParserRules::TypeContext *ctx) override {
+  virtual std::any visitDefineType(MikoParserRules::DefineTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitExternVar(MikoParserRules::ExternVarContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitExternFunc(MikoParserRules::ExternFuncContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitExternStruct(MikoParserRules::ExternStructContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -81,11 +89,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitStructBody(MikoParserRules::StructBodyContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitStructDefineStatement(MikoParserRules::StructDefineStatementContext *ctx) override {
+  virtual std::any visitStructMember(MikoParserRules::StructMemberContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -93,27 +97,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEnumBody(MikoParserRules::EnumBodyContext *ctx) override {
+  virtual std::any visitEnumMember(MikoParserRules::EnumMemberContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitExtendObject(MikoParserRules::ExtendObjectContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCompilerVar(MikoParserRules::CompilerVarContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCompilerFunc(MikoParserRules::CompilerFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual std::any visitCall(MikoParserRules::CallContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitCompilerCall(MikoParserRules::CompilerCallContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitProgramCall(MikoParserRules::ProgramCallContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitCallIdentifier(MikoParserRules::CallIdentifierContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitCallFunction(MikoParserRules::CallFunctionContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -149,11 +149,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitThis(MikoParserRules::ThisContext *ctx) override {
+  virtual std::any visitDot(MikoParserRules::DotContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDot(MikoParserRules::DotContext *ctx) override {
+  virtual std::any visitThis(MikoParserRules::ThisContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -173,15 +173,15 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitComma(MikoParserRules::CommaContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitNot(MikoParserRules::NotContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual std::any visitLambda(MikoParserRules::LambdaContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitComma(MikoParserRules::CommaContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -210,6 +210,10 @@ public:
   }
 
   virtual std::any visitOpen(MikoParserRules::OpenContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitObject(MikoParserRules::ObjectContext *ctx) override {
     return visitChildren(ctx);
   }
 

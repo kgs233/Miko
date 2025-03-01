@@ -16,6 +16,8 @@ namespace Miko
     public:
         Source(std::string);
         ~Source();
+
+        std::string GetSourcePath();
     };
 }
 
