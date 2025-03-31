@@ -6,11 +6,13 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <string>
+#include <variant>
 
 #include "AST.hpp"
 #include "pre/MikoParserRules.h"
 #include "source.hpp"
 #include "pre/MikoParserRulesBaseVisitor.h"
+#include "symbol_table.hpp"
 
 namespace Miko
 {
@@ -28,11 +30,11 @@ namespace Miko
         void PrintIR();
 
         std::any visitProg(MikoParserRules::ProgContext* ctx) override;
-        std::any visitStructMember(MikoParserRules::StructMemberContext *ctx, std::string prefix);
-        std::any visitDefineStatement(MikoParserRules::DefineStatementContext *ctx, std::string prefix);
-        std::any visitDefineExpression(MikoParserRules::DefineExpressionContext *ctx, std::string prefix, bool def);
-        std::any visitDefineType(MikoParserRules::DefineTypeContext *ctx, std::string prefix);
-        std::any visitLambdaExpression(MikoParserRules::LambdaExpressionContext *ctx, std::string prefix);
+        std::any visitStructMember(MikoParserRules::StructMemberContext *ctx, std::string prefix, bool top);
+        std::any visitDefineStatement(MikoParserRules::DefineStatementContext *ctx, std::string prefix, Member* member);
+        std::any visitDefineExpression(MikoParserRules::DefineExpressionContext *ctx, std::string prefix, Member member);
+        Type* visitDefineType(MikoParserRules::DefineTypeContext *ctx, std::string prefixr);
+        LambdaType* visitLambdaExpression(MikoParserRules::LambdaExpressionContext *ctx, std::string prefix);
     };
 }
 

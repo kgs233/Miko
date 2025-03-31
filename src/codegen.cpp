@@ -15,6 +15,7 @@
 
 #include "pre/MikoLexerRules.h"
 #include "pre/MikoParserRules.h"
+#include "symbol_table.hpp"
 
 using namespace Miko;
 
@@ -40,90 +41,141 @@ std::any CodeGen::visitProg(MikoParserRules::ProgContext* ctx)
 {
     for (auto member : ctx->structMember())
     {
-        visitStructMember(member, "");
+        visitStructMember(member, "_M", true);
     }
 
     return nullptr;
 }
 
-std::any CodeGen::visitStructMember(MikoParserRules::StructMemberContext* ctx, std::string prefix)
+std::any CodeGen::visitStructMember(MikoParserRules::StructMemberContext* ctx, std::string prefix, bool top)
 {
-    auto accessKeyword = ctx->accessKeyword();
-    if (accessKeyword == nullptr)
+    Visibility visibility = Visibility::Public;
+    Member* member = nullptr;
+
+    if (top != true)
     {
-        prefix += "pub#";
-    }
-    else
-    {
-        switch (accessKeyword->getStart()->getType())
+        auto accessKeyword = ctx->accessKeyword();
+        if (accessKeyword != nullptr)
         {
-            case MikoLexerRules::PUBLIC:
-                prefix += "pubA";
-                break;
-            case MikoLexerRules::PRIVATE:
-                prefix += "prvA";
-                break;
+            switch (accessKeyword->getStart()->getType())
+            {
+                case MikoLexerRules::PUBLIC:
+                    visibility = Visibility::Public;
+                    break;
+                case MikoLexerRules::PRIVATE:
+                    visibility = Visibility::Private;
+                    break;
+            }
         }
+
+        member = new Member();
+        member->visibility = visibility;
+    }
+    else 
+    {
+        member = new TopObject();
     }
 
     MikoParserRules::DefineStatementContext* defineStatement = ctx->defineStatement();
-    return visitDefineStatement(defineStatement, prefix);
+    return visitDefineStatement(defineStatement, prefix, member);
 }
 
-std::any CodeGen::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, std::string prefix)
+std::any CodeGen::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, std::string prefix, Member* member)
 {
     bool def = false;
     auto defineKeyword = ctx->defineKeyword();
+
+    Variability variability;
+
     if (ctx->defineKeyword()->DEFINE() != nullptr)
     {
-        def = true;
+        variability = Variability::Define;
     }
     else if (ctx->defineKeyword()->VAR() != nullptr)
     {
-        prefix += "var#";
+        variability = Variability::Var;
     }
     else if (defineKeyword->CONST() != nullptr)
     {
-        prefix += "const#";
+        variability = Variability::Const;
     }
+
+    member->variability = variability;
 
     for (auto expression : ctx->defineExpression())
     {
-        visitDefineExpression(expression, prefix, def);
+        visitDefineExpression(expression, prefix, *member);
     }
     return nullptr;
 }
 
-std::any CodeGen::visitDefineExpression(MikoParserRules::DefineExpressionContext* ctx, std::string prefix, bool def)
+std::any CodeGen::visitDefineExpression(MikoParserRules::DefineExpressionContext* ctx, std::string prefix, Member member)
 {
-    prefix += ctx->ID()->getText();
-
-    if (def && ctx->ASS() != nullptr)
+    if (member.variability == Variability::Define && ctx->ASS() != nullptr)
     {
         std::cerr << "define can't have assignement" << std::endl;
         throw "define can't have assignement";
     }
 
-    return visitDefineType(ctx->defineType(), prefix);
+    prefix += ctx->ID()->getText();
+    member.name = ctx->ID()->getText();
+    member.type = visitDefineType(ctx->defineType(), prefix);
+
+    return nullptr;
 }
 
-std::any CodeGen::visitDefineType(MikoParserRules::DefineTypeContext* ctx, std::string prefix)
+Type* CodeGen::visitDefineType(MikoParserRules::DefineTypeContext* ctx, std::string prefix)
 {
-    if (ctx->lambdaExpression() != nullptr)
+    if (ctx->compilerCall() != nullptr)
     {
-        visitLambdaExpression(ctx->lambdaExpression(), prefix);
+        if(dynamic_cast<MikoParserRules::CompilerFuncContext*>(ctx->compilerCall()) != nullptr)
+        {
+            auto compileCall = (MikoParserRules::CompilerFuncContext*)ctx->compilerCall();
+            if(compileCall->ID() != nullptr)
+            {
+                if(compileCall->ID()->getText() == "Int")
+                {
+                    if (dynamic_cast<MikoParserRules::AtomContext*>
+                            (compileCall->functionArgs()->expression()[0]) != nullptr)
+                    {
+                        auto arg = 
+                        dynamic_cast<MikoParserRules::AtomContext*>
+                            (compileCall->functionArgs()->expression()[0]);
+                        auto intSize = arg->atomExpression()->INT()->getText();
+                        int size = std::stoi(intSize);
+                        return new IntType(size);
+                    }
+                }
+                
+            }
+        }
+    }
+    else if (ctx->lambdaExpression() != nullptr)
+    {
+        return visitLambdaExpression(ctx->lambdaExpression(), prefix);
     }
 
     return nullptr;
 }
 
-std::any CodeGen::visitLambdaExpression(MikoParserRules::LambdaExpressionContext* ctx, std::string prefix)
+LambdaType* CodeGen::visitLambdaExpression(MikoParserRules::LambdaExpressionContext* ctx, std::string prefix)
 {
     llvm::Type* type = nullptr;
+    LambdaType* lambdaType = new LambdaType();
     if (ctx->lambdaBody()->codeBlock() != nullptr)
     {
         type = llvm::Type::getVoidTy(context);
-        prefix += "_void";
+        lambdaType->retrunType = new VoidType();
+        
+    }
+    else if(ctx->lambdaBody()->returncodeBlock() != nullptr)
+    {
+        Type* defineType = visitDefineType(ctx->lambdaBody()->returncodeBlock()->defineType(), prefix);
+        if(dynamic_cast<IntType*>(defineType) != nullptr)
+        {
+            type = llvm::Type::getIntNTy(context, ((IntType*)defineType)->GetSize());
+            lambdaType->retrunType = defineType;
+        }
     }
 
     llvm::FunctionType* functionType = llvm::FunctionType::get(type, false);
