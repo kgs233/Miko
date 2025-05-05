@@ -7,6 +7,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <string>
 #include <variant>
+#include <vector>
 
 #include "AST.hpp"
 #include "pre/MikoParserRules.h"
@@ -30,9 +31,9 @@ namespace Miko
         void PrintIR();
 
         std::any visitProg(MikoParserRules::ProgContext* ctx) override;
-        std::any visitStructMember(MikoParserRules::StructMemberContext *ctx, std::string prefix, bool top);
-        std::any visitDefineStatement(MikoParserRules::DefineStatementContext *ctx, std::string prefix, Member* member);
-        std::any visitDefineExpression(MikoParserRules::DefineExpressionContext *ctx, std::string prefix, Member member);
+        std::vector<Member> visitStructMember(MikoParserRules::StructMemberContext* ctx, std::string prefix, bool top);
+        std::vector<Storable> visitDefineStatement(MikoParserRules::DefineStatementContext *ctx, std::string prefix);
+        Storable visitDefineExpression(MikoParserRules::DefineExpressionContext *ctx, std::string prefix, Storable member);
         Type* visitDefineType(MikoParserRules::DefineTypeContext *ctx, std::string prefixr);
         LambdaType* visitLambdaExpression(MikoParserRules::LambdaExpressionContext *ctx, std::string prefix);
     };

@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
@@ -12,6 +13,7 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
+#include <vector>
 
 #include "pre/MikoLexerRules.h"
 #include "pre/MikoParserRules.h"
@@ -47,10 +49,9 @@ std::any CodeGen::visitProg(MikoParserRules::ProgContext* ctx)
     return nullptr;
 }
 
-std::any CodeGen::visitStructMember(MikoParserRules::StructMemberContext* ctx, std::string prefix, bool top)
+std::vector<Member> CodeGen::visitStructMember(MikoParserRules::StructMemberContext* ctx, std::string prefix, bool top)
 {
     Visibility visibility = Visibility::Public;
-    Member* member = nullptr;
 
     if (top != true)
     {
@@ -67,20 +68,23 @@ std::any CodeGen::visitStructMember(MikoParserRules::StructMemberContext* ctx, s
                     break;
             }
         }
-
-        member = new Member();
-        member->visibility = visibility;
-    }
-    else 
-    {
-        member = new TopObject();
     }
 
+    std::vector<Member> memberList;
     MikoParserRules::DefineStatementContext* defineStatement = ctx->defineStatement();
-    return visitDefineStatement(defineStatement, prefix, member);
+    std::vector<Storable> storableList = visitDefineStatement(defineStatement, prefix);
+
+    for(auto storable : storableList)
+    {
+        Member* member = new Member(storable);
+        member->visibility = visibility;
+        memberList.push_back(*member);
+    }
+
+    return memberList;
 }
 
-std::any CodeGen::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, std::string prefix, Member* member)
+std::vector<Storable> CodeGen::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, std::string prefix)
 {
     bool def = false;
     auto defineKeyword = ctx->defineKeyword();
@@ -100,32 +104,37 @@ std::any CodeGen::visitDefineStatement(MikoParserRules::DefineStatementContext* 
         variability = Variability::Const;
     }
 
-    member->variability = variability;
+    Storable storableTemplate;
+    std::vector<Storable> retList;
 
     for (auto expression : ctx->defineExpression())
     {
-        visitDefineExpression(expression, prefix, *member);
+        Storable storable = visitDefineExpression(expression, prefix, storableTemplate);
+        retList.push_back(storable);
     }
-    return nullptr;
+
+    return retList;
 }
 
-std::any CodeGen::visitDefineExpression(MikoParserRules::DefineExpressionContext* ctx, std::string prefix, Member member)
+
+Storable CodeGen::visitDefineExpression(MikoParserRules::DefineExpressionContext* ctx, std::string prefix, Storable storable)
 {
-    if (member.variability == Variability::Define && ctx->ASS() != nullptr)
+    if (storable.variability == Variability::Define && ctx->ASS() != nullptr)
     {
         std::cerr << "define can't have assignement" << std::endl;
         throw "define can't have assignement";
     }
 
     prefix += ctx->ID()->getText();
-    member.name = ctx->ID()->getText();
-    member.type = visitDefineType(ctx->defineType(), prefix);
+    storable.name = ctx->ID()->getText();
+    storable.type = visitDefineType(ctx->defineType(), prefix);
 
-    return nullptr;
+    return storable;
 }
 
 Type* CodeGen::visitDefineType(MikoParserRules::DefineTypeContext* ctx, std::string prefix)
 {
+    Type* type;
     if (ctx->compilerCall() != nullptr)
     {
         if(dynamic_cast<MikoParserRules::CompilerFuncContext*>(ctx->compilerCall()) != nullptr)
@@ -143,7 +152,7 @@ Type* CodeGen::visitDefineType(MikoParserRules::DefineTypeContext* ctx, std::str
                             (compileCall->functionArgs()->expression()[0]);
                         auto intSize = arg->atomExpression()->INT()->getText();
                         int size = std::stoi(intSize);
-                        return new IntType(size);
+                        type = new IntType(size);
                     }
                 }
                 
@@ -152,21 +161,36 @@ Type* CodeGen::visitDefineType(MikoParserRules::DefineTypeContext* ctx, std::str
     }
     else if (ctx->lambdaExpression() != nullptr)
     {
-        return visitLambdaExpression(ctx->lambdaExpression(), prefix);
+        type = visitLambdaExpression(ctx->lambdaExpression(), prefix);
     }
 
-    return nullptr;
+    return type;
 }
 
 LambdaType* CodeGen::visitLambdaExpression(MikoParserRules::LambdaExpressionContext* ctx, std::string prefix)
 {
     llvm::Type* type = nullptr;
-    LambdaType* lambdaType = new LambdaType();
+    LambdaType* lambda = new LambdaType();
+    std::vector<MikoParserRules::StatementContext*> statements;
+    std::vector<MikoParserRules::DefineExpressionContext*> arguments;
+
+    if(ctx->lambdaHead()->defineExpression().empty() != true)
+    {
+        arguments = ctx->lambdaHead()->defineExpression();
+        for (auto arg : arguments)
+        {
+            Storable storable = *(new Storable());
+            storable.variability = Variability::Const;
+            lambda->arguments.push_back(storable);
+            lambda->localSymbol.push_back(visitDefineExpression(arg, "", storable));
+        }
+    }
+
     if (ctx->lambdaBody()->codeBlock() != nullptr)
     {
         type = llvm::Type::getVoidTy(context);
-        lambdaType->retrunType = new VoidType();
-        
+        lambda->retrunType = new VoidType();
+        statements = ctx->lambdaBody()->codeBlock()->statement();
     }
     else if(ctx->lambdaBody()->returncodeBlock() != nullptr)
     {
@@ -174,13 +198,22 @@ LambdaType* CodeGen::visitLambdaExpression(MikoParserRules::LambdaExpressionCont
         if(dynamic_cast<IntType*>(defineType) != nullptr)
         {
             type = llvm::Type::getIntNTy(context, ((IntType*)defineType)->GetSize());
-            lambdaType->retrunType = defineType;
+            lambda->retrunType = defineType;
         }
+        statements = ctx->lambdaBody()->returncodeBlock()->codeBlock()->statement();
     }
 
     llvm::FunctionType* functionType = llvm::FunctionType::get(type, false);
     llvm::Function* function = llvm::Function::Create(functionType, llvm::Function::ExternalLinkage, prefix, module);
+
+    llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
+    builder->SetInsertPoint(block);
+    for(auto statement : statements)
+    {
+
+    }
+
     llvm::verifyFunction(*function);
 
-    return nullptr;
+    return lambda;
 }

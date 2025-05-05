@@ -1,11 +1,6 @@
 open Std.IO;
 
-define main : \().@Int(32)
-{
-    return 0;
-};
-
-define b : \().@Int(3)
+define main : \(foo : @Int(32)).@Int(32)
 {
     return 0;
 };

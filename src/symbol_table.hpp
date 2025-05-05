@@ -2,6 +2,7 @@
 #define MIKO_SYMBOL_TABLE_HPP
 
 #include <string>
+#include <vector>
 
 enum class SymbolType
 {
@@ -9,6 +10,7 @@ enum class SymbolType
     CompileFunction,
     Struct,
     Member,
+    Storable,
     TopObject,
     MemberFunction
 };
@@ -60,16 +62,21 @@ public:
     Type() = default;
 };
 
-class Member : public Symbol
+class Storable : public Symbol
 {
 public:
     Type* type;
+    SymbolType symbolType = SymbolType::Storable;
+    Variability variability;
+};
 
+class Member : public Storable
+{
+public:
     SymbolType symbolType = SymbolType::Member;
     Visibility visibility;
-    Variability variability;
-
     Member() = default;
+    Member(Storable& storable);
 };
 
 class TopObject : public Member
@@ -82,7 +89,10 @@ class LambdaType : public Type
 {
 public:
     LambdaType() = default;
+
     Type* retrunType;
+    std::vector<Storable> arguments;
+    std::vector<Storable> localSymbol;
 };
 
 class CompileType : public Type
@@ -109,5 +119,7 @@ class VoidType : public CompileType
 public:
     VoidType();
 };
+
+
 
 #endif // MIKO_SYMBOL_TABLE_HPP
