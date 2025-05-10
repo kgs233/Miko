@@ -2,7 +2,7 @@ unset(ANTLR_INCLUDE_DIRS CACHE)
 unset(ANTLR_LIBRARIES CACHE)
 
 find_path(ANTLR_INCLUDE_DIRS
-          antlr4-runtime.h
+          NAMES antlr4-runtime.h
           HINTS /usr/include/antlr4-runtime /usr/local/include/antlr4-runtime
           DOC "Antlr4 include directory"
 )
@@ -19,4 +19,14 @@ find_library(ANTLR_LIBRARIES
 
 if(${ANTLR_LIBRARIES} STREQUAL "ANTLR_LIBRARIES-NOTFOUND")
   message(FATAL_ERROR "Unable to find Antlr4 library")
+endif()
+
+find_program(ANTLR_BINARY
+             NAMES antlr4 antlr
+             HINTS /bin /usr/bin /usr/local/bin
+             DOC "Antlr4 Binary File"
+)
+
+if(${ANTLR_BINARY} STREQUAL "ANTLR_BINARY-NOTFOUND")
+  message(FATAL_ERROR "Unable to find Antlr4 Binary File")
 endif()
