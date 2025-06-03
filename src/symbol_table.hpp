@@ -1,125 +1,177 @@
 #ifndef MIKO_SYMBOL_TABLE_HPP
 #define MIKO_SYMBOL_TABLE_HPP
 
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Type.h>
+#include <map>
 #include <string>
 #include <vector>
 
-enum class SymbolType
+namespace Miko
 {
-    CompileType,
-    CompileFunction,
-    Struct,
-    Member,
-    Storable,
-    TopObject,
-    MemberFunction
-};
+    class Storable;
+    class Symbol;
 
-enum class CompileTypeType
-{
-    Int,
-    FP16,
-    FP32,
-    FP64,
-    FP128,
-    Pionter,
-    Void
-};
+    class SymbolContext
+    {
+        std::map<std::string, Symbol> localSymbolList;
+    public:
+        virtual void AddLocalSymbol(Symbol symbol);
+        virtual void AddLocalSymbols(std::vector<Symbol> symbols);
 
-enum class Visibility
-{
-    Public,
-    Private
-};
+        virtual Symbol* FindSymbol(std::string name);
+    };
 
-enum class Variability
-{
-    Var,
-    Const,
-    Define
-};
+    class GlobalContext : public SymbolContext
+    {
+        static GlobalContext globalContext;
+    public:
+        static GlobalContext* GetGlobalContext();
+    };
 
+    class Symbol
+    {
+    public:
+        enum class Kind
+        {
+            None,
 
-class Symbol
-{
-public:
-    std::string name;
-    Symbol* parent;
-    SymbolType symbolType;
+            
 
-    Symbol() = default;
+            Storable,
+            Member,
 
-    SymbolType GetType();
+            Prog,
+            Struct,
+            LambdaType,
 
-    virtual Symbol* GetParent() { return parent; }
+            MemberFunction
+        };
 
-    operator std::string() { return name; }
-};
+        std::string Name;
+        SymbolContext* Parent;
+        const Kind SymbolKind = Kind::None;
 
-class Type : public Symbol
-{
-public:
-    Type() = default;
-};
+        Symbol() = default;
+        
+        void SetParent(SymbolContext* parent);
+        SymbolContext* GetParent();
 
-class Storable : public Symbol
-{
-public:
-    Type* type;
-    SymbolType symbolType = SymbolType::Storable;
-    Variability variability;
-};
+        operator std::string()
+        {
+            return Name;
+        }
+    };
 
-class Member : public Storable
-{
-public:
-    SymbolType symbolType = SymbolType::Member;
-    Visibility visibility;
-    Member() = default;
-    Member(Storable& storable);
-};
+    class Type
+    {
+    public:
+        enum class Kind
+        {
+            None,
+            CompileType,
+            CompileFunction,
+        };
 
-class TopObject : public Member
-{
-public:
-    TopObject() = default;
-};
+        const Type::Kind TypeKind = Type::Kind::None;
 
-class LambdaType : public Type
-{
-public:
-    LambdaType() = default;
+        Type() = default;
+    };
 
-    Type* retrunType;
-    std::vector<Storable> arguments;
-    std::vector<Storable> localSymbol;
-};
+    class Storable : public Symbol
+    {
+    public:
+        const Symbol::Kind SymbolKind = Symbol::Kind::Storable;
 
-class CompileType : public Type
-{
-public:
-    SymbolType symbolType = SymbolType::CompileType;
-    CompileTypeType compileTypeType;
+        Type* Type;
+        bool isConst;
+        SymbolContext* Parent;
+    };
 
-    CompileType() = delete;
-    CompileType(CompileTypeType compileTypeType);
-};
+    class Member : public Storable
+    {
+    public:
+        enum class Visibility
+        {
+            Public,
+            Private
+        };
 
-class IntType : public CompileType
-{
-    int size;
-public:
-    IntType(int size);
+        const Symbol::Kind SymbolKind = Symbol::Kind::Member;
 
-    inline int GetSize() { return size; }
-};
+        bool isStatic;
+        Visibility VisibilityKind;
 
-class VoidType : public CompileType
-{
-public:
-    VoidType();
-};
+        Member() = default;
+        Member(Storable& storable, bool isStatic);
+    };
 
+    class Struct : public Type, SymbolContext
+    {
+        std::vector<Member> members;
 
+    public:
+        const Symbol::Kind TypeKind = Symbol::Kind::Struct;
+    };
+
+    class LambdaType : public Type, SymbolContext
+    {
+        Type* retrunType;
+        std::vector<Storable> arguments;
+
+    public:
+        const Symbol::Kind TypeKind = Symbol::Kind::LambdaType;
+
+        LambdaType();
+
+        void AddArgument(Storable argument);
+        void SetReturnType(Type* type);
+        Type* GetReturnType();
+    };
+
+    class CompileType : public Type
+    {
+    public:
+        enum class Kind
+        {
+            None,
+
+            Void,
+            Pionter,
+
+            Int,
+
+            FP16,
+            FP32,
+            FP64,
+            FP128,
+        };
+
+        const Type::Kind TypeKind = Type::Kind::CompileType;
+        CompileType::Kind CompileTypeKind;
+
+        CompileType() = delete;
+        CompileType(Kind kind);
+    };
+
+    class VoidType : public CompileType
+    {
+    public:
+        const CompileType::Kind CompileTypeKind = CompileType::Kind::Void;
+        VoidType();
+    };
+
+    class IntType : public CompileType
+    {
+        int size;
+
+    public:
+        const CompileType::Kind CompileTypeKind = CompileType::Kind::Int;
+
+        IntType(int size);
+
+        int GetSize() const;
+    };
+}
 
 #endif // MIKO_SYMBOL_TABLE_HPP

@@ -1,23 +1,23 @@
 #ifndef MIKO_UTIL_HPP
 #define MIKO_UTIL_HPP
 
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Type.h>
 #include <string>
+#include <vector>
 
-inline std::string redString(std::string str)
+constexpr std::vector<std::string> SplitName(std::string name)
 {
-    return "\033[1;31m" + str + "\033[0m";
-}
-
-inline std::string greenString(std::string str)
-{
-    return "\033[1;32m" + str + "\033[0m";
-}
-
-inline std::string yellowString(std::string str)
-{
-    return "\033[1;33m" + str + "\033[0m";
+    std::vector<std::string> ret;
+    std::string delimiter = ".";
+    size_t pos = 0;
+    std::string token;
+    while ((pos = name.find(delimiter)) != std::string::npos)
+    {
+        token = name.substr(0, pos);
+        ret.push_back(token);
+        name.erase(0, pos + delimiter.length());
+    }
+    ret.push_back(name);
+    return ret;
 }
 
 #endif

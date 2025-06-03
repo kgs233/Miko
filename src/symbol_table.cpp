@@ -1,40 +1,94 @@
 #include "symbol_table.hpp"
 
 #include <stdexcept>
+#include <utility>
+#include <vector>
 
-SymbolType Symbol::GetType()
+#include "util.hpp"
+
+using namespace Miko;
+
+constexpr int LLVM_INT_MAX_SIZE = 8388607;
+
+void SymbolContext::AddLocalSymbol(Symbol symbol)
 {
-    return symbolType;
+    localSymbolList.insert(std::make_pair(symbol.Name, symbol));
 }
 
-Member::Member(Storable& storable)
+void SymbolContext::AddLocalSymbols(std::vector<Symbol> symbols)
 {
-    variability = storable.variability;
-    name = storable.name;
-    type = storable.type;
-    parent = storable.parent;
+    for (auto child : symbols)
+    {
+        localSymbolList.insert(std::make_pair(child.Name, child));
+    }
 }
 
-CompileType::CompileType(CompileTypeType compileTypeType)
+GlobalContext* GlobalContext::GetGlobalContext()
 {
-    this->compileTypeType = compileTypeType;
+    return &globalContext;
 }
 
-IntType::IntType(int size) : CompileType(CompileTypeType::Int)
+Symbol* SymbolContext::FindSymbol(std::string name)
 {
-    this->name = "int" + std::to_string(size);
+    std::vector<std::string> nameList = SplitName(name);
+    SymbolContext nowContext = *this;
+    for(auto child : nameList)
+    {
+        if (nowContext.localSymbolList.find(child) == nowContext.localSymbolList.end())
+        {
+            return nullptr;
+        }
+        nowContext = *nowContext.localSymbolList[child].GetParent();
+    }
+}
+
+SymbolContext* Symbol::GetParent()
+{
+    return Parent;
+}
+
+Member::Member(Storable& storable, bool isStatic)
+{
+    Name = storable.Name;
+    Type = storable.Type;
+    Parent = storable.Parent;
+}
+
+LambdaType::LambdaType()
+{
+}
+
+void LambdaType::AddArgument(Storable argument)
+{
+    AddLocalSymbol(argument);
+    AddArgument(argument);
+}
+
+void LambdaType::SetReturnType(Type* type)
+{
+    if(retrunType != nullptr)
+    {
+        throw "Can't Set retrunType again";
+    }
+
+    retrunType = type;
+}
+
+Type* LambdaType::GetReturnType()
+{
+    return retrunType;
+}
+
+IntType::IntType(int size) :
+    CompileType(CompileType::Kind::Int)
+{
     // LLVM IR Int size max
-    if(size > 8388607)
+    if (size > LLVM_INT_MAX_SIZE)
     {
         throw std::runtime_error("size too large");
     }
-    else 
+    else
     {
         this->size = size;
     }
-}
-
-VoidType::VoidType() : CompileType(CompileTypeType::Void)
-{
-    this->name = "void";
 }

@@ -2,4 +2,11 @@
 
 A Uni-Level Language, module, controllable，graceful and unified.
 
-Now in the process of design and prototyping, please check [this repository (Chinese Only)](https://github.com/kgs233/MikoLangIdea "Miko Lang Idea") for progress.
+## Features
+
+* Simple and stable grammar
+* Powerful Standards Library
+* Easy-to-use build system and package manager
+* Uni-Level
+* C-compatible header files
+* Programmer-oriented free

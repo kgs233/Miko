@@ -1,6 +1,20 @@
-open Std.IO;
-
-define main : \(foo : @Int(32)).@Int(32)
+for (i : Int32) from 0 to 1 step 1
 {
-    return 0;
-};
+    
+}
+
+const Foo = lambda(arg : Int32) -> Int32
+{}
+
+// same as
+
+const Foo : lambda(arg : Int32) -> Int32 = lambda(arg : Int32) -> Int32
+{}
+
+const Type1 = struct
+{}
+
+// same as
+
+const Type1 : struct = struct
+{}

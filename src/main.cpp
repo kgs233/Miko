@@ -1,5 +1,5 @@
 #include "AST.hpp"
-#include "codegen.hpp"
+#include "analysis.hpp"
 #include "source.hpp"
 #include <llvm/Support/raw_ostream.h>
 
@@ -11,8 +11,6 @@ int main(int argc, char const *argv[])
     AST preCompile(&source);
     preCompile.PrintTokens();
     preCompile.PrintAST();
-    CodeGen codeGen(&preCompile);
-    codeGen.Gen();
-    codeGen.PrintIR();
+    Analysis codeGen(&preCompile);
     return 0;
 }
