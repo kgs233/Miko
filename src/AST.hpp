@@ -2,6 +2,7 @@
 #define MIKO_ANTLR_PRE_HPP
 
 #include <antlr4-runtime.h>
+#include <memory>
 
 #include "CommonTokenStream.h"
 #include "source.hpp"
@@ -12,24 +13,27 @@ namespace Miko
 {
     class AST
     {
-        Source* source;
+        Source* source; 
 
         antlr4::ANTLRInputStream input;
         MikoLexerRules lexer;
-        MikoParserRules parser;
         antlr4::CommonTokenStream tokens;
-        MikoParserRules::ProgContext* antlrContext;
+        MikoParserRules parser;
+        
+        MikoParserRules::SourceContext* SourceContext;
     public:
         AST(Source* source);
+        
+        ~AST();
 
-        antlr4::CommonTokenStream& GetTokens();
         void PrintTokens();
-        MikoParserRules::ProgContext* GetAST(); 
         void PrintAST();
 
         Source* GetSource();
+        antlr4::CommonTokenStream& GetTokens();
+        MikoParserRules::SourceContext* GetAST(); 
 
-        operator MikoParserRules::ProgContext*() { return antlrContext; }
+        operator MikoParserRules::SourceContext*() { return SourceContext; }
     };
 }
 

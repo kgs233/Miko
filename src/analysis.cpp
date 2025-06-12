@@ -1,8 +1,5 @@
 #include "analysis.hpp"
 
-#include <any>
-
-#include <iostream>
 #include <vector>
 
 #include "pre/MikoLexerRules.h"
@@ -11,10 +8,10 @@
 
 using namespace Miko;
 
-Analysis::Analysis(AST* ast) :
-    ast(ast)
+Analysis::Analysis(AST* ast, Output* output) :
+    ast(ast), 
+    output(output)
 {
-    source = ast->GetSource();
 }
 
 void Analysis::GenSymbolTable()
@@ -22,17 +19,43 @@ void Analysis::GenSymbolTable()
     visitProg(ast->GetAST());
 }
 
-std::any Analysis::visitProg(MikoParserRules::ProgContext* ctx)
+void Analysis::visitProg(MikoParserRules::SourceContext* ctx)
 {
+    Struct* prog = new Struct();
     for (auto member : ctx->structMember())
     {
-        visitStructMember(member, GlobalContext::GetGlobalContext());
+        visitStructMember(member, prog);
     }
-
-    return nullptr;
 }
 
-std::vector<Member> Analysis::visitStructMember(MikoParserRules::StructMemberContext* ctx, SymbolContext* context)
+Struct* Analysis::visitStructType(MikoParserRules::StructTypeContext* ctx)
+{
+    Struct* structType = new Struct();
+    for (auto structChild : ctx->children)
+    {
+        if (static_cast<MikoParserRules::OpenStatementContext*>(structChild) != nullptr)
+        {
+            // TODO: Open statement Analysis
+            // find symbol table if it exists than check static, if is static than import that struct member to this struct open member
+            // else mark unknow in codegen re analysis
+        }
+        else if (static_cast<MikoParserRules::StructMemberContext*>(structChild) != nullptr)
+        {
+            auto memberList = visitStructMember(
+                        static_cast<MikoParserRules::StructMemberContext*>(structChild),
+                        structType);
+            
+            for (auto member : memberList)
+            {
+                structType->AddLocalSymbol(static_cast<Symbol*>(member));
+            }
+        }
+    }
+
+    return structType;
+}
+
+std::vector<Member*> Analysis::visitStructMember(MikoParserRules::StructMemberContext* ctx, SymbolContext* context)
 {
     Member::Visibility visibility = Member::Visibility::Public;
 
@@ -50,39 +73,30 @@ std::vector<Member> Analysis::visitStructMember(MikoParserRules::StructMemberCon
         }
     }
 
-    std::vector<Member> memberList;
+    std::vector<Member*> memberList;
     MikoParserRules::DefineStatementContext* defineStatement = ctx->defineStatement();
-    std::vector<Storable> storableList = visitDefineStatement(defineStatement, context);
+    std::vector<Storable*> storableList = visitDefineStatement(defineStatement, context);
 
     for (auto storable : storableList)
     {
-        Member* member = new Member(storable, !(ctx->STATIC() == nullptr));
+        Member* member = new Member(*storable, !(ctx->STATIC() == nullptr));
         member->VisibilityKind = visibility;
-        memberList.push_back(*member);
+        memberList.push_back(member);
     }
 
     return memberList;
 }
 
-std::vector<Storable> Analysis::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, SymbolContext* context)
+std::vector<Storable*> Analysis::visitDefineStatement(MikoParserRules::DefineStatementContext* ctx, SymbolContext* context)
 {
+    bool def = false;
     Storable storableTemplate;
-    std::vector<Storable> retList;
-
-    storableTemplate.isConst = false;
-    if (ctx->defineKeyword()->VAR() != nullptr)
-    {
-        storableTemplate.isConst = false;
-    }
-    else if (ctx->defineKeyword()->CONST() != nullptr)
-    {
-        storableTemplate.isConst = true;
-    }
+    std::vector<Storable*> retList;
 
     for (auto expression : ctx->defineExpression())
     {
         Storable storable = visitDefineExpression(expression, storableTemplate);
-        retList.push_back(storable);
+        retList.push_back(&storable);
     }
 
     return retList;
@@ -98,7 +112,24 @@ Storable Analysis::visitDefineExpression(MikoParserRules::DefineExpressionContex
 
 Type* Analysis::visitDefineType(MikoParserRules::DefineTypeContext* ctx)
 {
+    Type* type = visitType(ctx->type());
+
+    if (ctx->defineVariability()->VAR() != nullptr)
+    {
+        type->isConst = false;
+    }
+    else if (ctx->defineVariability()->CONST() != nullptr)
+    {
+        type->isConst = true;
+    } 
+
+    return type;
+}
+
+Type* Analysis::visitType(MikoParserRules::TypeContext* ctx)
+{
     Type* type;
+
     if (ctx->compilerCall() != nullptr)
     {
         if (dynamic_cast<MikoParserRules::CompilerFuncContext*>(ctx->compilerCall()) != nullptr)
@@ -119,13 +150,17 @@ Type* Analysis::visitDefineType(MikoParserRules::DefineTypeContext* ctx)
             }
         }
     }
+    else if (ctx->structType() != nullptr)
+    {
+        type = visitStructType(ctx->structType());
+    }
     else if (ctx->lambdaExpression() != nullptr)
     {
         type = visitLambdaExpression(ctx->lambdaExpression());
     }
     else
     {
-        // Get Type
+        
     }
 
     return type;
@@ -143,18 +178,8 @@ LambdaType* Analysis::visitLambdaExpression(MikoParserRules::LambdaExpressionCon
         for (auto arg : arguments)
         {
             Storable storable = Storable();
-            storable.isConst = false;
-            if (ctx->defineKeyword()->VAR() != nullptr)
-            {
-                storable.isConst = false;
-            }
-            else if (ctx->defineKeyword()->CONST() != nullptr)
-            {
-                storable.isConst = true;
-            }
-            // FIXME: delate this temp var
             Storable storable2 = visitDefineExpression(arg, storable);
-            lambda->AddArgument(storable2);
+            lambda->AddArgument(&storable2);
         }
     }
 

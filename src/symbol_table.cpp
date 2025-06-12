@@ -10,36 +10,46 @@ using namespace Miko;
 
 constexpr int LLVM_INT_MAX_SIZE = 8388607;
 
-void SymbolContext::AddLocalSymbol(Symbol symbol)
+SymbolContext::~SymbolContext()
 {
-    localSymbolList.insert(std::make_pair(symbol.Name, symbol));
-}
-
-void SymbolContext::AddLocalSymbols(std::vector<Symbol> symbols)
-{
-    for (auto child : symbols)
+    for (auto child : localSymbolList)
     {
-        localSymbolList.insert(std::make_pair(child.Name, child));
+        DISPOSE(child.second);
     }
 }
 
-GlobalContext* GlobalContext::GetGlobalContext()
+void SymbolContext::AddLocalSymbol(Symbol* symbol)
 {
-    return &globalContext;
+    localSymbolList.insert(std::make_pair(symbol->Name, symbol));
+}
+
+void SymbolContext::AddLocalSymbols(std::vector<Symbol*> symbols)
+{
+    for (auto child : symbols)
+    {
+        localSymbolList.insert(std::make_pair(child->Name, child));
+    }
 }
 
 Symbol* SymbolContext::FindSymbol(std::string name)
 {
     std::vector<std::string> nameList = SplitName(name);
-    SymbolContext nowContext = *this;
-    for(auto child : nameList)
+    if (localSymbolList.find(nameList[0]) != localSymbolList.end())
     {
-        if (nowContext.localSymbolList.find(child) == nowContext.localSymbolList.end())
+        if (nameList.size() == 1)
         {
-            return nullptr;
+            return localSymbolList[nameList[0]];
         }
-        nowContext = *nowContext.localSymbolList[child].GetParent();
+
+        Type* type = static_cast<Storable*>(localSymbolList[nameList[0]])->Type;
+        if (static_cast<Struct*>(type) != nullptr)
+        {
+            nameList.erase(nameList.begin());
+            return static_cast<SymbolContext*>(static_cast<Struct*>(type))->FindSymbol(CombineName(nameList));
+        }
     }
+
+    return nullptr;
 }
 
 SymbolContext* Symbol::GetParent()
@@ -54,19 +64,18 @@ Member::Member(Storable& storable, bool isStatic)
     Parent = storable.Parent;
 }
 
-LambdaType::LambdaType()
-{
-}
+UnkonwnType::UnkonwnType(std::string name) :
+    name(name)
+{ }
 
-void LambdaType::AddArgument(Storable argument)
+void LambdaType::AddArgument(Storable* argument)
 {
     AddLocalSymbol(argument);
-    AddArgument(argument);
 }
 
 void LambdaType::SetReturnType(Type* type)
 {
-    if(retrunType != nullptr)
+    if (retrunType != nullptr)
     {
         throw "Can't Set retrunType again";
     }
@@ -79,8 +88,7 @@ Type* LambdaType::GetReturnType()
     return retrunType;
 }
 
-IntType::IntType(int size) :
-    CompileType(CompileType::Kind::Int)
+IntType::IntType(int size)
 {
     // LLVM IR Int size max
     if (size > LLVM_INT_MAX_SIZE)

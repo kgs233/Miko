@@ -14,10 +14,10 @@ namespace Miko
         std::filesystem::path path;
         std::filebuf* buf;
     public:
-        Source(std::string);
-        ~Source();
+        Source(const std::string&); 
+        ~Source(); 
 
-        std::string GetSourcePath();
+        std::string GetSourcePath() const;
     };
 }
 

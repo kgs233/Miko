@@ -3,6 +3,7 @@
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Type.h>
+
 #include <map>
 #include <string>
 #include <vector>
@@ -14,19 +15,20 @@ namespace Miko
 
     class SymbolContext
     {
-        std::map<std::string, Symbol> localSymbolList;
+        std::map<std::string, Symbol*> openSymbolList;
+        std::map<std::string, Symbol*> localSymbolList;
+
     public:
-        virtual void AddLocalSymbol(Symbol symbol);
-        virtual void AddLocalSymbols(std::vector<Symbol> symbols);
+        virtual void AddLocalSymbol(Symbol* symbol);
+        virtual void AddLocalSymbols(std::vector<Symbol*> symbols);
 
         virtual Symbol* FindSymbol(std::string name);
+
+        virtual ~SymbolContext();
     };
 
-    class GlobalContext : public SymbolContext
+    class OpenContext : public SymbolContext
     {
-        static GlobalContext globalContext;
-    public:
-        static GlobalContext* GetGlobalContext();
     };
 
     class Symbol
@@ -36,16 +38,11 @@ namespace Miko
         {
             None,
 
-            
-
             Storable,
             Member,
 
             Prog,
             Struct,
-            LambdaType,
-
-            MemberFunction
         };
 
         std::string Name;
@@ -53,7 +50,7 @@ namespace Miko
         const Kind SymbolKind = Kind::None;
 
         Symbol() = default;
-        
+
         void SetParent(SymbolContext* parent);
         SymbolContext* GetParent();
 
@@ -61,6 +58,8 @@ namespace Miko
         {
             return Name;
         }
+
+        virtual ~Symbol() = default;
     };
 
     class Type
@@ -71,11 +70,15 @@ namespace Miko
             None,
             CompileType,
             CompileFunction,
+            Lambda
         };
 
         const Type::Kind TypeKind = Type::Kind::None;
 
+        bool isConst;
+
         Type() = default;
+        virtual ~Type() = default;
     };
 
     class Storable : public Symbol
@@ -84,7 +87,6 @@ namespace Miko
         const Symbol::Kind SymbolKind = Symbol::Kind::Storable;
 
         Type* Type;
-        bool isConst;
         SymbolContext* Parent;
     };
 
@@ -106,7 +108,23 @@ namespace Miko
         Member(Storable& storable, bool isStatic);
     };
 
-    class Struct : public Type, SymbolContext
+    class UnkonwnType : public Type
+    {
+        std::string name;
+
+    public:
+        const Type::Kind TypeKind = Type::Kind::None;
+
+        UnkonwnType() = delete;
+        UnkonwnType(std::string name);
+
+        constexpr std::string GetName() const
+        {
+            return name;
+        }
+    };
+
+    class Struct : public Type, public SymbolContext
     {
         std::vector<Member> members;
 
@@ -120,11 +138,11 @@ namespace Miko
         std::vector<Storable> arguments;
 
     public:
-        const Symbol::Kind TypeKind = Symbol::Kind::LambdaType;
+        const Type::Kind TypeKind = Type::Kind::Lambda;
 
-        LambdaType();
+        LambdaType() = default;
 
-        void AddArgument(Storable argument);
+        void AddArgument(Storable* argument);
         void SetReturnType(Type* type);
         Type* GetReturnType();
     };
@@ -150,15 +168,15 @@ namespace Miko
         const Type::Kind TypeKind = Type::Kind::CompileType;
         CompileType::Kind CompileTypeKind;
 
-        CompileType() = delete;
-        CompileType(Kind kind);
+        CompileType() = default;
     };
 
     class VoidType : public CompileType
     {
     public:
         const CompileType::Kind CompileTypeKind = CompileType::Kind::Void;
-        VoidType();
+
+        VoidType() = default;
     };
 
     class IntType : public CompileType
