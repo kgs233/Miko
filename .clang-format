@@ -27,14 +27,14 @@ BinPackArguments: true
 BinPackParameters: true
 BitFieldColonSpacing: Both
 
-BreakBeforeBraces: Allman
 AlwaysBreakAfterReturnType:  None
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Allman
 BreakBeforeInlineASMColon: Never
 BreakBeforeTernaryOperators: false
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
 BreakStringLiterals: true
-AlwaysBreakTemplateDeclarations: Yes
 CompactNamespaces: false
 Cpp11BracedListStyle: true
 ContinuationIndentWidth: 4
