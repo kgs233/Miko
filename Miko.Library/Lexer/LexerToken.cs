@@ -5,6 +5,6 @@ namespace Miko.Library.Lexer
         public int Line { get; set; } = Line;
         public int Column { get; set; } = Column;
         public LexerTokenType Type { get; set; } = Type;
-        public string Text { get; set; } = Text;
+        public string Value { get; set; } = Text;
     }
 }

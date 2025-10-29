@@ -27,10 +27,15 @@ namespace Miko.Library.Lexer
         ThisKeyword,
         AsmKeyword,
         ReturnKeyword,
+        BreakKeyword,
         StopKeyword,
         NextKeyword,
         DefineKeyword,
         NullKeyword,
+        StaticKeyword,
+        PublicKeyword,
+        PrivateKeyword,
+        OpenKeyword,        
 
         // 符号 (xxxSymbol)
         // 单字符符号
@@ -73,7 +78,7 @@ namespace Miko.Library.Lexer
         LogicalOrSymbol,            // ||
         LeftShiftSymbol,            // <<
         RightShiftSymbol,           // >>
-        
+
         // 复合赋值运算符
         PlusAssignSymbol,       // +=
         MinusAssignSymbol,      // -=
@@ -88,7 +93,7 @@ namespace Miko.Library.Lexer
 
         // 特殊运算符
         LambdaArrowSymbol,       // ->
-        
+
         EndOfFile
     }
 }

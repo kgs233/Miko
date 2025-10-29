@@ -29,10 +29,10 @@ namespace Miko.Test
                 var expectedItem = expected[i];
 
                 Assert.True(actual.Type == expectedItem.Type,
-                    $"Token {i} 类型错误。期望: {expectedItem.Type}, 实际: {actual.Type}. Text: {actual.Text}");
+                    $"Token {i} 类型错误。期望: {expectedItem.Type}, 实际: {actual.Type}. Text: {actual.Value}");
 
-                Assert.True(actual.Text == expectedItem.Text,
-                    $"Token {i} 源字符串错误。期望: \"{expectedItem.Text}\", 实际: \"{actual.Text}\"");
+                Assert.True(actual.Value == expectedItem.Text,
+                    $"Token {i} 源字符串错误。期望: \"{expectedItem.Text}\", 实际: \"{actual.Value}\"");
             }
 
             // 验证最后一个 Token 是 EOF
@@ -189,17 +189,17 @@ namespace Miko.Test
             Assert.Equal(8, tokens.Count); // 7 tokens + EOF
 
             // 验证行和列信息
-            Assert.True(tokens[0].Text == "if" && tokens[0].Line == 1 && tokens[0].Column == 1);
-            Assert.True(tokens[1].Text == "{" && tokens[1].Line == 2 && tokens[1].Column == 1);
+            Assert.True(tokens[0].Value == "if" && tokens[0].Line == 1 && tokens[0].Column == 1);
+            Assert.True(tokens[1].Value == "{" && tokens[1].Line == 2 && tokens[1].Column == 1);
             
             // 'a' token
-            Assert.True(tokens[2].Text == "a" && tokens[2].Line == 3 && tokens[2].Column == 5); 
+            Assert.True(tokens[2].Value == "a" && tokens[2].Line == 3 && tokens[2].Column == 5); 
             
             // '=' token
-            Assert.True(tokens[3].Text == "=" && tokens[3].Line == 3 && tokens[3].Column == 7); 
+            Assert.True(tokens[3].Value == "=" && tokens[3].Line == 3 && tokens[3].Column == 7); 
             
             // '}' token
-            Assert.True(tokens[6].Text == "}" && tokens[6].Line == 4 && tokens[6].Column == 1); 
+            Assert.True(tokens[6].Value == "}" && tokens[6].Line == 4 && tokens[6].Column == 1); 
         }
     }
 }

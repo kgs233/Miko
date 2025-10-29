@@ -25,7 +25,15 @@ namespace Miko.Library.Lexer
             {"this", LexerTokenType.ThisKeyword},
             {"asm", LexerTokenType.AsmKeyword},
             {"define", LexerTokenType.DefineKeyword},
-            {"return", LexerTokenType.ReturnKeyword}
+            {"return", LexerTokenType.ReturnKeyword },
+            {"stop", LexerTokenType.StopKeyword},
+            {"next", LexerTokenType.NextKeyword},
+            {"null", LexerTokenType.NullKeyword},
+            {"static", LexerTokenType.StaticKeyword},
+            {"break", LexerTokenType.BreakKeyword},
+            {"public", LexerTokenType.PublicKeyword},
+            {"private", LexerTokenType.PrivateKeyword},
+            {"open", LexerTokenType.OpenKeyword},
         };
 
         // Symbol map (based on the provided version)
@@ -82,7 +90,7 @@ namespace Miko.Library.Lexer
         };
         
         // Maximum symbol length for longest match principle
-        private const int MaxSymbolLength = 3; 
+        private const int MaxSymbolLength = 3;
 
         // ----------------------------------------------------
         // CharStream (重构: 使用 Source 抽象类进行索引访问)
@@ -90,10 +98,10 @@ namespace Miko.Library.Lexer
         private class CharStream
         {
             // 使用抽象的 Source 对象，而不是 TextReader
-            private readonly Source _source; 
+            private readonly Source _source;
             // 使用 long 来处理大文件的索引
-            private long _position; 
-            private char _current; 
+            private long _position;
+            private char _current;
 
             public int Line { get; private set; }
             public int Column { get; private set; }
@@ -104,7 +112,7 @@ namespace Miko.Library.Lexer
                 _source = source;
                 _position = -1; // 准备读取第一个字符 (索引 0)
                 Line = 1;
-                Column = 0; 
+                Column = 0;
                 ReadNext(); // 加载第一个字符
             }
 
@@ -114,15 +122,15 @@ namespace Miko.Library.Lexer
             public char Peek(int n)
             {
                 if (n == 0) return _current;
-                
+
                 long lookaheadIndex = _position + n;
-                
+
                 if (lookaheadIndex >= 0 && lookaheadIndex < _source.Length)
                 {
                     return _source.GetChar(lookaheadIndex);
                 }
                 // 返回 EOF 标记
-                return '\0'; 
+                return '\0';
             }
 
             // EOF 检查更简单，只需要检查 _current 是否为 EOF 标记
@@ -148,7 +156,7 @@ namespace Miko.Library.Lexer
                 var sb = new StringBuilder();
                 for (int i = 0; i < n; i++)
                 {
-                    if (IsEndOfStream()) break; 
+                    if (IsEndOfStream()) break;
                     sb.Append(Consume());
                 }
                 return sb.ToString();
@@ -180,10 +188,6 @@ namespace Miko.Library.Lexer
                 }
             }
         }
-
-        // ----------------------------------------------------
-        // 辅助方法 (保持不变)
-        // ----------------------------------------------------
         
         // Helper: Handles escaped characters (including Unicode escapes)
         private static char GetEscapedChar(CharStream stream, char firstChar)
@@ -241,9 +245,6 @@ namespace Miko.Library.Lexer
             return sb.ToString();
         }
 
-        // ----------------------------------------------------
-        // Core Lexing function (重构: 接受 Source 对象)
-        // ----------------------------------------------------
         public static List<LexerToken> Lex(Source source)
         {
             // 使用 using 块确保 Source 对象（如 FileSource/MMF）被正确 Dispose
