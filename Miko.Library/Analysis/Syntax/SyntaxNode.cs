@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Miko.Library.Parser.Syntax;
+namespace Miko.Library.Analysis.Syntax;
 
 public abstract class SyntaxNode
 {

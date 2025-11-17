@@ -1,71 +1,87 @@
-using System.Text;
+using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Text;
+using System;
 
 namespace Miko.Library.Source;
 
 /// <summary>
-/// A Source implementation using Memory-Mapped Files (MMF) for efficient, low-memory access
-/// to large files on disk. Instantiation may throw file-system related exceptions.
+/// A Source implementation that uses Memory-Mapped Files (MMF) for efficient, low-memory access
+/// to large files, using the specified character encoding for sequential access.
 /// </summary>
 public sealed class FileSource : Source
 {
-    private readonly MemoryMappedFile _mappedFile;
-    private readonly MemoryMappedViewAccessor _accessor;
-    private readonly Encoding _encoding;
-    private readonly long _byteLength;
-    
-    // 新增的私有成员，用于存储完整的文件路径
-    private readonly string _filePath; 
-
-    public override long Length => _byteLength;
+    private readonly MemoryMappedFile mappedFile;
+    private readonly MemoryMappedViewStream mappedStream;
+    private readonly StreamReader internalReader;
+    private readonly string filePath;
 
     /// <summary>
     /// Gets the full, absolute path to the physical file on disk.
     /// </summary>
-    public string FilePath => _filePath;
+    public string FilePath => filePath;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileSource"/> class by mapping a file to memory.
     /// </summary>
     /// <param name="filePath">The full path to the source file.</param>
-    /// <param name="encoding">The file encoding (optional, defaults to UTF8).</param>
+    /// <param name="encoding">The file encoding (optional, defaults to UTF8). 
+    /// If null, UTF8 is used with BOM detection.</param>
     public FileSource(string filePath, Encoding? encoding = null)
-        : base(Path.GetFileName(filePath)) // SourceName 为文件名
+        : base() 
     {
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
 
-        _filePath = filePath;
-        _encoding = encoding ?? Encoding.UTF8;
-
-        // 1. 创建 MemoryMappedFile
-        _mappedFile = MemoryMappedFile.CreateFromFile(
-            _filePath, 
+        this.filePath = filePath;
+        
+        SourceName = Path.GetFileName(filePath);
+        
+        mappedFile = MemoryMappedFile.CreateFromFile(
+            this.filePath,
             FileMode.Open, 
             null, 
-            0, // Map the entire file
+            0,
             MemoryMappedFileAccess.Read);
 
-        // 2. 创建视图，获取访问器
-        _accessor = _mappedFile.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
-        _byteLength = _accessor.Capacity;
-    }
-
-    public override char GetChar(long index)
-    {
-        if (index < 0 || index >= _byteLength)
-            return '\0'; 
-
-        // Read byte from MMF view
-        byte b = _accessor.ReadByte(index);
+        mappedStream = mappedFile.CreateViewStream(0, 0, MemoryMappedFileAccess.Read);
         
-        // Simplified: Treat byte as char (works for ASCII/simple UTF-8)
-        return (char)b; 
+        Encoding finalEncoding = encoding ?? Encoding.UTF8;
+        bool detectBom = (encoding == null);
+        internalReader = new StreamReader(mappedStream, finalEncoding, detectBom);
     }
-
-    public override void Dispose()
+    
+    /// <summary>
+    /// Reads the next character from the internal StreamReader using ImplementRead().
+    /// </summary>
+    /// <returns>The next character, or '\0' if the end of the source is reached.</returns>
+    public override char ImplementRead()
     {
-        _accessor?.Dispose();
-        _mappedFile?.Dispose();
+        // StreamReader.Read() returns -1 on EOF.
+        int charCode = internalReader.Read();
+
+        if (charCode == -1)
+        {
+            return '\0'; 
+        }
+        
+        return (char)charCode;
+    }
+    
+    /// <summary>
+    /// Releases the unmanaged and managed resources used by the <see cref="FileSource"/>.
+    /// </summary>
+    /// <param name="disposing">True to release both managed and unmanaged resources.</param>
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // Dispose of managed resources held by this derived class.
+            internalReader.Dispose(); 
+            mappedFile.Dispose();
+        }
+
+        // Call the base class's Dispose method.
+        base.Dispose(disposing);
     }
 }

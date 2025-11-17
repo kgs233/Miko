@@ -1,6 +1,6 @@
 using System;
 
-namespace Miko.Library.Parser.Syntax;
+namespace Miko.Library.Analysis.Syntax;
 
 public class SyntaxTree
 {

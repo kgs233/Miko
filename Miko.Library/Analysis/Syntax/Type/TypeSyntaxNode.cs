@@ -1,7 +1,7 @@
 using System.Text;
-using Miko.Library.Parser.Syntax;
+using Miko.Library.Analysis.Syntax;
 
-namespace Miko.Library.Parser.Syntax.Type;
+namespace Miko.Library.Analysis.Syntax.Type;
 
 public enum TypeKind
 {

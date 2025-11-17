@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Analysis\" />
     <Folder Include="Analysis\Symbol\" />
   </ItemGroup>
 
