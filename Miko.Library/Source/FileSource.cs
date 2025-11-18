@@ -14,12 +14,11 @@ public sealed class FileSource : Source
     private readonly MemoryMappedFile mappedFile;
     private readonly MemoryMappedViewStream mappedStream;
     private readonly StreamReader internalReader;
-    private readonly string filePath;
 
     /// <summary>
     /// Gets the full, absolute path to the physical file on disk.
     /// </summary>
-    public string FilePath => filePath;
+    public string FilePath { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileSource"/> class by mapping a file to memory.
@@ -28,29 +27,28 @@ public sealed class FileSource : Source
     /// <param name="encoding">The file encoding (optional, defaults to UTF8). 
     /// If null, UTF8 is used with BOM detection.</param>
     public FileSource(string filePath, Encoding? encoding = null)
-        : base() 
     {
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
 
-        this.filePath = filePath;
-        
+        FilePath = filePath;
+
         SourceName = Path.GetFileName(filePath);
-        
+
         mappedFile = MemoryMappedFile.CreateFromFile(
-            this.filePath,
-            FileMode.Open, 
-            null, 
+            FilePath,
+            FileMode.Open,
+            null,
             0,
             MemoryMappedFileAccess.Read);
 
         mappedStream = mappedFile.CreateViewStream(0, 0, MemoryMappedFileAccess.Read);
-        
+
         Encoding finalEncoding = encoding ?? Encoding.UTF8;
-        bool detectBom = (encoding == null);
+        bool detectBom = encoding == null;
         internalReader = new StreamReader(mappedStream, finalEncoding, detectBom);
     }
-    
+
     /// <summary>
     /// Reads the next character from the internal StreamReader using ImplementRead().
     /// </summary>
@@ -62,12 +60,12 @@ public sealed class FileSource : Source
 
         if (charCode == -1)
         {
-            return '\0'; 
+            return '\0';
         }
-        
+
         return (char)charCode;
     }
-    
+
     /// <summary>
     /// Releases the unmanaged and managed resources used by the <see cref="FileSource"/>.
     /// </summary>
@@ -77,7 +75,7 @@ public sealed class FileSource : Source
         if (disposing)
         {
             // Dispose of managed resources held by this derived class.
-            internalReader.Dispose(); 
+            internalReader.Dispose();
             mappedFile.Dispose();
         }
 

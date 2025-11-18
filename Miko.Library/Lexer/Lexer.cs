@@ -106,7 +106,7 @@ namespace Miko.Library.Lexer
         /// <summary> Skips whitespace characters. </summary>
         private static void ProcessWhitespace(Source.Source source)
         {
-            while (!source.IsEOF() && char.IsWhiteSpace(source.Peek()))
+            while (!source.IsEOF && char.IsWhiteSpace(source.Peek()))
             {
                 source.Read();
             }
@@ -159,7 +159,7 @@ namespace Miko.Library.Lexer
         private static LexerToken ProcessIdentifier(Source.Source source, int startLine, int startColumn)
         {
             var sb = new StringBuilder();
-            while (!source.IsEOF())
+            while (!source.IsEOF)
             {
                 var currentCh = source.Peek();
                 // Allow letters, digits, underscore, and Unicode letters
@@ -199,15 +199,15 @@ namespace Miko.Library.Lexer
                 // Consume digits based on the prefix
                 if (nextCh == 'x' || nextCh == 'X') 
                 {
-                    while (!source.IsEOF() && IsHexDigit(source.Peek())) sb.Append(source.Read());
+                    while (!source.IsEOF && IsHexDigit(source.Peek())) sb.Append(source.Read());
                 }
                 else if (nextCh == 'b' || nextCh == 'B') 
                 {
-                    while (!source.IsEOF() && (source.Peek() == '0' || source.Peek() == '1')) sb.Append(source.Read());
+                    while (!source.IsEOF && (source.Peek() == '0' || source.Peek() == '1')) sb.Append(source.Read());
                 }
                 else // Octal 'o' / 'O'
                 {
-                    while (!source.IsEOF() && source.Peek() >= '0' && source.Peek() <= '7') sb.Append(source.Read());
+                    while (!source.IsEOF && source.Peek() >= '0' && source.Peek() <= '7') sb.Append(source.Read());
                 }
 
                 if (sb.Length <= 2) // Contains only "0x", "0b", "0o"
@@ -218,7 +218,7 @@ namespace Miko.Library.Lexer
             }
 
             // 2. Handle decimal and floating point numbers
-            while (!source.IsEOF())
+            while (!source.IsEOF)
             {
                 char peek = source.Peek();
                 if (char.IsDigit(peek))
@@ -248,7 +248,7 @@ namespace Miko.Library.Lexer
                 if (sign == '+' || sign == '-') sb.Append(source.Read()); // Consume sign
                 
                 // Consume exponent digits
-                while (!source.IsEOF() && char.IsDigit(source.Peek())) sb.Append(source.Read());
+                while (!source.IsEOF && char.IsDigit(source.Peek())) sb.Append(source.Read());
             }
 
             return new LexerToken(startLine, startColumn, isFloat ? LexerTokenType.FLOAT : LexerTokenType.INT, sb.ToString());
@@ -262,12 +262,12 @@ namespace Miko.Library.Lexer
 
             try
             {
-                while (!source.IsEOF() && source.Peek() != '"')
+                while (!source.IsEOF && source.Peek() != '"')
                 {
                     if (source.Peek() == '\\')
                     {
                         source.Read(); // Consume '\'
-                        if (source.IsEOF())
+                        if (source.IsEOF)
                             throw new Exception("Unexpected EOF after escape character.");
                         
                         char escapedChar = HandleEscapeSequence(source, source.Read()); 
@@ -279,7 +279,7 @@ namespace Miko.Library.Lexer
                     }
                 }
 
-                if (!source.IsEOF()) 
+                if (!source.IsEOF) 
                 {
                     source.Read(); // Consume closing '"'
                     return new LexerToken(startLine, startColumn, LexerTokenType.STRING, stringBuilder.ToString());
@@ -292,7 +292,7 @@ namespace Miko.Library.Lexer
             catch (Exception ex)
             {
                 // Clean up the stream to the next '\'' or newline
-                while (!source.IsEOF() && source.Peek() != '"' && source.Peek() != '\n') source.Read();
+                while (!source.IsEOF && source.Peek() != '"' && source.Peek() != '\n') source.Read();
                 if (source.Peek() == '"') source.Read();
                 
                 return new LexerToken(startLine, startColumn, LexerTokenType.ERROR, $"String error: {ex.Message}");
@@ -307,13 +307,13 @@ namespace Miko.Library.Lexer
 
             try
             {
-                if (source.IsEOF())
+                if (source.IsEOF)
                     throw new Exception("Empty or unclosed character literal.");
                 
                 if (source.Peek() == '\\')
                 {
                     source.Read(); // Consume '\'
-                    if (source.IsEOF()) 
+                    if (source.IsEOF) 
                         throw new Exception("Unexpected EOF after escape character.");
                     
                     value = HandleEscapeSequence(source, source.Read()); 
@@ -332,7 +332,7 @@ namespace Miko.Library.Lexer
             catch (Exception ex)
             {
                 // Clean up the stream to the next '\'' or newline
-                while (!source.IsEOF() && source.Peek() != '\'' && source.Peek() != '\n') source.Read();
+                while (!source.IsEOF && source.Peek() != '\'' && source.Peek() != '\n') source.Read();
                 if (source.Peek() == '\'') source.Read();
                 
                 return new LexerToken(startLine, startColumn, LexerTokenType.ERROR, $"Char error: {ex.Message}");
@@ -396,7 +396,7 @@ namespace Miko.Library.Lexer
             // The position properties are accessible directly on the source instance.
             using (source)
             {
-                while (!source.IsEOF())
+                while (!source.IsEOF)
                 {
                     int startLine = source.Line;
                     int startColumn = source.Column;
